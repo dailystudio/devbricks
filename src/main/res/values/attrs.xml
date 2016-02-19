@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    
+    <attr name="textStyle">
+        <flag name="normal" value="0" />
+        <flag name="bold" value="1" />
+        <flag name="italic" value="2" />
+    </attr>
+    
+    <attr name="textSize" format="dimension" />
+
+    <attr name="textColor" format="reference|color" />
+    
+    <!-- Standard orientation constant. -->
+    <attr name="orientation">
+        <!-- Defines an horizontal widget. -->
+        <enum name="horizontal" value="0" />
+        <!-- Defines a vertical widget. -->
+        <enum name="vertical" value="1" />
+    </attr>
+    
+    <declare-styleable name="CountView">
+        <attr name="minDigits" format="integer" />
+        <attr name="count" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="DurationCountView">
+        <attr name="textStyle" />
+        <attr name="textSize" />
+        <attr name="textColor" />
+	</declare-styleable>
+
+</resources>

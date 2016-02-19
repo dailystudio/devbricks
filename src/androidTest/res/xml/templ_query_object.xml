@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Database name="tests">
+	
+	<Template table="query">
+		<Column name="_id" type="integer" primary="true" allowNull="false"/>
+		<Column name="intValue" type="integer"/>
+		<Column name="doubleValue" type="double"/>
+		<Column name="textValue" type="text"/>
+	</Template>
+	
+</Database>

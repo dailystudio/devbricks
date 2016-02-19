@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Database name="tests">
+	
+	<Template table="test1">
+		<Column name="_id" type="integer" primary="true" allowNull="false"/>
+		<Column name="time" type="long" allowNull="false"/>
+	</Template>
+	
+</Database>

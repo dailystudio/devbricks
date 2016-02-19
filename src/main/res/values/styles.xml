@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources
+	xmlns:core="http://schemas.android.com/apk/res/com.dailystudio.memory" xmlns:android="http://schemas.android.com/apk/res/android">
+	
+    <style name="Theme" parent="android:Theme">
+    </style>
+    
+    <style name="Theme.DefaultActivity">
+		<item name="android:windowNoTitle">true</item>
+        <item name="android:windowSoftInputMode">adjustPan</item>
+	</style>
+	
+    <style name="Theme.DefaultActivity.Light">
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+    
+    <style name="Theme.Translucent" parent="android:style/Theme.Translucent">
+        <item name="android:windowBackground">@color/translucent_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorForeground">#fff</item>
+    </style>
+    
+    <style name="Theme.Transparent">
+        <item name="android:windowIsTranslucent">true</item>
+		<item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorForeground">#fff</item>
+    </style>
+
+	<style name="DefaultText">
+		<item name="android:gravity">center</item>
+		<item name="android:textColor">@color/light_black</item>
+		<item name="android:textSize">@dimen/default_font_size</item>
+	</style>
+
+	<style name="DefaultButton">
+		<item name="android:gravity">center</item>
+		<item name="android:textSize">@dimen/default_font_size</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:padding">@dimen/default_button_padding</item>
+	</style>
+	
+	<style name="DefaultCheck" parent="DefaultText">
+		<item name="android:gravity">left|center_vertical</item>
+		<item name="android:paddingTop">@dimen/default_check_padding</item>
+		<item name="android:paddingBottom">@dimen/default_check_padding</item>
+	</style>
+
+	<style name="DefaultListItemText" parent="DefaultText">
+		<item name="android:gravity">left|center_vertical</item>
+		<item name="android:textSize">@dimen/lv_item_font_size</item>
+		<item name="android:padding">@dimen/lv_item_padding</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:singleLine">true</item>
+	</style>
+	
+	<style name="DefaultListItemText1stLine" parent="DefaultListItemText">
+		<item name="android:paddingLeft">@dimen/lv_item_padding</item>
+		<item name="android:paddingRight">@dimen/lv_item_padding</item>
+		<item name="android:paddingTop">0dp</item>
+		<item name="android:paddingBottom">0dp</item>
+	</style>
+	
+	<style name="DefaultListItemText2ndLine">
+		<item name="android:gravity">left|center_vertical</item>
+		<item name="android:textColor">@color/gray</item>
+		<item name="android:textSize">@dimen/lv_item_2nd_font_size</item>
+		<item name="android:paddingLeft">@dimen/lv_item_padding</item>
+		<item name="android:paddingRight">@dimen/lv_item_padding</item>
+		<item name="android:paddingTop">@dimen/lv_item_2nd_vpadding</item>
+		<item name="android:paddingBottom">@dimen/lv_item_2nd_vpadding</item>
+		<item name="android:singleLine">true</item>
+	</style>
+	
+	<style name="DefaultGridItemText" parent="DefaultListItemText">
+		<item name="android:gravity">center</item>
+	</style>
+	
+	<style name="DefaultLabel">
+		<item name="android:gravity">left|center_vertical</item>
+		<item name="android:textColor">@color/light_black</item>
+		<item name="android:textSize">@dimen/default_font_size</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:padding">@dimen/default_label_padding</item>
+	</style>
+
+	<style name="ActiveLabel" parent="DefaultLabel">
+		<item name="android:textColor">@color/android_blue</item>
+	</style>
+
+	<style name="DefaultEditText">
+		<item name="android:textSize">@dimen/default_font_size</item>
+		<item name="android:inputType">textMultiLine</item>
+	</style>
+
+	<style name="DefaultScrollView">
+		<item name="android:scrollbarStyle">insideOverlay</item>
+	</style>
+			
+	<style name="DefaultAdapterView" parent="DefaultScrollView">
+		<item name="android:clipChildren">false</item>
+		<item name="android:clipToPadding">false</item>
+		<item name="android:cacheColorHint">@color/transparent</item>
+		<item name="android:persistentDrawingCache">animation|scrolling</item>
+		<item name="android:divider">@drawable/list_divider</item>
+	</style>
+	
+	<style name="DefaultListView" parent="DefaultAdapterView">
+		<item name="android:layoutAnimation">@anim/list_layout_anim</item>
+	</style>
+	
+	<style name="DefaultListView.NoAnim" parent="DefaultAdapterView">
+	</style>
+	
+	<style name="DefaultGridView" parent="DefaultAdapterView">
+		<item name="android:layoutAnimation">@anim/grid_layout_anim</item>
+		<item name="android:numColumns">2</item>
+		<item name="android:horizontalSpacing">@dimen/gv_item_hpadding</item>
+		<item name="android:verticalSpacing">@dimen/gv_item_vpadding</item>
+	</style>
+
+	<style name="DefaultGridView.NoAnim" parent="DefaultAdapterView">
+		<item name="android:numColumns">2</item>
+		<item name="android:horizontalSpacing">@dimen/gv_item_hpadding</item>
+		<item name="android:verticalSpacing">@dimen/gv_item_vpadding</item>
+	</style>
+	
+	<style name="DefaultPagerTitleStrip">
+		<item name="android:paddingBottom">8dp</item>
+		<item name="android:paddingTop">9dp</item>
+		<item name="android:textColor">@color/light_black</item>
+		<item name="android:textSize">@dimen/default_pager_title_font_size</item>
+	</style>
+	
+	<style name="DefaultDarkPagerTitleStrip" parent="DefaultPagerTitleStrip">
+		<item name="android:background">@color/action_bar_bg_color</item>
+	    <item name="android:textColor">@color/light_white</item>
+	</style>
+
+	<style name="DefaultWebView">
+		<item name="android:scrollbarStyle">insideOverlay</item>
+	</style>
+
+	<style name="DurationCountViewText" parent="DefaultText">
+	    <item name="android:gravity">right|center_vertical</item>
+		<item name="android:textStyle">bold</item>
+		<item name="minDigits">2</item>
+	</style>
+
+	<style name="PaperClipTitle" parent="DefaultLabel">
+	    <item name="android:textSize">@dimen/paper_clip_title_font_size</item>
+	    <item name="android:singleLine">true</item>
+	</style>
+    
+	<style name="DefaultEmptyText" parent="DefaultLabel">
+		<item name="android:gravity">center</item>
+		<item name="android:textColor">@color/light_gray</item>
+		<item name="android:textSize">@dimen/default_empty_text_font_size</item>
+		<item name="android:textStyle">bold|italic</item>
+	</style>
+
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<DatabaseObject 
+	name="TestObject"
+	class="com.dailystudio.database.TestObject" 
+	database="test.db" 
+	table="test">
+	
+	<Template table="test">
+		<Column name="_id" type="integer" primary="true" allowNull="false"/>
+		<Column name="latitude" type="double"/>
+		<Column name="longitude" type="double"/>
+		<Column name="altitude" type="double"/>
+	</Template>
+	
+</DatabaseObject>

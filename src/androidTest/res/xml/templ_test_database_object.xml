@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Database name="tests">
+	
+	<Template table="test">
+		
+		<Column name="intVal" type="integer"/>
+		<Column name="longVal" type="long"/>
+		<Column name="doubleVal" type="double"/>
+		<Column name="textVal" type="text"/>
+		
+	</Template>
+	
+</Database>

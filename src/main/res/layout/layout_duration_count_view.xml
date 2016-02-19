@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+	
+	<TextView
+        android:id="@+id/stats_lifetime_sec_label"
+        style="@style/DurationCountViewText"
+        android:text="@string/time_print_label_sec"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+	    android:layout_height="fill_parent"/>
+    
+    <com.dailystudio.memory.ui.CountView
+        android:id="@+id/stats_lifetime_sec"
+        style="@style/DurationCountViewText"
+        android:layout_toLeftOf="@id/stats_lifetime_sec_label"
+        android:layout_width="wrap_content"
+	    android:layout_height="fill_parent"/>
+	
+	<TextView
+        android:id="@+id/stats_lifetime_min_label"
+        style="@style/DurationCountViewText"
+        android:text="@string/time_print_label_min"
+        android:layout_toLeftOf="@id/stats_lifetime_sec"
+        android:layout_width="wrap_content"
+	    android:layout_height="fill_parent"/>
+	
+	<com.dailystudio.memory.ui.CountView
+        android:id="@+id/stats_lifetime_min"
+        style="@style/DurationCountViewText"
+        android:layout_toLeftOf="@id/stats_lifetime_min_label"
+        android:layout_width="wrap_content"
+	    android:layout_height="fill_parent"/>
+    
+	<TextView
+        android:id="@+id/stats_lifetime_hour_label"
+        style="@style/DurationCountViewText"
+        android:text="@string/time_print_label_hour"
+        android:layout_toLeftOf="@id/stats_lifetime_min"
+        android:layout_width="wrap_content"
+	    android:layout_height="fill_parent"/>
+	
+	<com.dailystudio.memory.ui.CountView
+        android:id="@+id/stats_lifetime_hour"
+        style="@style/DurationCountViewText"
+        android:layout_toLeftOf="@id/stats_lifetime_hour_label"
+        android:layout_width="wrap_content"
+	    android:layout_height="fill_parent"/>
+    
+	<TextView
+        android:id="@+id/stats_lifetime_day_label"
+        style="@style/DurationCountViewText"
+        android:text="@string/time_print_label_day"
+        android:layout_toLeftOf="@id/stats_lifetime_hour"
+        android:layout_width="wrap_content"
+	    android:layout_height="fill_parent"/>
+	
+	<com.dailystudio.memory.ui.CountView
+        android:id="@+id/stats_lifetime_day"
+        style="@style/DurationCountViewText"
+        android:layout_toLeftOf="@id/stats_lifetime_day_label"
+        android:layout_width="wrap_content"
+	    android:layout_height="fill_parent"/>
+     
+</RelativeLayout>

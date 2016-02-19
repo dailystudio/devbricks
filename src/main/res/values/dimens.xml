@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+	
+	<dimen name="default_font_size">20dp</dimen>
+
+	<dimen name="default_label_padding">10dp</dimen>
+	<dimen name="default_check_padding">10dp</dimen>
+	<dimen name="default_button_padding">15dp</dimen>
+	<dimen name="default_content_padding">20dp</dimen>
+			
+	<dimen name="lv_item_font_size">20dp</dimen>
+	<dimen name="lv_item_2nd_font_size">14dp</dimen>
+	<dimen name="lv_item_padding">5dp</dimen>
+	<dimen name="lv_item_2nd_vpadding">3dp</dimen>
+	<dimen name="lv_item_icon_size">48dp</dimen>
+			
+	<dimen name="lv_index_font_size">18dp</dimen>
+	<dimen name="lv_index_padding">0dp</dimen>
+	<dimen name="lv_index_width">60dp</dimen>
+	
+	<dimen name="gv_item_hpadding">10dp</dimen>
+	<dimen name="gv_item_vpadding">10dp</dimen>
+	<dimen name="default_grid_item_height">100dp</dimen>
+		
+	<dimen name="default_pager_title_font_size">20dp</dimen>
+	
+	<dimen name="default_chart_label_size">14dp</dimen>
+	<dimen name="default_chart_title_size">20dp</dimen>
+	<dimen name="default_chart_axis_title_size">16dp</dimen>
+	<dimen name="default_chart_legend_size">14dp</dimen>
+	<dimen name="default_chart_legend_height">200dp</dimen>
+	<dimen name="default_chart_margin_left">40dp</dimen>
+	<dimen name="default_chart_margin_top">20dp</dimen>
+	<dimen name="default_chart_margin_right">20dp</dimen>
+	<dimen name="default_chart_margin_bottom">40dp</dimen>
+			
+	<dimen name="default_content_hpadding">20dp</dimen>
+	<dimen name="default_content_vpadding">20dp</dimen>
+	
+	<dimen name="default_empty_text_font_size">24dp</dimen>
+		
+	<dimen name="action_bar_text_size">20dp</dimen>
+	<dimen name="action_bar_padding">6dp</dimen>
+	<dimen name="action_bar_height">48dp</dimen>
+	<dimen name="action_bar_right_padding">10dp</dimen>
+	<dimen name="actbar_custom_view_right_padding">5dp</dimen>
+			
+	<dimen name="actbar_overflow_menu_icon_width">32dp</dimen>
+	<dimen name="actbar_overflow_menu_icon_height">32dp</dimen>
+	<dimen name="actbar_overflow_menu_text_size">18dp</dimen>
+	<dimen name="actbar_overflow_menu_max_width">180dp</dimen>
+	<dimen name="actbar_overflow_menu_item_padding">10dp</dimen>
+											
+	<dimen name="memory_index_font_size">18dp</dimen>
+	<dimen name="memory_index_padding">5dp</dimen>
+	<dimen name="memory_index_width">60dp</dimen>
+	<dimen name="memory_ic_witdh">60dp</dimen>
+	<dimen name="memory_ic_height">60dp</dimen>
+		
+	<dimen name="alert_dialog_custom_view_padding_left">5dp</dimen>
+	<dimen name="alert_dialog_custom_view_padding_right">5dp</dimen>
+	<dimen name="alert_dialog_custom_view_padding_top">5dp</dimen>
+	<dimen name="alert_dialog_custom_view_padding_bottom">5dp</dimen>
+	
+	<dimen name="default_ask_board_width">200dp</dimen>
+	<dimen name="ask_question_content_padding">20dp</dimen>
+	<dimen name="ask_question_answers_padding">10dp</dimen>
+				
+	<dimen name="default_notify_height">250dp</dimen>
+	<dimen name="notification_content_padding">20dp</dimen>
+	<dimen name="notification_dialog_height">350dp</dimen>
+	
+	<dimen name="close_button_size">32dp</dimen>
+						
+	<dimen name="bfw_min_content_height">20dp</dimen>
+	<dimen name="bfw_title_height">56dp</dimen>
+	<dimen name="bfw_hpadding">10dp</dimen>
+	<dimen name="bfw_title_hpadding">5dp</dimen>
+	
+	<dimen name="paper_clip_title_font_size">24dp</dimen>
+	<dimen name="paper_clip_frame_padding">10dp</dimen>
+	<dimen name="paper_clip_title_height">56dp</dimen>
+	<dimen name="paper_clip_title_hmargin">8dp</dimen>
+	<dimen name="paper_clip_title_vmargin">8dp</dimen>
+	<dimen name="paper_clip_content_hpadding">10dp</dimen>
+	<dimen name="paper_clip_content_vpadding">10dp</dimen>
+	
+	<dimen name="core_app_check_padding">2dp</dimen>
+	<dimen name="core_app_check_badge_margin">30dp</dimen>
+	
+	<dimen name="daygroup_item_height">60dp</dimen>
+	
+    <dimen name="app_widget_margin">8dp</dimen>
+    <dimen name="app_widget_frame_padding">5dp</dimen>
+    <dimen name="app_widget_grid_width">80dp</dimen>
+	<dimen name="app_widget_grid_height">100dp</dimen>
+	<dimen name="app_widget_chart_margin_left">0dp</dimen>
+	<dimen name="app_widget_chart_margin_top">0dp</dimen>
+	<dimen name="app_widget_chart_margin_right">0dp</dimen>
+	<dimen name="app_widget_chart_margin_bottom">0dp</dimen>
+	<dimen name="app_widget_label_font_size">20dp</dimen>
+	<dimen name="app_widget_label_padding">4dp</dimen>
+	<dimen name="app_widget_title_padding">8dp</dimen>
+	<dimen name="app_widget_btn_padding">2dp</dimen>
+
+	<dimen name="default_res_icon_size">48dp</dimen>
+	<dimen name="default_app_item_padding">5dp</dimen>
+	
+	<dimen name="card_content_text_size">16dp</dimen>
+	<dimen name="card_title_text_size">14dp</dimen>
+	<dimen name="card_item_hpadding">16dp</dimen>
+	<dimen name="card_item_vpadding">8dp</dimen>
+	<dimen name="card_content_height">165dp</dimen>
+	<dimen name="card_content_height_mini">150dp</dimen>
+										
+</resources>

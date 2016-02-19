@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Template>
+	<Column name="_id" type="integer" primary="true" allowNull="false"/>
+	<Column name="time" type="long" />
+</Template>
