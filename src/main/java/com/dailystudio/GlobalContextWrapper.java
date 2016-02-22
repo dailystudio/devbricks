@@ -19,7 +19,12 @@ public class GlobalContextWrapper {
 	}
 	
 	public synchronized static void unbindContext(Context context) {
-		if (sContext != context) {
+		if (context == null) {
+			return;
+		}
+
+		final Context appContext = context.getApplicationContext();
+		if (sContext != appContext) {
 			return;
 		}
 		
