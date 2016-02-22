@@ -34,3 +34,7 @@ captures/
 # Android Studio project files
 *.iml
 .idea
+
+# OS generated files #
+.DS_Store
+.DS_Store?
