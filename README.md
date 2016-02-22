@@ -109,6 +109,7 @@ public class MyApplication extends Application {
 
 ## Logging
 DevBricks bases and enhance the default Android logging mechanism. Same as default logging mechanism, it separates the log in four different priorities:
+
 DevBricks Logger   | Android Log
 :---               | :-------
 **`.debug()`**     | Log.d()
