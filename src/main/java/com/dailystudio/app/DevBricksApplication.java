@@ -47,8 +47,12 @@ public class DevBricksApplication extends Application {
 		} 
 		
 		if (!handled) {
-			Logger.setDebugEnabled(BuildConfig.DEBUG);
+			Logger.setDebugEnabled(isDebugBuild());
 		}
+	}
+
+	protected boolean isDebugBuild() {
+		return BuildConfig.DEBUG;
 	}
 	
 }

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
 	    android:layout_height="fill_parent"/>
     
-    <com.dailystudio.memory.ui.CountView
+    <com.dailystudio.app.ui.CountView
         android:id="@+id/stats_lifetime_sec"
         style="@style/DurationCountViewText"
         android:layout_toLeftOf="@id/stats_lifetime_sec_label"
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
 	    android:layout_height="fill_parent"/>
 	
-	<com.dailystudio.memory.ui.CountView
+	<com.dailystudio.app.ui.CountView
         android:id="@+id/stats_lifetime_min"
         style="@style/DurationCountViewText"
         android:layout_toLeftOf="@id/stats_lifetime_min_label"
@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
 	    android:layout_height="fill_parent"/>
 	
-	<com.dailystudio.memory.ui.CountView
+	<com.dailystudio.app.ui.CountView
         android:id="@+id/stats_lifetime_hour"
         style="@style/DurationCountViewText"
         android:layout_toLeftOf="@id/stats_lifetime_hour_label"
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
 	    android:layout_height="fill_parent"/>
 	
-	<com.dailystudio.memory.ui.CountView
+	<com.dailystudio.app.ui.CountView
         android:id="@+id/stats_lifetime_day"
         style="@style/DurationCountViewText"
         android:layout_toLeftOf="@id/stats_lifetime_day_label"
