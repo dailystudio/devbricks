@@ -49,7 +49,26 @@ Then declare it in your **`AndroidMenifest.xml`**:
 - Bind and unbind a global context with your Application Context.
 - Disable or Enable Logging accroding to your build types and runtime environment.
 
-You will know more about these two concepts in following chapters. After you understand well with them, you can do it by yourself without derving your **`Application`** from **`DevBricksApplication`**.
+>You will know more about these two concepts in following chapters. After you understand well with them, you can do it by yourself without derving your **`Application`** from **`DevBricksApplication`**.
+
+**`DevBricksApplication`** will enable logging mechanism according to the following three factors by priority:
+- If there is a file name in `dslog_force.your-package-name` under root directory of your external storage (e.g. `/sdcard`), all of debug output of your applications will be printed even the build type of your application is release.
+- If there is a file name in `dslog_suppress.your-package-name` under root directory of your external storage (e.g. `/sdcard`), there will be no any debug outputs for your applications.
+- If **`isDebugBuild()`** returns `true`,  all of the debug output will be printed. Otherwise no any outputs
+
+Usually, there is no any special files (prefix with `dslog_`) exist on your external storage. The last factor will be used. If you want to correctly configure your debug output, you need to override **`isDebugBuild()`**, the easiest way to directly return **`BuildConfig.DEBUG`**:
+``` java
+public class MyApplication extends DevBricksApplication {
+	...
+	
+	@Override
+	protected boolean isDebugBuild() {
+		return BuildConfig.DEBUG;
+	}
+
+}
+```
+>Due to DevBricks is a library project released in `.aar` format on Maven repository, its own `BuildConfig.DEBUG` is false.  There is no way for DevBricks to get correct BuildConfig.DEBUG value of host application. So DevBricks provides an interface `isDebugBuild()` for application to override the correct value of build type.
 
 ## Global Context
 As you know **`Context`** is an important thing in Android application. Your code can do few things without **`Context`**. DevBricks provides an interfaces to bind a global application context - **`GlobalContextWrapper`**. You can retrieve it at anywhere in your application. To bind the context, you can call **`bindContext()`**:
