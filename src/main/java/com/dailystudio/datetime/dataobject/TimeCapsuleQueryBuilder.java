@@ -12,9 +12,9 @@ import com.dailystudio.development.Logger;
 
 import java.util.Calendar;
 
-public class TimeBasedQueryBuilder extends QueryBuilder {
+public class TimeCapsuleQueryBuilder extends QueryBuilder {
 	
-	public TimeBasedQueryBuilder(Class<? extends DatabaseObject> klass) {
+	public TimeCapsuleQueryBuilder(Class<? extends DatabaseObject> klass) {
 		super(klass);
 	}
 	
@@ -56,8 +56,8 @@ public class TimeBasedQueryBuilder extends QueryBuilder {
 			}
 			
 			OrderingToken orderBy = (orderByAscending ?
-					TimeBasedDatabaseObject.COLUMN_TIME.orderByAscending() :
-						TimeBasedDatabaseObject.COLUMN_TIME.orderByDescending());
+					TimeCapsule.COLUMN_TIME.orderByAscending() :
+						TimeCapsule.COLUMN_TIME.orderByDescending());
 			if (orderBy != null) {
 				query.setOrderBy(orderBy);
 			}
@@ -113,8 +113,8 @@ public class TimeBasedQueryBuilder extends QueryBuilder {
 			}
 			
 			OrderingToken orderBy = (orderByAscending ?
-					TimeBasedDatabaseObject.COLUMN_TIME.orderByAscending() :
-						TimeBasedDatabaseObject.COLUMN_TIME.orderByDescending());
+					TimeCapsule.COLUMN_TIME.orderByAscending() :
+						TimeCapsule.COLUMN_TIME.orderByDescending());
 			if (orderBy != null) {
 				query.setOrderBy(orderBy);
 			}
@@ -136,16 +136,16 @@ public class TimeBasedQueryBuilder extends QueryBuilder {
 		Query query = getQuery();
 		if (query != null) {
 			if (start < end) {
-				ExpressionToken selection = TimeBasedDatabaseObject.COLUMN_TIME.gte(start)
-					.and(TimeBasedDatabaseObject.COLUMN_TIME.lte(end));
+				ExpressionToken selection = TimeCapsule.COLUMN_TIME.gte(start)
+					.and(TimeCapsule.COLUMN_TIME.lte(end));
 				if (selection != null) {
 					query.setSelection(selection);
 				}
 			}
 			
 			OrderingToken orderBy = (orderByAscending ?
-					TimeBasedDatabaseObject.COLUMN_TIME.orderByAscending() :
-						TimeBasedDatabaseObject.COLUMN_TIME.orderByDescending());
+					TimeCapsule.COLUMN_TIME.orderByAscending() :
+						TimeCapsule.COLUMN_TIME.orderByDescending());
 			if (orderBy != null) {
 				query.setOrderBy(orderBy);
 			}

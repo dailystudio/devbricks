@@ -11,33 +11,33 @@ import com.dailystudio.dataobject.query.Query;
 import java.util.Calendar;
 import java.util.List;
 
-public class TimeBasedDatabaseReader<T extends TimeBasedDatabaseObject> extends DatabaseReader<T> {
+public class TimeCapsuleDatabaseReader<T extends TimeCapsule> extends DatabaseReader<T> {
 
-	public TimeBasedDatabaseReader(Context context,
-								   Class<T> objectClass) {
+	public TimeCapsuleDatabaseReader(Context context,
+									 Class<T> objectClass) {
 		this(context, null, objectClass);
 	}
 	
-	public TimeBasedDatabaseReader(Context context,
-								   String authority,
-								   Class<T> objectClass) {
+	public TimeCapsuleDatabaseReader(Context context,
+									 String authority,
+									 Class<T> objectClass) {
 		this(context, authority, objectClass, DatabaseObject.VERSION_LATEST);
 	}
 	
-	public TimeBasedDatabaseReader(Context context,
-								   Class<T> objectClass,
-								   int version) {
+	public TimeCapsuleDatabaseReader(Context context,
+									 Class<T> objectClass,
+									 int version) {
 		this(context, null, objectClass, version);
 	}
 
-	public TimeBasedDatabaseReader(Context context,
-								   String authority, Class<T> klass, int version) {
+	public TimeCapsuleDatabaseReader(Context context,
+									 String authority, Class<T> klass, int version) {
 		super(context, authority, klass, version);
 	}
 	
 	@Override
 	protected QueryBuilder onCreateQueryBuilder(Class<T> klass) {
-		return new TimeBasedQueryBuilder(klass);
+		return new TimeCapsuleQueryBuilder(klass);
 	}
 	
 	public T queryLastOne() {
@@ -51,7 +51,7 @@ public class TimeBasedDatabaseReader<T extends TimeBasedDatabaseObject> extends 
 	
 	@Override
 	public T queryLastOne(Query query) {
-		OrderingToken orderByToken = TimeBasedDatabaseObject.COLUMN_TIME.orderByDescending();
+		OrderingToken orderByToken = TimeCapsule.COLUMN_TIME.orderByDescending();
 		if (orderByToken != null) {
 			query.setOrderBy(orderByToken);
 		}
@@ -69,11 +69,11 @@ public class TimeBasedDatabaseReader<T extends TimeBasedDatabaseObject> extends 
 	}
 	
 	public List<T> query(long start, long end, boolean orderByAscending) {
-		if (mQueryBuilder instanceof TimeBasedQueryBuilder == false) {
+		if (mQueryBuilder instanceof TimeCapsuleQueryBuilder == false) {
 			return null;
 		}
 		
-		Query query = ((TimeBasedQueryBuilder)mQueryBuilder).getQuery(
+		Query query = ((TimeCapsuleQueryBuilder)mQueryBuilder).getQuery(
 				start, end, orderByAscending);
 		if (query == null) {
 			return null;
@@ -87,11 +87,11 @@ public class TimeBasedDatabaseReader<T extends TimeBasedDatabaseObject> extends 
 	}
 
 	public List<T> queryForDay(long time, boolean orderByAscending) {
-		if (mQueryBuilder instanceof TimeBasedQueryBuilder == false) {
+		if (mQueryBuilder instanceof TimeCapsuleQueryBuilder == false) {
 			return null;
 		}
 		
-		Query query = ((TimeBasedQueryBuilder)mQueryBuilder).getQueryForDay(
+		Query query = ((TimeCapsuleQueryBuilder)mQueryBuilder).getQueryForDay(
 				time, orderByAscending);
 		if (query == null) {
 			return null;
@@ -115,11 +115,11 @@ public class TimeBasedDatabaseReader<T extends TimeBasedDatabaseObject> extends 
 	}
 
 	public List<T> queryForWeek(long time, boolean orderByAscending) {
-		if (mQueryBuilder instanceof TimeBasedQueryBuilder == false) {
+		if (mQueryBuilder instanceof TimeCapsuleQueryBuilder == false) {
 			return null;
 		}
 		
-		Query query = ((TimeBasedQueryBuilder)mQueryBuilder).getQueryForWeek(
+		Query query = ((TimeCapsuleQueryBuilder)mQueryBuilder).getQueryForWeek(
 				time, orderByAscending);
 		if (query == null) {
 			return null;
@@ -143,11 +143,11 @@ public class TimeBasedDatabaseReader<T extends TimeBasedDatabaseObject> extends 
 	}
 
 	public List<T> queryForMonth(long time, boolean orderByAscending) {
-		if (mQueryBuilder instanceof TimeBasedQueryBuilder == false) {
+		if (mQueryBuilder instanceof TimeCapsuleQueryBuilder == false) {
 			return null;
 		}
 		
-		Query query = ((TimeBasedQueryBuilder)mQueryBuilder).getQueryForMonth(
+		Query query = ((TimeCapsuleQueryBuilder)mQueryBuilder).getQueryForMonth(
 				time, orderByAscending);
 		if (query == null) {
 			return null;
@@ -171,11 +171,11 @@ public class TimeBasedDatabaseReader<T extends TimeBasedDatabaseObject> extends 
 	}
 
 	public List<T> queryForYear(long time, boolean orderByAscending) {
-		if (mQueryBuilder instanceof TimeBasedQueryBuilder == false) {
+		if (mQueryBuilder instanceof TimeCapsuleQueryBuilder == false) {
 			return null;
 		}
 		
-		Query query = ((TimeBasedQueryBuilder)mQueryBuilder).getQueryForYear(
+		Query query = ((TimeCapsuleQueryBuilder)mQueryBuilder).getQueryForYear(
 				time, orderByAscending);
 		if (query == null) {
 			return null;

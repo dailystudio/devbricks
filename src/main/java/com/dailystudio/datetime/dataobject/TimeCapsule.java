@@ -9,7 +9,7 @@ import com.dailystudio.dataobject.Template;
 import com.dailystudio.dataobject.TimeColumn;
 import com.dailystudio.datetime.CalendarUtils;
 
-public class TimeBasedDatabaseObject extends DatabaseObject {
+public class TimeCapsule extends DatabaseObject {
 	
 	public static final Column COLUMN_ID = new IntegerColumn("_id", false, true);
 	public static final TimeColumn COLUMN_TIME = new TimeColumn("time", false);
@@ -19,11 +19,11 @@ public class TimeBasedDatabaseObject extends DatabaseObject {
 		COLUMN_TIME,
 	};
 
-	public TimeBasedDatabaseObject(Context context) {
+	public TimeCapsule(Context context) {
 		this(context, VERSION_START);
 	}
 	
-	public TimeBasedDatabaseObject(Context context, int version) {
+	public TimeCapsule(Context context, int version) {
 		super(context, version);
 		
 		final Template templ = getTemplate();
