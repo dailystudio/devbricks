@@ -25,25 +25,32 @@ public class Logger {
 	private static final int TRACE_BASE_INDEX = 3;
 	
 	private static final String DEBUG_MSG_TEMPL = "%s(): %s";
-	
+
+	private static final String UNKNOWN_TAG = "Unknown";
+
 	private static volatile boolean sLogDebugEnabled = BuildConfig.DEBUG;
-	
+
 	private static void output(String format, LogToken token, Object... args) {
-		final String compose = String.format(DEBUG_MSG_TEMPL, 
+		final String compose = String.format(DEBUG_MSG_TEMPL,
 				getCallingMethodName(2), format);
 		
 		if (token == null) {
 			token = LogToken.LOG_D;
 		}
-			
+
+		String tag = getCallingSimpleClassName(2);
+		if (TextUtils.isEmpty(tag)) {
+			tag = UNKNOWN_TAG;
+		}
+
 		if (token == LogToken.LOG_D) {
-			Log.d(getCallingSimpleClassName(2), String.format(compose, args));
+			Log.d(tag, String.format(compose, args));
 		} else if (token == LogToken.LOG_W) {
-			Log.w(getCallingSimpleClassName(2), String.format(compose, args));
+			Log.w(tag, String.format(compose, args));
 		} else if (token == LogToken.LOG_I) {
-			Log.i(getCallingSimpleClassName(2), String.format(compose, args));
+			Log.i(tag, String.format(compose, args));
 		} else if (token == LogToken.LOG_E) {
-			Log.e(getCallingSimpleClassName(2), String.format(compose, args));
+			Log.e(tag, String.format(compose, args));
 		}
 	}
 	
