@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/fragment_view_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+	
+    <ListView
+        android:id="@android:id/list"
+		style="@style/DefaultListView"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"/>
+    
+    <TextView
+        android:id="@android:id/empty"
+		style="@style/DefaultEmptyText"
+		android:text="@string/default_nodata_prompt"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"/>
+        
+</RelativeLayout>

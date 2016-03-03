@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="error_unknow">未知</string>
+    
+    <string name="default_iv_description">图片</string>
+	
+	<string name="time_print_date_format">yyyy年M月d日</string>
+	<string name="time_print_date_format_without_year">M月d日</string>
+
+	<string name="time_print_label_sec">秒</string>
+	<string name="time_print_label_min">分</string>
+	<string name="time_print_label_hour">小时</string>
+	<string name="time_print_label_day">天</string>
+	<string name="time_print_label_days">天</string>
+	
+	<string name="date_label_today">今天</string>
+	<string name="date_label_yesterday">昨天</string>
+
+	<string name="default_nodata_prompt">暂时没有数据哦~\n╮(╯_╰)╭</string>
+
+</resources>

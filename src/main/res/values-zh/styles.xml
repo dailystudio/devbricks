@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources
+	xmlns:core="http://schemas.android.com/apk/res/com.dailystudio.memory" xmlns:android="http://schemas.android.com/apk/res/android">
+	
+    <style name="DefaultButton">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/default_font_size</item>
+        <item name="android:padding">@dimen/default_button_padding</item>
+    </style>
+
+    <style name="DefaultListItemText" parent="DefaultText">
+		<item name="android:gravity">left|center_vertical</item>
+		<item name="android:textSize">@dimen/lv_item_font_size</item>
+		<item name="android:padding">@dimen/lv_item_padding</item>
+		<item name="android:singleLine">true</item>
+	</style>
+	
+	<style name="DefaultLabel">
+		<item name="android:gravity">left|center_vertical</item>
+		<item name="android:textColor">@color/light_black</item>
+		<item name="android:textSize">@dimen/default_font_size</item>
+		<item name="android:padding">@dimen/default_label_padding</item>
+	</style>
+
+	<style name="DefaultEmptyText" parent="DefaultLabel">
+		<item name="android:gravity">center</item>
+		<item name="android:textColor">@color/light_gray</item>
+		<item name="android:textSize">@dimen/default_empty_text_font_size</item>
+	</style>
+
+	
+</resources>
