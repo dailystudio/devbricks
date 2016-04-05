@@ -31,4 +31,10 @@
         <attr name="textColor" />
 	</declare-styleable>
 
+    <declare-styleable name="GifMovieView">
+        <attr name="gif" format="reference" />
+        <attr name="paused" format="boolean" />
+        <attr name="infinite" format="boolean" />
+    </declare-styleable>
+
 </resources>
