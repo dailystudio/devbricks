@@ -35,7 +35,7 @@ public class TimeSpanUtils {
 	
 	public static long calculateDays(long start, long end, int[] filterWeekdays) {
 		if (filterWeekdays == null) {
-			final long days = (long)FloatMath.ceil((end - start)
+			final long days = (long)Math.ceil((end - start)
 					/ (float)CalendarUtils.DAY_IN_MILLIS);
 			Logger.debug("(end(%d, %s) - start(%d, %s)) / dayInMillis(%d) = days(%d)", 
 					end, CalendarUtils.timeToReadableString(end),
