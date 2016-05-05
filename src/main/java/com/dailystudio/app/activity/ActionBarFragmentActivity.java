@@ -3,10 +3,14 @@ package com.dailystudio.app.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
+import com.dailystudio.R;
 import com.dailystudio.app.fragment.BaseIntentFragment;
 
 import java.util.List;
@@ -14,7 +18,9 @@ import java.util.List;
 /**
  * Created by nan on 2015/2/12.
  */
-public class ActionBarFragmentActivity extends android.support.v7.app.ActionBarActivity {
+public class ActionBarFragmentActivity extends AppCompatActivity {
+
+    private Snackbar mSnackBar = null;
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -148,6 +154,45 @@ public class ActionBarFragmentActivity extends android.support.v7.app.ActionBarA
         }
 
         return frgmgr.findFragmentById(fragmentId);
+    }
+
+    public void showPrompt(CharSequence prompt) {
+        View contentView = findViewById(android.R.id.content);
+        if (contentView == null) {
+            contentView = getWindow().getDecorView();
+        }
+
+        if (contentView == null) {
+            return;
+        }
+
+        mSnackBar = Snackbar.make(contentView,
+                prompt, Snackbar.LENGTH_INDEFINITE);
+        if (mSnackBar != null) {
+            Snackbar.SnackbarLayout layout =
+                    (Snackbar.SnackbarLayout) mSnackBar.getView();
+            if (layout != null) {
+                layout.setBackgroundColor(
+                        getResources().getColor(R.color.snack_bar_bg_color));
+            }
+
+            mSnackBar.show();
+        }
+    }
+
+    public void updatePrompt(CharSequence prompt) {
+        if (mSnackBar != null
+                && mSnackBar.isShownOrQueued()) {
+            mSnackBar.setText(prompt);
+        }
+    }
+
+    public void hidePrompt() {
+        if (mSnackBar != null) {
+            mSnackBar.dismiss();
+
+            mSnackBar = null;
+        }
     }
 
 }
