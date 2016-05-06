@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.dailystudio.R;
 import com.dailystudio.app.fragment.BaseIntentFragment;
@@ -172,6 +173,13 @@ public class ActionBarFragmentActivity extends AppCompatActivity {
             Snackbar.SnackbarLayout layout =
                     (Snackbar.SnackbarLayout) mSnackBar.getView();
             if (layout != null) {
+                TextView snackText = ((TextView) layout.findViewById(
+                        R.id.snackbar_text));
+                if (snackText != null) {
+                    snackText.setTextAppearance(this,
+                            R.style.DefaultPromptText);
+                }
+
                 layout.setBackgroundColor(
                         getResources().getColor(R.color.snack_bar_bg_color));
             }

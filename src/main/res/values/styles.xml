@@ -161,4 +161,12 @@
 		<item name="android:textStyle">bold|italic</item>
 	</style>
 
+	<style name="DefaultPromptText">
+		<item name="android:textColor">@color/action_bar_text_color</item>
+		<item name="android:textSize">@dimen/action_bar_text_size</item>
+		<item name="android:gravity">left|center_vertical</item>
+		<item name="android:textStyle">italic</item>
+	</style>
+
+
 </resources>
