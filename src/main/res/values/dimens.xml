@@ -106,7 +106,8 @@
 
 	<dimen name="default_res_icon_size">48dp</dimen>
 	<dimen name="default_app_item_padding">5dp</dimen>
-	
+
+	<dimen name="card_corner_radius">3dp</dimen>
 	<dimen name="card_content_text_size">16dp</dimen>
 	<dimen name="card_title_text_size">14dp</dimen>
 	<dimen name="card_item_hpadding">16dp</dimen>

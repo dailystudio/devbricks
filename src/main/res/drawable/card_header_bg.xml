@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background -->
+    <item>
+    <shape>
+		<solid android:color="@color/card_title_bg_color" />
+        <corners
+            android:topLeftRadius="@dimen/card_corner_radius"
+        	android:topRightRadius="@dimen/card_corner_radius" />
+    </shape>
+   </item>
+</layer-list>
