@@ -16,6 +16,8 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 	private RecyclerView.ItemDecoration mItemDecoration;
 	private RecyclerView.LayoutManager mLayoutManager;
 
+	private View mEmptyView;
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -63,10 +65,10 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 				mRecyclerView.addItemDecoration(mItemDecoration);
 			}
 
-//			final View emptyView = fragmentView.findViewById(getEmptyViewId());
-//			if (emptyView != null) {
-//				mRecyclerView.setEmptyView(emptyView);
-//			}
+			mEmptyView = fragmentView.findViewById(getEmptyViewId());
+			if (mEmptyView != null && mAdapter != null) {
+				mAdapter.registerAdapterDataObserver(mAdapterDataObserver);
+			}
 		}
 	}
 	
@@ -85,12 +87,12 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
  	@Override
  	public void onLoadFinished(Loader<ItemSet> loader, ItemSet data) {
  		bindData(mAdapter, data);
- 	};
+ 	}
  	
  	@Override
  	public void onLoaderReset(Loader<ItemSet> loader) {
  		bindData(mAdapter, null);
- 	};
+ 	}
  	
  	protected void removeCallbacks(Runnable r) {
  		mHandler.removeCallbacks(r);
@@ -132,6 +134,33 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 			mAdapter.notifyDataSetChanged();
 		}
 		
+	};
+
+	private RecyclerView.AdapterDataObserver mAdapterDataObserver = new RecyclerView.AdapterDataObserver() {
+
+		@Override
+		public void onChanged() {
+			super.onChanged();
+
+			if (mEmptyView == null || mRecyclerView == null) {
+				return;
+			}
+
+			RecyclerView.Adapter adapter = getAdapter();
+			if (adapter == null) {
+				return;
+			}
+
+			final int N = adapter.getItemCount();
+			if (N <= 0) {
+				mEmptyView.setVisibility(View.VISIBLE);
+				mRecyclerView.setVisibility(View.GONE);
+			} else {
+				mEmptyView.setVisibility(View.GONE);
+				mRecyclerView.setVisibility(View.VISIBLE);
+			}
+		}
+
 	};
 
 }
