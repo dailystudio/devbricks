@@ -25,8 +25,9 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 
 	private RecyclerView mRecyclerView;
 	private RecyclerView.Adapter<ItemHolder> mAdapter;
+	private RecyclerView.ItemDecoration mItemDecoration;
 	private RecyclerView.LayoutManager mLayoutManager;
-	
+
     private OnListItemSelectedListener mOnListItemSelectedListener;
     
 	@Override
@@ -71,9 +72,12 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 			oldRecyclerView.setVisibility(View.GONE);
 //			oldRecyclerView.setEmptyView(null);
 			oldRecyclerView.setLayoutManager(null);
+			oldRecyclerView.removeItemDecoration(mItemDecoration);
 		}
 		
 		mAdapter = onCreateAdapter();
+		mItemDecoration = onCreateItemDecoration();
+
 		mLayoutManager = onCreateLayoutManager();
 		
 		mRecyclerView = (RecyclerView) fragmentView.findViewById(
@@ -84,7 +88,11 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 //			mRecyclerView.setOnItemClickListener(this);
 			mRecyclerView.setVisibility(View.VISIBLE);
 			mRecyclerView.scheduleLayoutAnimation();
-			
+
+			if (mItemDecoration != null) {
+				mRecyclerView.addItemDecoration(mItemDecoration);
+			}
+
 //			final View emptyView = fragmentView.findViewById(getEmptyViewId());
 //			if (emptyView != null) {
 //				mRecyclerView.setEmptyView(emptyView);
@@ -99,7 +107,11 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 	public RecyclerView getRecyclerView() {
 		return mRecyclerView;
 	}
-	
+
+	public RecyclerView.ItemDecoration getItemDecoration() {
+		return mItemDecoration;
+	}
+
  	@Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -146,6 +158,7 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 
 	abstract protected RecyclerView.Adapter onCreateAdapter();
 	abstract protected RecyclerView.LayoutManager onCreateLayoutManager();
+	abstract protected RecyclerView.ItemDecoration onCreateItemDecoration();
 
 	private Handler mHandler = new Handler();
 	private DeferredHandler mDeferredHandler = new DeferredHandler();
