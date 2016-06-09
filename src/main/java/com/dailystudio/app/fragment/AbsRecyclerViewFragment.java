@@ -1,54 +1,26 @@
 package com.dailystudio.app.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 
 import com.dailystudio.app.widget.DeferredHandler;
-import com.dailystudio.development.Logger;
 
 public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends RecyclerView.ViewHolder>
-		extends AbsLoaderFragment<ItemSet>
-	implements OnItemClickListener {
-	
-	public interface OnListItemSelectedListener {
-		
-        public void onListItemSelected(Object itemData);
-        
-    }
+		extends AbsLoaderFragment<ItemSet> {
 
 	private RecyclerView mRecyclerView;
 	private RecyclerView.Adapter<ItemHolder> mAdapter;
 	private RecyclerView.ItemDecoration mItemDecoration;
 	private RecyclerView.LayoutManager mLayoutManager;
 
-    private OnListItemSelectedListener mOnListItemSelectedListener;
-    
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
 		bindAdapterView();
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-		if (mOnListItemSelectedListener != null) {
-			final RecyclerView.Adapter adapter = getAdapter();
-			if (adapter == null) {
-				return;
-			}
-			
-//			Object data = adapter.getItem(position);
-//
-//			mOnListItemSelectedListener.onListItemSelected(data);
-		}
 	}
 
 	protected int getAdapterViewId() {
@@ -68,7 +40,6 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 			oldRecyclerView.clearDisappearingChildren();
 			oldRecyclerView.clearAnimation();
 			oldRecyclerView.setAdapter(null);
-//			oldRecyclerView.setOnItemClickListener(null);
 			oldRecyclerView.setVisibility(View.GONE);
 //			oldRecyclerView.setEmptyView(null);
 			oldRecyclerView.setLayoutManager(null);
@@ -85,7 +56,6 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 		if (mRecyclerView != null) {
 			mRecyclerView.setAdapter(mAdapter);
 			mRecyclerView.setLayoutManager(mLayoutManager);
-//			mRecyclerView.setOnItemClickListener(this);
 			mRecyclerView.setVisibility(View.VISIBLE);
 			mRecyclerView.scheduleLayoutAnimation();
 
@@ -111,18 +81,6 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 	public RecyclerView.ItemDecoration getItemDecoration() {
 		return mItemDecoration;
 	}
-
- 	@Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        
-        if (activity instanceof OnListItemSelectedListener) {
-        	mOnListItemSelectedListener = (OnListItemSelectedListener) activity;
-        } else {
-        	Logger.warnning("host activity does not implements: %s", 
-        			OnListItemSelectedListener.class.getSimpleName());
-        }
-    }
 
  	@Override
  	public void onLoadFinished(Loader<ItemSet> loader, ItemSet data) {

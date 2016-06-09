@@ -1,6 +1,8 @@
 package com.dailystudio.app.fragment;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.dailystudio.app.ui.AbsArrayRecyclerAdapter;
 import com.dailystudio.development.Logger;
@@ -13,6 +15,41 @@ import java.util.List;
  */
 public abstract class AbsArrayRecyclerViewFragment<Item, ItemHolder extends RecyclerView.ViewHolder>
         extends AbsRecyclerViewFragment<Item, List<Item>, ItemHolder> {
+
+    public interface OnRecyclerViewItemClickListener {
+
+        public void onItemClick(View view, Object item);
+
+    }
+
+    private OnRecyclerViewItemClickListener mOnRecyclerViewItemClickListener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (activity instanceof OnRecyclerViewItemClickListener) {
+            mOnRecyclerViewItemClickListener = (OnRecyclerViewItemClickListener) activity;
+        } else {
+            Logger.warnning("host activity does not implements: %s",
+                    OnRecyclerViewItemClickListener.class.getSimpleName());
+        }
+    }
+
+    @Override
+    protected void bindAdapterView() {
+        RecyclerView.Adapter oldAdapter = getAdapter();
+        if (oldAdapter instanceof AbsArrayRecyclerAdapter) {
+            ((AbsArrayRecyclerAdapter)oldAdapter).setOnItemClickListener(null);
+        }
+
+        super.bindAdapterView();
+
+        RecyclerView.Adapter adapter = getAdapter();
+        if (adapter instanceof AbsArrayRecyclerAdapter) {
+            ((AbsArrayRecyclerAdapter)adapter).setOnItemClickListener(mOnItemClickListener);
+        }
+    }
 
     @Override
     protected void bindData(RecyclerView.Adapter adapter, List<Item> data) {
@@ -68,6 +105,21 @@ public abstract class AbsArrayRecyclerViewFragment<Item, ItemHolder extends Recy
             }
 
             ((AbsArrayRecyclerAdapter<Item, ItemHolder>)adapter).sort(comparator);
+        }
+
+    };
+
+    protected void onItemClick(View view, Object item) {
+        if (mOnRecyclerViewItemClickListener != null) {
+            mOnRecyclerViewItemClickListener.onItemClick(view, item);
+        }
+    }
+
+    private AbsArrayRecyclerAdapter.OnItemClickListener mOnItemClickListener = new AbsArrayRecyclerAdapter.OnItemClickListener() {
+
+        @Override
+        public void onItemClick(View view, Object item) {
+            AbsArrayRecyclerViewFragment.this.onItemClick(view, item);
         }
 
     };

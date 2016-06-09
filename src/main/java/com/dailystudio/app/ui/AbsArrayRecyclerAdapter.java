@@ -4,6 +4,7 @@ import android.annotation.NonNull;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +17,12 @@ import java.util.List;
 public abstract class AbsArrayRecyclerAdapter<Item, ItemHolder extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<ItemHolder> {
 
+    public interface OnItemClickListener {
+
+        void onItemClick(View view, Object item);
+
+    }
+
     private Context mContext;
 
     private List<Item> mObjects;
@@ -23,6 +30,8 @@ public abstract class AbsArrayRecyclerAdapter<Item, ItemHolder extends RecyclerV
     private final Object mLock = new Object();
 
     protected LayoutInflater mLayoutInflater;
+
+    private OnItemClickListener mOnItemClickListener = null;
 
     public AbsArrayRecyclerAdapter(Context context) {
         this(context, new ArrayList<Item>());
@@ -35,6 +44,10 @@ public abstract class AbsArrayRecyclerAdapter<Item, ItemHolder extends RecyclerV
         mLayoutInflater = LayoutInflater.from(context);
     }
 
+    public void setOnItemClickListener(OnItemClickListener l) {
+        mOnItemClickListener = l;
+    }
+
     @Override
     public void onBindViewHolder(ItemHolder holder, int position) {
         if (holder instanceof AbsArrayItemViewHolder == false) {
@@ -42,6 +55,15 @@ public abstract class AbsArrayRecyclerAdapter<Item, ItemHolder extends RecyclerV
         }
 
         Item item = getItem(position);
+
+        if (holder.itemView != null) {
+            if (mOnItemClickListener != null) {
+                holder.itemView.setTag(item);
+                holder.itemView.setOnClickListener(mClickListener);
+            } else {
+                holder.itemView.setOnClickListener(null);
+            }
+        }
 
         ((AbsArrayItemViewHolder)holder).bindItem(getContext(), item);
     }
@@ -106,5 +128,24 @@ public abstract class AbsArrayRecyclerAdapter<Item, ItemHolder extends RecyclerV
     public int getItemCount() {
         return mObjects.size();
     }
+
+    private View.OnClickListener mClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            if (v == null) {
+                return;
+            }
+
+            Object tag = v.getTag();
+            if (tag == null) {
+                return;
+            }
+
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(v, v.getTag());
+            }
+        }
+    };
 
 }
