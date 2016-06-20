@@ -31,28 +31,28 @@ import android.view.View.MeasureSpec;
 
 public class BitmapUtils {
 
-	public static int estimateSampleSize(String filePath, 
-			int destWidth, int destHeight) {
+	public static int estimateSampleSize(String filePath,
+										 int destWidth, int destHeight) {
 		return estimateSampleSize(filePath, destWidth, destHeight, 0);
 	}
-	
-	public static int estimateSampleSize(String filePath, 
-			int destWidth,
-			int destHeight,
-			int orientation) {
+
+	public static int estimateSampleSize(String filePath,
+										 int destWidth,
+										 int destHeight,
+										 int orientation) {
 		if (filePath == null) {
 			return 0;
 		}
-		
+
 		if (destWidth <= 0 || destHeight <= 0) {
 			return 0;
 		}
-		
+
 		final int tw = destWidth;
 		final int th = destHeight;
 		int sw = 0;
 		int sh = 0;
-		
+
 		final Options opts = new Options();
 		opts.inJustDecodeBounds = true;
 
@@ -68,30 +68,30 @@ public class BitmapUtils {
 				opts.outWidth,
 				opts.outHeight,
 				tw, th);
-*/		
+*/
 		sw = opts.outWidth;
 		sh = opts.outHeight;
-		
-        if(orientation == 90 || orientation == 270){
-        	sw = opts.outHeight;
-            sh = opts.outWidth;
-        }
-		
+
+		if (orientation == 90 || orientation == 270) {
+			sw = opts.outHeight;
+			sh = opts.outWidth;
+		}
+
 		return Math.min(sw / tw, sh / th);
 	}
 
 	public static Bitmap rotateBitmap(Bitmap source, int degrees) {
 		if (degrees != 0 && source != null) {
 			Matrix m = new Matrix();
-			
-			m.setRotate(degrees, (float) source.getWidth() / 2, 
+
+			m.setRotate(degrees, (float) source.getWidth() / 2,
 					(float) source.getHeight() / 2);
 
 			try {
 				Bitmap rbitmap = Bitmap.createBitmap(
-						source, 
-						0, 0, 
-						source.getWidth(), source.getHeight(), 
+						source,
+						0, 0,
+						source.getWidth(), source.getHeight(),
 						m, true);
 				if (source != rbitmap) {
 					source.recycle();
@@ -101,10 +101,44 @@ public class BitmapUtils {
 				Logger.debug("rotate bimtap failure: %s", ex.toString());
 			}
 		}
-		
+
 		return source;
 	}
-	
+
+	public static Bitmap scaleBitmapRatioLocked(Bitmap bitmap,
+												int destWidth,
+												int destHeight) {
+		if (bitmap == null) {
+			return null;
+		}
+
+		final int destMin = Math.min(destWidth, destHeight);
+		if (destMin <= 0) {
+			Logger.warnning("incorrect dest dimen: [%d, %d]",
+					destWidth,
+					destHeight);
+
+			return bitmap;
+		}
+
+		int w = bitmap.getWidth();
+		int h = bitmap.getHeight();
+
+		int tw;
+		int th;
+		if (w > h) {
+			tw = destMin;
+			th = (tw * h / w);
+		} else if (w < h) {
+			th = destMin;
+			tw = (th * w / h);
+		} else {
+			tw = th = destMin;
+		}
+
+		return scaleBitmap(bitmap, tw, th);
+	}
+
 	public static Bitmap scaleBitmap(Bitmap bitmap,
 			int destWidth, int destHeight) {
 		if (bitmap == null) {
@@ -232,7 +266,7 @@ public class BitmapUtils {
 		return success;
 	}
 
-	public static Bitmap createColorFiltedBitmap(Bitmap origBitmap, 
+	public static Bitmap createColorFilteredBitmap(Bitmap origBitmap,
 			ColorMatrix cm) {
 		if (origBitmap == null || cm == null) {
 			return origBitmap;
@@ -263,7 +297,7 @@ public class BitmapUtils {
 		ColorMatrix cm = new ColorMatrix();      
 		cm.setSaturation(0);      
 		
-		return createColorFiltedBitmap(origBitmap, cm);
+		return createColorFilteredBitmap(origBitmap, cm);
 	}
 
 	public static Bitmap createViewSnapshot(Context context, 
