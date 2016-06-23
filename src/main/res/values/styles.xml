@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources
-	xmlns:core="http://schemas.android.com/apk/res/com.dailystudio.memory" xmlns:android="http://schemas.android.com/apk/res/android">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
 	
     <style name="Theme" parent="android:Theme">
     </style>
@@ -168,5 +169,10 @@
 		<item name="android:textStyle">italic</item>
 	</style>
 
+	<style name="DefaultCardView">
+		<item name="cardCornerRadius">5dp</item>
+		<item name="cardElevation">3dp</item>
+		<item name="cardUseCompatPadding">true</item>
+	</style>
 
 </resources>

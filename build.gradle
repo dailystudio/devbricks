@@ -83,6 +83,7 @@ dependencies {
 
     compile "com.android.support:support-v4:${project.ext.androidSupportVersion}"
     compile "com.android.support:appcompat-v7:${project.ext.appcompatVersion}"
+    compile "com.android.support:cardview-v7:${project.ext.cardViewVersion}"
     compile "com.android.support:design:${project.ext.designVersion}"
 
     compile "com.googlecode.juniversalchardet:juniversalchardet:${project.ext.juniversalchardetVersion}"
