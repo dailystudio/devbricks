@@ -107,10 +107,12 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
  	}
  	
 	protected void notifyAdapterChanged() {
+		mHandler.removeCallbacks(notifyAdapterChangedRunnable);
 		post(notifyAdapterChangedRunnable);
 	}
  	
 	protected void notifyAdapterChangedOnIdle() {
+		mDeferredHandler.cancelRunnable(notifyAdapterChangedRunnable);
 		mDeferredHandler.postIdle(notifyAdapterChangedRunnable);
 	}
  	
@@ -130,7 +132,7 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 			if (mAdapter == null) {
 				return;
 			}
-			
+
 			mAdapter.notifyDataSetChanged();
 		}
 		
