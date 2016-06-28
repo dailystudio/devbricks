@@ -75,7 +75,24 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 	public RecyclerView.Adapter<ItemHolder> getAdapter() {
 		return mAdapter;
 	}
-	
+
+	public void switchLayout() {
+		if (mRecyclerView != null) {
+			mRecyclerView.removeItemDecoration(mItemDecoration);
+		}
+
+		mItemDecoration = onCreateItemDecoration();
+		mLayoutManager = onCreateLayoutManager();
+
+		if (mRecyclerView != null) {
+			mRecyclerView.setLayoutManager(mLayoutManager);
+
+			if (mItemDecoration != null) {
+				mRecyclerView.addItemDecoration(mItemDecoration);
+			}
+		}
+	}
+
 	public RecyclerView getRecyclerView() {
 		return mRecyclerView;
 	}
