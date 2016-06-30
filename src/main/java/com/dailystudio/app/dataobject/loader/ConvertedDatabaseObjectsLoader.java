@@ -60,9 +60,19 @@ public abstract class ConvertedDatabaseObjectsLoader<D extends DatabaseObject, P
 			cr.registerContentObserver(uri, true, mObserver);
 		}
 		
-		return (List<C>)data;
+		return (projectionClass == null ?
+				convertRawObjects((List<D>)data)
+				: convertProjectedObjects((List<P>)data)) ;
 	}
-	
+
+	protected List<C> convertRawObjects(List<D> objects) {
+		return (List<C>)objects;
+	}
+
+	protected List<C> convertProjectedObjects(List<P> objects) {
+		return (List<C>)objects;
+	}
+
 	protected DatabaseConnectivity getDatabaseConnectivity(
 			Class<? extends DatabaseObject> objectClass) {
 		return new DatabaseConnectivity(getContext(), objectClass);
