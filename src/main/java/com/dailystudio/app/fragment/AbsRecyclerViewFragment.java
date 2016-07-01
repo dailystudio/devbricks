@@ -127,7 +127,12 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 		mHandler.removeCallbacks(notifyAdapterChangedRunnable);
 		post(notifyAdapterChangedRunnable);
 	}
- 	
+
+	protected void notifyAdapterChangedDelay(long delay) {
+		mHandler.removeCallbacks(notifyAdapterChangedRunnable);
+		postDelayed(notifyAdapterChangedRunnable, delay);
+	}
+
 	protected void notifyAdapterChangedOnIdle() {
 		mDeferredHandler.cancelRunnable(notifyAdapterChangedRunnable);
 		mDeferredHandler.postIdle(notifyAdapterChangedRunnable);
