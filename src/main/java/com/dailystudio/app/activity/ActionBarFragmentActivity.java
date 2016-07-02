@@ -1,12 +1,15 @@
 package com.dailystudio.app.activity;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -201,6 +204,11 @@ public class ActionBarFragmentActivity extends AppCompatActivity {
 
             mSnackBar = null;
         }
+    }
+
+    public boolean isPermissionGranted(String permission){
+        return (ContextCompat.checkSelfPermission(this,
+                permission) == PackageManager.PERMISSION_GRANTED);
     }
 
 }

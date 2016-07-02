@@ -121,5 +121,13 @@ public class FileLogger {
 		
 		mOutputStream = null;
 	}
-	
+
+	@Override
+	public String toString() {
+		return String.format("%s(0x%08x): filename = %s",
+				getClass().getSimpleName(),
+				hashCode(),
+				mFileName);
+	}
+
 }
