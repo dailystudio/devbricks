@@ -127,7 +127,10 @@
 		<item name="android:horizontalSpacing">@dimen/gv_item_hpadding</item>
 		<item name="android:verticalSpacing">@dimen/gv_item_vpadding</item>
 	</style>
-	
+
+	<style name="DefaultRecyclerView" parent="DefaultAdapterView">
+	</style>
+
 	<style name="DefaultPagerTitleStrip">
 		<item name="android:paddingBottom">8dp</item>
 		<item name="android:paddingTop">9dp</item>
