@@ -43,7 +43,7 @@ public class ArrayUtils {
 			return null;
 		}
 		
-		List<Integer> newArray = new ArrayList<Integer>();
+		List<Integer> newArray = new ArrayList<>();
 		
 		final int N = array.length;
 		
@@ -53,7 +53,23 @@ public class ArrayUtils {
 		
 		return newArray.toArray(new Integer[0]);
 	}
-	
+
+	public static Double[] toDoubleArray(double[] array) {
+		if (array == null) {
+			return null;
+		}
+
+		List<Double> newArray = new ArrayList<>();
+
+		final int N = array.length;
+
+		for (int i = 0; i < N; i++) {
+			newArray.add(array[i]);
+		}
+
+		return newArray.toArray(new Double[0]);
+	}
+
 	public static String intArrayToString(int[] array) {
 		return intArrayToString(array, DEFAULT_ARRAY_DELIMITER);
 	}

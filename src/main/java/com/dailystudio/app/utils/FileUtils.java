@@ -3,6 +3,7 @@ package com.dailystudio.app.utils;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,6 +17,7 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.regex.Pattern;
 
 import org.mozilla.universalchardet.UniversalDetector;
 
@@ -283,6 +285,28 @@ public class FileUtils {
 
 		return dstFile.length();
 	}
+
+	public static File[] listFiles(String dir) {
+		return listFiles(dir, null);
+	}
+
+	public static File[] listFiles(String dir, String pattern) {
+		return listFiles(new File(dir), pattern);
+	}
+
+	public static File[] listFiles(File dir) {
+		return listFiles(dir, null);
+	}
+
+	public static File[] listFiles(File dir, String pattern) {
+		if (dir == null || dir.exists() == false) {
+			return null;
+		}
+
+		FileFilter ff = new RegexFilter(pattern);
+
+		return dir.listFiles(ff);
+	}
 	
 	public static String getFileContent(String file) throws IOException {
 		if (file == null) {
@@ -492,14 +516,18 @@ public class FileUtils {
     	
     	return defExt;
     }
-    
+
 	public static void writeFileContent(String file, String fileContent) throws IOException {
+		writeFileContent(file, fileContent, false);
+	}
+
+	public static void writeFileContent(String file, String fileContent, boolean append) throws IOException {
 		if (file == null || fileContent == null) {
 			return;
 		}
 		
 		StringReader reader = new StringReader(fileContent);
-		FileWriter ostream = new FileWriter(file);
+		FileWriter ostream = new FileWriter(file, append);
 		
 		char buffer[] = new char[2048];
 		int n = 0;
@@ -512,7 +540,7 @@ public class FileUtils {
 		
 		return;
 	}
-	
+
 	public static boolean downloadFile(String fileUrl, String dstFile) {
 		if (fileUrl == null || dstFile == null) {
 			return false;
@@ -608,4 +636,28 @@ public class FileUtils {
 		return success;
 	}
 
+	private static class RegexFilter implements FileFilter {
+
+		private Pattern mFilePattern;
+
+		private RegexFilter(String pattern) {
+			if (!TextUtils.isEmpty(pattern)) {
+				mFilePattern = Pattern.compile(pattern);
+			}
+		}
+
+		@Override
+		public boolean accept(File file) {
+			if (file == null) {
+				return false;
+			}
+
+			if (mFilePattern == null) {
+				return true;
+			}
+
+			return mFilePattern.matcher(file.getName()).matches();
+		}
+
+	}
 }
