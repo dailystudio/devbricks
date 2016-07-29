@@ -30,6 +30,8 @@ public class GifImageView extends View {
 
     private boolean mInfinite = true;
 
+    private boolean mFillCanvas = false;
+
     public GifImageView(Context context) {
         this(context, null);
     }
@@ -63,6 +65,7 @@ public class GifImageView extends View {
         mMovieResourceId = array.getResourceId(R.styleable.GifMovieView_gif,
                 -1);
         mPaused = array.getBoolean(R.styleable.GifMovieView_paused, false);
+        mFillCanvas = array.getBoolean(R.styleable.GifMovieView_fill, false);
 
         array.recycle();
 
@@ -87,7 +90,7 @@ public class GifImageView extends View {
         float scaleW = 1f;
         if (MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.UNSPECIFIED) {
             final int maximumWidth = MeasureSpec.getSize(widthMeasureSpec);
-            if (width > maximumWidth) {
+            if (width > maximumWidth || mFillCanvas) {
                 scaleW = (float) width / (float) maximumWidth;
             }
         }
@@ -95,7 +98,7 @@ public class GifImageView extends View {
         float scaleH = 1f;
         if (MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.UNSPECIFIED) {
             final int maximumHeight = MeasureSpec.getSize(heightMeasureSpec);
-            if (height > maximumHeight) {
+            if (height > maximumHeight || mFillCanvas) {
                 scaleH = (float) height / (float) maximumHeight;
             }
         }
@@ -228,6 +231,16 @@ public class GifImageView extends View {
 
     public boolean isInfinite() {
         return mInfinite;
+    }
+
+    public void setFillCanvas(boolean fill) {
+        mFillCanvas = fill;
+
+        requestLayout();
+    }
+
+    public boolean isFillCanvas() {
+        return mFillCanvas;
     }
 
     private Runnable mSyncAnimRunnable = new Runnable() {

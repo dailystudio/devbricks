@@ -35,6 +35,7 @@
         <attr name="gif" format="reference" />
         <attr name="paused" format="boolean" />
         <attr name="infinite" format="boolean" />
+        <attr name="fill" format="boolean" />
     </declare-styleable>
 
 </resources>
