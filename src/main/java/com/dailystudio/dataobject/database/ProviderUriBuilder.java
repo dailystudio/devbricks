@@ -6,28 +6,56 @@ import android.net.Uri;
 import android.net.Uri.Builder;
 
 class ProviderUriBuilder {
-	
+
 	public static Uri buildQueryUri(String authority,
-			Class<? extends DatabaseObject> klass) {
-		return buildQueryUri(authority, klass, DatabaseObject.VERSION_START);
+									Class<? extends DatabaseObject> klass) {
+		return buildQueryUri(authority, klass, DatabaseObject.VERSION_START, false);
 	}
-	
+
 	public static Uri buildQueryUri(String authority,
-			Class<? extends DatabaseObject> klass, 
-			long serial) {
-		return buildQueryUri(authority, klass, DatabaseObject.VERSION_START, serial);
+									Class<? extends DatabaseObject> klass,
+									boolean cursorOnly) {
+		return buildQueryUri(authority, klass, DatabaseObject.VERSION_START, cursorOnly);
 	}
-	
-	public static Uri buildQueryUri(String authority, 
-			Class<? extends DatabaseObject> klass, 
-			int version) {
-		return buildQueryUri(authority, klass, version, -1);
+
+	public static Uri buildQueryUri(String authority,
+									Class<? extends DatabaseObject> klass,
+									long serial) {
+		return buildQueryUri(authority, klass, serial, false);
 	}
-	
-	public static Uri buildQueryUri(String authority, 
-			Class<? extends DatabaseObject> klass, 
-			int version, 
-			long serial) {
+
+	public static Uri buildQueryUri(String authority,
+									Class<? extends DatabaseObject> klass,
+									long serial,
+									boolean cursorOnly) {
+		return buildQueryUri(authority, klass, DatabaseObject.VERSION_START, serial, cursorOnly);
+	}
+
+	public static Uri buildQueryUri(String authority,
+									Class<? extends DatabaseObject> klass,
+									int version) {
+		return buildQueryUri(authority, klass, version, false);
+	}
+
+	public static Uri buildQueryUri(String authority,
+									Class<? extends DatabaseObject> klass,
+									int version,
+									boolean cursorOnly) {
+		return buildQueryUri(authority, klass, version, -1, cursorOnly);
+	}
+
+	public static Uri buildQueryUri(String authority,
+									Class<? extends DatabaseObject> klass,
+									int version,
+									long serial) {
+		return buildQueryUri(authority, klass, version, serial, false);
+	}
+
+	public static Uri buildQueryUri(String authority,
+									Class<? extends DatabaseObject> klass,
+									int version,
+									long serial,
+									boolean cursorOnly) {
 		if (authority == null 
 				|| klass == null 
 				|| version < 0) {
@@ -52,7 +80,8 @@ class ProviderUriBuilder {
 			return null;
 		}
 		
-		builder.appendPath(ProviderQueryUriParser.BASE_QUERY);
+		builder.appendPath(cursorOnly ?
+				ProviderQueryUriParser.BASE_QUERY_CURSOR : ProviderQueryUriParser.BASE_QUERY);
 		builder.appendPath(database);
 		builder.appendPath(String.valueOf(version));
 		builder.appendPath(table);

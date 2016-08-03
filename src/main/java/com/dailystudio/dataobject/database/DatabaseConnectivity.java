@@ -249,9 +249,10 @@ public class DatabaseConnectivity extends AbsDatabaseConnectivity {
 		
 		return mContentResovler.update(uri, values, selection, null);
 	}
-	
+
 	private Cursor doQueryCursor(long serial, Query query,
-			Class<? extends DatabaseObject> projectionClass) {
+								 Class<? extends DatabaseObject> projectionClass,
+								 boolean cursorOnly) {
 		if (query == null) {
 			return null;
 		}
@@ -261,7 +262,7 @@ public class DatabaseConnectivity extends AbsDatabaseConnectivity {
 		}
 		
 		Uri uri = ProviderUriBuilder.buildQueryUri(mAuthority, mObjectClass, 
-				getDatabaseVersion(), serial);
+				getDatabaseVersion(), serial, cursorOnly);
 		if (uri == null) {
 			return null;
 		}
@@ -312,10 +313,10 @@ public class DatabaseConnectivity extends AbsDatabaseConnectivity {
 		if (c == null || c.getCount() <= 0) {
 			if (c != null) {
 				c.close();
-				
-				closeOpenedDatabase(serial);
 			}
-			
+
+			closeOpenedDatabase(serial);
+
 			return null;
 		}
 		
@@ -327,7 +328,7 @@ public class DatabaseConnectivity extends AbsDatabaseConnectivity {
 			Class<? extends DatabaseObject> projectionClass) {
 		final long serial = System.currentTimeMillis();
 
-		Cursor c = doQueryCursor(serial, query, projectionClass);
+		Cursor c = doQueryCursor(serial, query, projectionClass, true);
 		
 		/*
 		 * XXX: we must return an fake empty cursor,
@@ -360,7 +361,7 @@ public class DatabaseConnectivity extends AbsDatabaseConnectivity {
 		final long serial = System.currentTimeMillis();
 		
 //		Logger.debug("OPEN DB: serial = %d", serial);
-		Cursor c = doQueryCursor(serial, query, projectionClass);
+		Cursor c = doQueryCursor(serial, query, projectionClass, false);
 		if (c == null) {
 			return null;
 		}
@@ -394,13 +395,19 @@ public class DatabaseConnectivity extends AbsDatabaseConnectivity {
 		if (serial < 0) {
 			return;
 		}
-		
-		Intent i = new Intent(OpenedDatabaseCloseReceiver.ACTION_CLOSE_DATABASE);
-		
-		i.putExtra(OpenedDatabaseCloseReceiver.EXTRA_SERIAL, serial);
-		
-		mContext.sendBroadcast(i);
-//		Logger.debug("CLOSE DB: serial = %d", serial);
+
+		Uri uri = ProviderUriBuilder.buildQueryUri(mAuthority, mObjectClass,
+				getDatabaseVersion(), serial);
+		if (uri == null) {
+			return;
+		}
+
+		if (OpenedDatabaseManager.ODM_DEBUG) {
+			Logger.debug("connectivity close db: serial = %d", serial);
+		}
+
+		mContentResovler.call(uri, DatabaseConnectivityProvider.METHOD_CLOSE_DATABASE,
+				String.valueOf(serial), null);
 	}
 
 	@Override

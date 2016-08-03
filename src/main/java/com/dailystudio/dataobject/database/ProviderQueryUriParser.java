@@ -5,7 +5,8 @@ import android.net.Uri;
 class ProviderQueryUriParser extends ProviderUriParser {
 	
 	final static String BASE_QUERY = "query";
-	
+	final static String BASE_QUERY_CURSOR = "queryCursor";
+
 	protected final static int SEG_QUERY_IND_DATABASE = SEG_INDEX_BASE + 1;
 	protected final static int SEG_QUERY_IND_VERSION = SEG_QUERY_IND_DATABASE + 1;
 	protected final static int SEG_QUERY_IND_TABLE = SEG_QUERY_IND_DATABASE + 2;
@@ -22,7 +23,7 @@ class ProviderQueryUriParser extends ProviderUriParser {
 	protected boolean hasValidBase() {
 		final String base = getBase();
 
-		return BASE_QUERY.equals(base);
+		return BASE_QUERY.equals(base) || BASE_QUERY_CURSOR.equals(base);
 	}
 	
 	@Override

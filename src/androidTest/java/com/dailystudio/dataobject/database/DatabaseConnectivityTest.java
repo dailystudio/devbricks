@@ -791,7 +791,7 @@ public class DatabaseConnectivityTest extends ActivityTestCase {
 		
 		connectivity.delete(new Query(QueryObject.class));
 	}
-	
+
 	public void testQueryCursor() {
 		final int count = 10;
 		DatabaseObject object = null;

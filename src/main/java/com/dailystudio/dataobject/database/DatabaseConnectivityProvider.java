@@ -10,8 +10,13 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 public class DatabaseConnectivityProvider extends ContentProvider {
+
+	public static final String METHOD_CLOSE_DATABASE = "close-database";
 
 	@Override
 	public boolean onCreate() {
@@ -21,6 +26,46 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 	@Override
 	public String getType(Uri uri) {
 		return null;
+	}
+
+	@Nullable
+	@Override
+	public Bundle call(String method, String arg, Bundle extras) {
+		if (OpenedDatabaseManager.ODM_DEBUG) {
+			Logger.debug("method calling: name: %s, arg: %s, extras: %s",
+					method, arg, extras);
+		}
+
+		if (METHOD_CLOSE_DATABASE.equals(method)) {
+			if (TextUtils.isEmpty(arg)) {
+				return null;
+			}
+
+			long serial = 0;
+			try {
+				serial = Long.valueOf(arg);
+			} catch (NumberFormatException e) {
+				Logger.debug("could not parse serial from argument[%s]: %s",
+						arg,
+						e.toString());
+				serial = 0;
+			}
+
+			OpenedDatabaseManager odbMgr =
+					OpenedDatabaseManager.getInstance();
+			if (odbMgr == null) {
+				return null;
+			}
+
+			OpenedDatabase db = odbMgr.removeObjectByKey(serial);
+
+			if (OpenedDatabaseManager.ODM_DEBUG) {
+				Logger.debug("provider is closing serial = %d, db = %s [remained: %d]",
+						serial, db, odbMgr.getCount());
+			}
+		}
+
+		return super.call(method, arg, extras);
 	}
 
 	@Override
@@ -370,6 +415,8 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			return queryCommands(uri, projection, selection, selectionArgs, sortOrder);
 		} else if (ProviderQueryUriParser.BASE_QUERY.equals(base)) {
 			return queryObjects(uri, projection, selection, selectionArgs, sortOrder);
+		} else if (ProviderQueryUriParser.BASE_QUERY_CURSOR.equals(base)) {
+			return queryCursor(uri, projection, selection, selectionArgs, sortOrder);
 		}
 		
 		return null;
@@ -443,9 +490,19 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 		
 		return cursor;
 	}
-	
+
+	protected Cursor queryCursor(Uri uri, String[] projection, String selection,
+								  String[] selectionArgs, String sortOrder) {
+		return doRealQueryInDatabase(uri, projection, selection, selectionArgs, sortOrder, true);
+	}
+
 	protected Cursor queryObjects(Uri uri, String[] projection, String selection,
-			String[] selectionArgs, String sortOrder) {
+								  String[] selectionArgs, String sortOrder) {
+		return doRealQueryInDatabase(uri, projection, selection, selectionArgs, sortOrder, false);
+	}
+
+	protected Cursor doRealQueryInDatabase(Uri uri, String[] projection, String selection,
+										   String[] selectionArgs, String sortOrder, boolean cursorOnly) {
 		if (uri == null) {
 			return null;
 		}
@@ -533,9 +590,11 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			
 			return null;
 		}
-		
-		manageOpenedDatabase(serial, db);
-		
+
+		if (!cursorOnly) {
+			manageOpenedDatabase(serial, db);
+		}
+
 		ContentResolver cr = context.getContentResolver();
 		
 		if (cr != null) {

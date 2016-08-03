@@ -9,6 +9,7 @@ class CommandFinder {
 		"/system/bin/su",
 		"/system/xbin/su",
 		"/data/bin/su",
+		"/su/bin/su",
 	};
 
 	private static final String[] sSHCmdCandidates = {

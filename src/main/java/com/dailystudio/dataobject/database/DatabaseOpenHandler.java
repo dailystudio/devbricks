@@ -82,8 +82,14 @@ class DatabaseOpenHandler extends SQLiteOpenHelper {
 		if (mOldVersion == -1) {
 			return mCurrentVersion;
 		}
-		
+
 		return mOldVersion;
 	}
-	
+
+	@Override
+	protected void finalize() throws Throwable {
+		this.close();
+		super.finalize();
+	}
+
 }
