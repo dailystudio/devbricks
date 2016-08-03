@@ -108,7 +108,7 @@ public class DatabaseUpdaterTest extends ActivityTestCase {
 		DatabaseOpenHandler handler = null;
 		boolean catched = false;
 		
-		handler = new DatabaseOpenHandler(mTargetContext, 
+		handler = DatabaseOpenHandler.getInstance(mTargetContext, 
 				DatabaseObject.classToDatabase(DynamicColumnsObject.class), DatabaseObject.VERSION_START);
 		assertNotNull(handler);
 
@@ -151,7 +151,7 @@ public class DatabaseUpdaterTest extends ActivityTestCase {
 		
 		updater.doUpdate(info.getNewVersion(), info.getOldVersion());
 		
-		handler = new DatabaseOpenHandler(mTargetContext, 
+		handler = DatabaseOpenHandler.getInstance(mTargetContext, 
 				DatabaseObject.classToDatabase(DynamicColumnsObject.class), DatabaseObject.VERSION_START + 1);
 		assertNotNull(handler);
 
@@ -209,7 +209,7 @@ public class DatabaseUpdaterTest extends ActivityTestCase {
 		
 		updater.doUpdate(info.getNewVersion(), info.getOldVersion());
 		
-		handler = new DatabaseOpenHandler(mTargetContext, 
+		handler = DatabaseOpenHandler.getInstance(mTargetContext, 
 				DatabaseObject.classToDatabase(DynamicColumnsObject.class), DatabaseObject.VERSION_START + 2);
 		assertNotNull(handler);
 

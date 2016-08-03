@@ -1,21 +1,95 @@
 package com.dailystudio.dataobject.database;
 
 import com.dailystudio.development.Logger;
+import com.dailystudio.manager.ISingletonObject;
+import com.dailystudio.manager.Manager;
+import com.dailystudio.manager.SingletonManager;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 
 class DatabaseOpenHandler extends SQLiteOpenHelper {
+
+	private static class DatabaseHandlerInstance implements ISingletonObject<String> {
+
+		String dbName;
+		int dbVer;
+		DatabaseOpenHandler dbHandler;
+
+		private DatabaseHandlerInstance(String db, int ver, DatabaseOpenHandler handler) {
+			dbName = db;
+			dbVer = ver;
+			dbHandler= handler;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%s(0x%08x): db = %s, ver = %d, handler = %s",
+					dbName, dbVer, dbHandler);
+		}
+
+		@Override
+		public String getSingletonKey() {
+			return dbName;
+		}
+
+	}
+
+	public static class DatabaseHandlerInstanceManager
+			extends SingletonManager<String,DatabaseHandlerInstance> {
+
+		public static synchronized DatabaseHandlerInstanceManager getInstance() {
+			return Manager.getInstance(DatabaseHandlerInstanceManager.class);
+		}
+
+	}
 
 	private static final int RETRY_TIMES = 3;
 	private static final int RETRY_INTERVAL = 500;
 	
 	private int mCurrentVersion;
 	private int mOldVersion = -1;
+
+	public static synchronized DatabaseOpenHandler getInstance(Context context, String name, int version) {
+		if (context == null || TextUtils.isEmpty(name)) {
+			return null;
+		}
+
+		final Context appContext = context.getApplicationContext();
+
+		DatabaseHandlerInstanceManager dbhiMgr =
+				DatabaseHandlerInstanceManager.getInstance();
+
+		DatabaseOpenHandler handler = null;
+
+		DatabaseHandlerInstance instance = dbhiMgr.getObject(name);
+		if (instance == null) {
+			handler = new DatabaseOpenHandler(appContext,
+							name, version);
+
+			instance = new DatabaseHandlerInstance(name, version, handler);
+
+			dbhiMgr.addObject(instance);
+		} else {
+			handler = instance.dbHandler;
+
+			if (instance.dbVer != version) {
+				handler.close();
+				handler = new DatabaseOpenHandler(appContext,
+						name, version);
+
+				instance.dbVer = version;
+				instance.dbHandler = handler;
+			}
+		}
+
+		return handler;
+	}
 	
-	public DatabaseOpenHandler(Context context, String name, int version) {
+	private DatabaseOpenHandler(Context context, String name, int version) {
 		super(context, name, null, version);
 		
 		mCurrentVersion = version;

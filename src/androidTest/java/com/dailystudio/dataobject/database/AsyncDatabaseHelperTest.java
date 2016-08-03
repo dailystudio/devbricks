@@ -464,7 +464,7 @@ public class AsyncDatabaseHelperTest extends ActivityTestCase {
 		assertNotNull(connectivity);
 		
 		DatabaseOpenHandler handler = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject2.class), 0x1);
 		assertNotNull(handler);
 		
@@ -537,12 +537,12 @@ public class AsyncDatabaseHelperTest extends ActivityTestCase {
 		assertNotNull(connectivity2);
 		
 		DatabaseOpenHandler handler1 = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject1.class), 0x1);
 		assertNotNull(handler1);
 		
 		DatabaseOpenHandler handler2 = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject2.class), 0x1);
 		assertNotNull(handler2);
 		
@@ -661,12 +661,12 @@ public class AsyncDatabaseHelperTest extends ActivityTestCase {
 		assertNotNull(connectivity2);
 		
 		DatabaseOpenHandler handler1 = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject1.class), 0x1);
 		assertNotNull(handler1);
 		
 		DatabaseOpenHandler handler2 = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject2.class), 0x1);
 		assertNotNull(handler2);
 		
@@ -760,7 +760,7 @@ public class AsyncDatabaseHelperTest extends ActivityTestCase {
 		assertNotNull(connectivity);
 		
 		DatabaseOpenHandler handler = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject1.class), 0x1);
 		assertNotNull(handler);
 
@@ -864,12 +864,12 @@ public class AsyncDatabaseHelperTest extends ActivityTestCase {
 		assertNotNull(connectivity2);
 		
 		DatabaseOpenHandler handler1 = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject1.class), 0x1);
 		assertNotNull(handler1);
 		
 		DatabaseOpenHandler handler2 = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject2.class), 0x1);
 		assertNotNull(handler2);
 		

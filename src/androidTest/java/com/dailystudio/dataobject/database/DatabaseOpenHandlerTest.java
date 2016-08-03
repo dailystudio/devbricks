@@ -20,7 +20,7 @@ public class DatabaseOpenHandlerTest extends ActivityTestCase {
 	
 	public void testCreateDatabaseOpenHandler() {
 		DatabaseOpenHandler handler = 
-			new DatabaseOpenHandler(mTargetContext, "test.db", 1);
+			DatabaseOpenHandler.getInstance(mTargetContext, "test.db", 1);
 		assertNotNull(handler);
 		
 		SQLiteDatabase db = null;
@@ -39,7 +39,7 @@ public class DatabaseOpenHandlerTest extends ActivityTestCase {
 	public void testGetVersion() {
 		DatabaseOpenHandler handler = null;
 		
-		handler = new DatabaseOpenHandler(mTargetContext, "test-upgrade.db", 1);
+		handler = DatabaseOpenHandler.getInstance(mTargetContext, "test-upgrade.db", 1);
 		assertNotNull(handler);
 		
 		SQLiteDatabase db = null;
@@ -55,7 +55,7 @@ public class DatabaseOpenHandlerTest extends ActivityTestCase {
 		assertEquals(1, handler.getOldVersion());
 
 		
-		handler = new DatabaseOpenHandler(mTargetContext, "test-upgrade.db", 2);
+		handler = DatabaseOpenHandler.getInstance(mTargetContext, "test-upgrade.db", 2);
 		assertNotNull(handler);
 
 		db = handler.getWritableDatabase();
@@ -64,7 +64,7 @@ public class DatabaseOpenHandlerTest extends ActivityTestCase {
 		assertEquals(2, handler.getNewVersion());
 		assertEquals(1, handler.getOldVersion());
 		
-		handler = new DatabaseOpenHandler(mTargetContext, "test-upgrade.db", 3);
+		handler = DatabaseOpenHandler.getInstance(mTargetContext, "test-upgrade.db", 3);
 		assertNotNull(handler);
 
 		db = handler.getWritableDatabase();
@@ -73,7 +73,7 @@ public class DatabaseOpenHandlerTest extends ActivityTestCase {
 		assertEquals(3, handler.getNewVersion());
 		assertEquals(2, handler.getOldVersion());
 		
-		handler = new DatabaseOpenHandler(mTargetContext, "test-upgrade.db", 1);
+		handler = DatabaseOpenHandler.getInstance(mTargetContext, "test-upgrade.db", 1);
 		assertNotNull(handler);
 
 		db = handler.getWritableDatabase();

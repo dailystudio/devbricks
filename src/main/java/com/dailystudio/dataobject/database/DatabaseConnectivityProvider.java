@@ -99,7 +99,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			return null;
 		}
 		
-		DatabaseOpenHandler handler = new DatabaseOpenHandler(
+		DatabaseOpenHandler handler = DatabaseOpenHandler.getInstance(
 				context, database, version);
 		
 		final SQLiteDatabase db = handler.getWritableDatabase();
@@ -186,7 +186,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			return 0;
 		}
 		
-		DatabaseOpenHandler handler = new DatabaseOpenHandler(
+		DatabaseOpenHandler handler = DatabaseOpenHandler.getInstance(
 				context, database, version);
 		
 		final SQLiteDatabase db = handler.getWritableDatabase();
@@ -273,7 +273,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			return 0;
 		}
 		
-		DatabaseOpenHandler handler = new DatabaseOpenHandler(
+		DatabaseOpenHandler handler = DatabaseOpenHandler.getInstance(
 				context, database, version);
 		
 		final SQLiteDatabase db = handler.getWritableDatabase();
@@ -352,7 +352,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			return 0;
 		}
 		
-		DatabaseOpenHandler handler = new DatabaseOpenHandler(
+		DatabaseOpenHandler handler = DatabaseOpenHandler.getInstance(
 				context, database, version);
 		
 		final SQLiteDatabase db = handler.getWritableDatabase();
@@ -470,7 +470,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			return null;
 		}
 		
-		DatabaseOpenHandler handler = new DatabaseOpenHandler(
+		DatabaseOpenHandler handler = DatabaseOpenHandler.getInstance(
 				context, database, version);
 		
 		SQLiteDatabase db = handler.getWritableDatabase();
@@ -535,7 +535,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			return null;
 		}
 		
-		DatabaseOpenHandler handler = new DatabaseOpenHandler(
+		DatabaseOpenHandler handler = DatabaseOpenHandler.getInstance(
 				context, database, version);
 		
 		final SQLiteDatabase db = handler.getReadableDatabase();

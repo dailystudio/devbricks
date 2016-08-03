@@ -62,7 +62,7 @@ public class DatabaseConnectivityProviderTest extends ActivityTestCase {
 		cr.insert(queryUri, values);
 		
 		DatabaseOpenHandler handler = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject2.class), 0x1);
 		assertNotNull(handler);
 		
@@ -117,7 +117,7 @@ public class DatabaseConnectivityProviderTest extends ActivityTestCase {
 		cr.bulkInsert(queryUri, values);
 		
 		DatabaseOpenHandler handler = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject2.class), 0x1);
 		assertNotNull(handler);
 		
@@ -182,7 +182,7 @@ public class DatabaseConnectivityProviderTest extends ActivityTestCase {
 		cr.delete(queryUri, selection.toString(), null);
 		
 		DatabaseOpenHandler handler = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject2.class), 0x1);
 		assertNotNull(handler);
 		
@@ -248,7 +248,7 @@ public class DatabaseConnectivityProviderTest extends ActivityTestCase {
 		cr.delete(queryUri, null, null);
 		
 		DatabaseOpenHandler handler = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject2.class), 0x1);
 		assertNotNull(handler);
 		
@@ -315,7 +315,7 @@ public class DatabaseConnectivityProviderTest extends ActivityTestCase {
 				selection.toString(), null);
 		
 		DatabaseOpenHandler handler = 
-			new DatabaseOpenHandler(mTargetContext, 
+			DatabaseOpenHandler.getInstance(mTargetContext, 
 					DatabaseObject.classToDatabase(SampleObject2.class), 0x1);
 		assertNotNull(handler);
 		

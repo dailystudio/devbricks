@@ -35,7 +35,7 @@ class DatabaseConnectivityDirectSQLiteImpl extends
 			if (database != null) {
 				int dbver = getDatabaseVersion();
 				
-				mOpenHandler = new DatabaseOpenHandler(context, database, dbver);
+				mOpenHandler = DatabaseOpenHandler.getInstance(context, database, dbver);
 			}
 		}
 	}
