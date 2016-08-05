@@ -10,9 +10,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 public class DatabaseConnectivityProvider extends ContentProvider {
 
@@ -26,46 +23,6 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 	@Override
 	public String getType(Uri uri) {
 		return null;
-	}
-
-	@Nullable
-	@Override
-	public Bundle call(String method, String arg, Bundle extras) {
-		if (OpenedDatabaseManager.ODM_DEBUG) {
-			Logger.debug("method calling: name: %s, arg: %s, extras: %s",
-					method, arg, extras);
-		}
-
-		if (METHOD_CLOSE_DATABASE.equals(method)) {
-			if (TextUtils.isEmpty(arg)) {
-				return null;
-			}
-
-			long serial = 0;
-			try {
-				serial = Long.valueOf(arg);
-			} catch (NumberFormatException e) {
-				Logger.debug("could not parse serial from argument[%s]: %s",
-						arg,
-						e.toString());
-				serial = 0;
-			}
-
-			OpenedDatabaseManager odbMgr =
-					OpenedDatabaseManager.getInstance();
-			if (odbMgr == null) {
-				return null;
-			}
-
-			OpenedDatabase db = odbMgr.removeObjectByKey(serial);
-
-			if (OpenedDatabaseManager.ODM_DEBUG) {
-				Logger.debug("provider is closing serial = %d, db = %s [remained: %d]",
-						serial, db, odbMgr.getCount());
-			}
-		}
-
-		return super.call(method, arg, extras);
 	}
 
 	@Override
@@ -108,7 +65,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 		}
 		
 		if (checkOrCreateTable(db, table, createTableSQL) == false) {
-			db.close();
+//			db.close();
 			
 			return null;
 		}
@@ -132,7 +89,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			}
 		}
 		
-		db.close();
+//		db.close();
 		
 		if (rowId <= 0) {
 			return null;
@@ -195,7 +152,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 		}
 		
 		if (checkOrCreateTable(db, table, createTableSQL) == false) {
-			db.close();
+//			db.close();
 			
 			return 0;
 		}
@@ -230,7 +187,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			}
 		}
 		
-		db.close();
+//		db.close();
 		
 		Uri resUri = ProviderUriBuilder.buildResultUri(
 				authority, database, version, table);
@@ -305,7 +262,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			}
 		}
 		
-		db.close();
+//		db.close();
 		
 		Uri resUri = ProviderUriBuilder.buildResultUri(
 				authority, database, version, table);
@@ -361,7 +318,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 		}
 		
 		if (checkOrCreateTable(db, table, createTableSQL) == false) {
-			db.close();
+//			db.close();
 			
 			return 0;
 		}
@@ -386,7 +343,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			}
 		}
 		
-		db.close();
+//		db.close();
 		
 		Uri resUri = ProviderUriBuilder.buildResultUri(
 				authority, database, version, table);
@@ -478,7 +435,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			return null;
 		}
 		
-		db.close();
+//		db.close();
 		
 		final int newVersion = handler.getNewVersion();
 		final int oldVersion = handler.getOldVersion();
@@ -586,13 +543,9 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 				c.close();
 			}
 			
-			db.close();
+//			db.close();
 			
 			return null;
-		}
-
-		if (!cursorOnly) {
-			manageOpenedDatabase(serial, db);
 		}
 
 		ContentResolver cr = context.getContentResolver();
@@ -603,22 +556,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 		
 		return c;
 	}
-	
-	private void manageOpenedDatabase(long serial, SQLiteDatabase database) {
-		if (serial < 0 || database == null) {
-			return;
-		}
-		
-		OpenedDatabaseManager odbmgr = OpenedDatabaseManager.getInstance();
-		if (odbmgr == null) {
-			return;
-		}
-		
-		OpenedDatabase odb = new OpenedDatabase(serial, database);
-		
-		odbmgr.addObject(odb);
-	}
-	
+
 	protected boolean checkOrCreateTable(SQLiteDatabase db, String table, String createTableSQL) {
 		if (db == null || db.isReadOnly() 
 				|| table == null || createTableSQL == null) {

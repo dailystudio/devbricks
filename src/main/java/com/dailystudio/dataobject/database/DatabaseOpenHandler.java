@@ -28,6 +28,8 @@ class DatabaseOpenHandler extends SQLiteOpenHelper {
 		@Override
 		public String toString() {
 			return String.format("%s(0x%08x): db = %s, ver = %d, handler = %s",
+					getClass().getSimpleName(),
+					hashCode(),
 					dbName, dbVer, dbHandler);
 		}
 
@@ -45,6 +47,12 @@ class DatabaseOpenHandler extends SQLiteOpenHelper {
 			return Manager.getInstance(DatabaseHandlerInstanceManager.class);
 		}
 
+		@Override
+		public void addObject(DatabaseHandlerInstance object) {
+			super.addObject(object);
+
+			Logger.debug("add new help: %s", object);
+		}
 	}
 
 	private static final int RETRY_TIMES = 3;
@@ -158,12 +166,6 @@ class DatabaseOpenHandler extends SQLiteOpenHelper {
 		}
 
 		return mOldVersion;
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		this.close();
-		super.finalize();
 	}
 
 }

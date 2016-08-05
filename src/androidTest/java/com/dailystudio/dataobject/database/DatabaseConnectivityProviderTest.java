@@ -422,8 +422,6 @@ public class DatabaseConnectivityProviderTest extends ActivityTestCase {
 		
 		c.close();
 		
-		closeOpenedDatabase(serial);
-		
 		cr.delete(queryUri, null, null);
 	}
 
@@ -504,8 +502,6 @@ public class DatabaseConnectivityProviderTest extends ActivityTestCase {
 		
 		c.close();
 		
-		closeOpenedDatabase(serial);
-		
 		cr.delete(queryUri, null, null);
 	}
 
@@ -585,8 +581,6 @@ public class DatabaseConnectivityProviderTest extends ActivityTestCase {
 		
 		c.close();
 		
-		closeOpenedDatabase(serial);
-		
 		orderByToken = col.orderByDescending();
 		assertNotNull(orderByToken);
 		
@@ -619,8 +613,6 @@ public class DatabaseConnectivityProviderTest extends ActivityTestCase {
 		}
 		
 		c.close();
-		
-		closeOpenedDatabase(serial);
 		
 		cr.delete(queryUri, null, null);
 	}
@@ -693,8 +685,6 @@ public class DatabaseConnectivityProviderTest extends ActivityTestCase {
 		
 		c.close();
 		
-		closeOpenedDatabase(serial);
-		
 		cr.delete(queryUri, null, null);
 	}
 
@@ -762,25 +752,10 @@ public class DatabaseConnectivityProviderTest extends ActivityTestCase {
 		assertEquals(3, c.getInt(columnIndex));
 
 		c.close();
-		
-		closeOpenedDatabase(serial);
-		
+
 		cr.delete(queryUri, null, null);
 	}
-	
-	private void closeOpenedDatabase(long serial) {
-		if (serial < 0) {
-			return;
-		}
-		
-		Intent i = new Intent(OpenedDatabaseCloseReceiver.ACTION_CLOSE_DATABASE);
-		assertNotNull(i);
-		
-		i.putExtra(OpenedDatabaseCloseReceiver.EXTRA_SERIAL, serial);
-		
-		mContext.sendBroadcast(i);
-	}
-	
+
 	public void testQueryCommand() {
 		ContentResolver cr = mTargetContext.getContentResolver();
 		assertNotNull(cr);

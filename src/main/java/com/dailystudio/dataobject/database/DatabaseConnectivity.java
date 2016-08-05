@@ -315,8 +315,6 @@ public class DatabaseConnectivity extends AbsDatabaseConnectivity {
 				c.close();
 			}
 
-			closeOpenedDatabase(serial);
-
 			return null;
 		}
 		
@@ -386,28 +384,7 @@ public class DatabaseConnectivity extends AbsDatabaseConnectivity {
 		
 		c.close();
 
-		closeOpenedDatabase(serial);
-		
 		return objects;
-	}
-
-	private void closeOpenedDatabase(long serial) {
-		if (serial < 0) {
-			return;
-		}
-
-		Uri uri = ProviderUriBuilder.buildQueryUri(mAuthority, mObjectClass,
-				getDatabaseVersion(), serial);
-		if (uri == null) {
-			return;
-		}
-
-		if (OpenedDatabaseManager.ODM_DEBUG) {
-			Logger.debug("connectivity close db: serial = %d", serial);
-		}
-
-		mContentResovler.call(uri, DatabaseConnectivityProvider.METHOD_CLOSE_DATABASE,
-				String.valueOf(serial), null);
 	}
 
 	@Override
