@@ -93,7 +93,7 @@ public class CommandShellTest extends ActivityTestCase {
 		copyScriptFromRaw(R.raw.test_welcome, "test_welcome.sh");
 		
 		int ret = CommandShell.execAndWaitFor(
-				new String[]{getAbsolutePath("test_welcome.sh")});
+				new String[]{getAbsolutePath("test_welcome.sh")}, true);
 		assertEquals(CommandShell.ERR_NONE, CommandShell.getErrorCode(ret));
 		assertEquals(0, CommandShell.getExitValue(ret));
 	}

@@ -9,7 +9,12 @@
     <uses-sdk android:minSdkVersion="15" />
     
     <application>
-		
+
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".PermCheckActivity"
+            android:label="@string/activity_title_perm_check"
+            android:theme="@style/Theme.AppCompat"/>
+
    		<provider
             android:name="com.dailystudio.dataobject.database.DatabaseConnectivityProvider"
             android:authorities="com.dailystudio.dataobject.database" />
