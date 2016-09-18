@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -111,6 +112,37 @@ public class ThumbAsyncDecoder {
 					thumbPath,
 					bitmap);
 */			
+			return bitmap;
+		}
+
+	}
+
+	private static class DecodeAssetThumbAsyncTask extends AbsDecodeThumbAsyncTask {
+
+		public DecodeAssetThumbAsyncTask(String thumbKey, String decodeSource) {
+			super(thumbKey, decodeSource);
+		}
+
+		@Override
+		protected Bitmap doDecodeBitmap(Context context,
+										String thumbKey, String decodeSource) {
+			if (decodeSource == null) {
+				return null;
+			}
+
+			Bitmap bitmap = null;
+			try {
+				bitmap = BitmapUtils.loadAssetBitmap(context, decodeSource);
+			} catch (OutOfMemoryError e) {
+				Logger.debug("decode thumb failure: %s", e.toString());
+
+				bitmap = null;
+			}
+
+/*			Logger.debug("DECODE THUMB: thumb = %s, bitmap = %s",
+					thumbPath,
+					bitmap);
+*/
 			return bitmap;
 		}
 
@@ -391,7 +423,22 @@ public class ThumbAsyncDecoder {
 		requestDecodeThumb(context, 
 				new DecodeFileThumbAsyncTask(thumbKey, thumbFilePath));
 	}
-	
+
+	public static void requestDecodeAssetThumb(Context context,
+											   String assetKey,
+											   String assetPath) {
+		if (context == null) {
+			return;
+		}
+
+		if (assetKey == null || assetPath == null) {
+			return;
+		}
+
+		requestDecodeThumb(context,
+				new DecodeAssetThumbAsyncTask(assetKey, assetPath));
+	}
+
 	public static void requestDecodeActivityIconThumb(Context context,
 			String thumbKey, ComponentName comp) {
 		if (context == null) {
