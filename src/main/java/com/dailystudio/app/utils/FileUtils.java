@@ -15,21 +15,43 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.regex.Pattern;
 
 import org.mozilla.universalchardet.UniversalDetector;
 
+import android.annotation.TargetApi;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.dailystudio.development.Logger;
 import com.dailystudio.utils.ResourcesUtils;
 
 public class FileUtils {
+
+	private final static String SCHEME_CONTENT = "content";
+	private final static String SCHEME_FILE = "file";
+	private final static String COLUMN_DATA = "_data";
+
+	private final static String MEDIA_DOC_AUTHORITY = "com.android.providers.media.documents";
+	private final static String EXT_STORAGE_DOC_AUTHORITY = "com.android.externalstorage.documents";
+	private final static String DOWNLOAD_DOC_AUTHORITY = "com.android.providers.downloads.documents";
+
+	private final static String MEIDA_TYPE_VIDEO = "video";
+	private final static String MEIDA_TYPE_AUDIO = "audio";
+	private final static String MEIDA_TYPE_IMAGE = "image";
 
 	private final static String NO_MEDIA_TAG_FILE = ".nomedia";
 	
@@ -516,6 +538,97 @@ public class FileUtils {
     	
     	return defExt;
     }
+
+	@TargetApi(Build.VERSION_CODES.KITKAT)
+	public static String getPathFromUri(final Context context, final Uri uri) {
+		final boolean isKitKatOrAbove = Build.VERSION.SDK_INT >=  Build.VERSION_CODES.KITKAT;
+
+		if (isKitKatOrAbove && DocumentsContract.isDocumentUri(context, uri)) {
+			if (isExternalStorageDocument(uri)) {
+				final String docId = DocumentsContract.getDocumentId(uri);
+				final String[] split = docId.split(":");
+				final String type = split[0];
+
+				if ("primary".equalsIgnoreCase(type)) {
+					return Environment.getExternalStorageDirectory() + "/" + split[1];
+				}
+
+				// TODO handle non-primary volumes
+			} else if (isDownloadsDocument(uri)) {
+
+				final String id = DocumentsContract.getDocumentId(uri);
+				final Uri contentUri = ContentUris.withAppendedId(
+						Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+				return getDataColumn(context, contentUri, null, null);
+			} else if (isMediaDocument(uri)) {
+				final String docId = DocumentsContract.getDocumentId(uri);
+				final String[] split = docId.split(":");
+				final String type = split[0];
+
+				Uri contentUri = null;
+				if (MEIDA_TYPE_IMAGE.equals(type)) {
+					contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+				} else if (MEIDA_TYPE_VIDEO.equals(type)) {
+					contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+				} else if (MEIDA_TYPE_AUDIO.equals(type)) {
+					contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+				}
+
+				final String selection = "_id=?";
+				final String[] selectionArgs = new String[] {
+						split[1]
+				};
+
+				return getDataColumn(context, contentUri, selection, selectionArgs);
+			}
+		} else if (SCHEME_CONTENT.equalsIgnoreCase(uri.getScheme())) {
+			return getDataColumn(context, uri, null, null);
+		} else if (SCHEME_FILE.equalsIgnoreCase(uri.getScheme())) {
+			return uri.getPath();
+		}
+
+		return null;
+	}
+
+	public static String getDataColumn(Context context, Uri uri, String selection,
+									   String[] selectionArgs) {
+
+		Cursor cursor = null;
+		final String column = COLUMN_DATA;
+		final String[] projection = {
+				column
+		};
+
+		try {
+			cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+					null);
+			if (cursor != null && cursor.moveToFirst()) {
+				final int column_index = cursor.getColumnIndexOrThrow(column);
+
+				return cursor.getString(column_index);
+			}
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+
+		return null;
+	}
+
+
+	public static boolean isExternalStorageDocument(Uri uri) {
+		return EXT_STORAGE_DOC_AUTHORITY.equals(uri.getAuthority());
+	}
+
+	public static boolean isDownloadsDocument(Uri uri) {
+		return DOWNLOAD_DOC_AUTHORITY.equals(uri.getAuthority());
+	}
+
+	public static boolean isMediaDocument(Uri uri) {
+		return MEDIA_DOC_AUTHORITY.equals(uri.getAuthority());
+	}
 
 	public static void writeFileContent(String file, String fileContent) throws IOException {
 		writeFileContent(file, fileContent, false);
