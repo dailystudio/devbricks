@@ -208,7 +208,7 @@ public class BitmapUtils {
 		return scaledBitmap;
 	}
 
-	private static Bitmap createClippedBitmap(Bitmap bitmap, int x, int y, 
+	public static Bitmap createClippedBitmap(Bitmap bitmap, int x, int y,
 			int width, int height) {
 		if (bitmap == null) {
 			return null;
