@@ -2,7 +2,7 @@ package com.dailystudio.system;
 
 import java.io.InputStream;
 
-public class ExecOuputStreams {
+public class ExecOutputStreams {
 
 	public InputStream errStream;
 	public InputStream outputStream;

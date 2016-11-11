@@ -3,6 +3,7 @@ package com.dailystudio.system;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.dailystudio.development.Logger;
 import com.dailystudio.system.CommandShell.PendingReturnHandler;
 
 class ExecUnit {
@@ -66,7 +67,7 @@ class ExecUnit {
 		final InputStream stdout = mProcess.getInputStream();
 		final InputStream stderr = mProcess.getErrorStream();
 		final OutputStream stdin = mProcess.getOutputStream();
-		
+
 		if (handleOutputs) {
 			if (stdout != null) {
 				mStdoutTask = new ExecOutputASyncTask("stdout", stdout);
@@ -100,35 +101,51 @@ class ExecUnit {
 	public void cancel() {
 		if (mStdoutTask != null) {
 			mStdoutTask.stop();
-			mStdoutTask = null;
+//			mStdoutTask = null;
 		}
 		
 		if (mStderrTask != null) {
 			mStderrTask.stop();
-			mStderrTask = null;
+//			mStderrTask = null;
 		}
 
 		if (mStdinTask != null) {
 			mStdinTask.stop();
-			mStdinTask = null;
+//			mStdinTask = null;
 		}
 	}
 	
 	public void waitFor() {
 		if (mStdoutTask != null) {
 			mStdoutTask.waitForStop();
-			mStdoutTask = null;
+//			mStdoutTask = null;
 		}
 		
 		if (mStderrTask != null) {
 			mStderrTask.waitForStop();
-			mStderrTask = null;
+//			mStderrTask = null;
 		}
 		if (mStdinTask != null) {
 			mStdinTask.waitForStop();
-			mStdinTask = null;
+//			mStdinTask = null;
 		}
 	}
-	
+
+	public String[] getOutputs() {
+		if (mStdoutTask == null) {
+			return null;
+		}
+
+		return mStdoutTask.getOutputs();
+	}
+
+	public String[] getErrors() {
+		if (mStderrTask == null) {
+			return null;
+		}
+
+		return mStderrTask.getOutputs();
+	}
+
 }
 

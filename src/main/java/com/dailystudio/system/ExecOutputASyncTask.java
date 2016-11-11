@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.dailystudio.development.Logger;
 
@@ -12,6 +14,8 @@ class ExecOutputASyncTask extends ExecIOASyncTask {
 	private InputStream mInputStream;
 	
 	private boolean mIgnoreEmptyLines;
+
+	private List<String> mOutputs = new ArrayList<>();
 	
 	public ExecOutputASyncTask(String tag, InputStream input) {
 		super(tag);
@@ -47,11 +51,13 @@ class ExecOutputASyncTask extends ExecIOASyncTask {
 				}
 				
 				Logger.info("%s: [%s]", mTag, line);
+
+				mOutputs.add(line);
 			}
 
 			lineReader.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.warnning("[%s]: read from output failed, %s", e.toString());
 		}
 	}
 	
@@ -65,6 +71,10 @@ class ExecOutputASyncTask extends ExecIOASyncTask {
 	public void stop() {
 //		printOutput();
 		super.stop();
+	}
+
+	public String[] getOutputs() {
+		return mOutputs.toArray(new String[0]);
 	}
 	
 }

@@ -10,7 +10,8 @@ public class CommandShell {
 	
 	public static interface PendingReturnHandler {
 		
-		public void onReturned(int pendingId, int ret);
+		public void onReturned(int pendingId, int ret,
+							   String[] outputs, String[] errors);
 		
 	}
 	
@@ -52,12 +53,12 @@ public class CommandShell {
 		return execAndWaitFor(commands, false);
 	}
 	
-	public static int execAndWaitFor(String command, boolean asSuperUsser) {
-		return execAndWaitFor(new String[] { command }, asSuperUsser);
+	public static int execAndWaitFor(String command, boolean asSuperUser) {
+		return execAndWaitFor(new String[] { command }, asSuperUser);
 	}
 	
-	public static int execAndWaitFor(String[] commands, boolean asSuperUsser) {
-		return exec(commands, asSuperUsser, true, null);
+	public static int execAndWaitFor(String[] commands, boolean asSuperUser) {
+		return exec(commands, asSuperUser, true, null);
 	}
 	
 	public static int exec(String command) {
@@ -68,13 +69,13 @@ public class CommandShell {
 		return exec(command, false, handler);
 	}
 
-	public static int exec(String command, boolean asSuperUsser) {
-		return exec(new String[] { command }, asSuperUsser);
+	public static int exec(String command, boolean asSuperUser) {
+		return exec(new String[] { command }, asSuperUser);
 	}
 	
-	static int exec(String command, boolean asSuperUsser, 
+	static int exec(String command, boolean asSuperUser,
 			PendingReturnHandler handler) {
-		return exec(new String[] { command }, asSuperUsser, false, handler);
+		return exec(new String[] { command }, asSuperUser, false, handler);
 	}
 	
 	public static int exec(String[] commands) {
@@ -94,32 +95,32 @@ public class CommandShell {
 		return exec(commands, asSuperUsser, false, handler);
 	}
 	
-	public static int exec(String[] commands, ExecOuputStreams streams) {
+	public static int exec(String[] commands, ExecOutputStreams streams) {
 		return exec(commands, false, streams);
 	}
 	
 	public static int exec(String[] commands, PendingReturnHandler handler, 
-			ExecOuputStreams streams) {
+			ExecOutputStreams streams) {
 		return exec(commands, false, handler, streams);
 	}
 	
-	public static int exec(String[] commands, boolean asSuperUsser,
-			ExecOuputStreams streams) {
-		return exec(commands, asSuperUsser, false, null, streams);
+	public static int exec(String[] commands, boolean asSuperUser,
+			ExecOutputStreams streams) {
+		return exec(commands, asSuperUser, false, null, streams);
 	}
 	
-	public static int exec(String[] commands, boolean asSuperUsser,
-			PendingReturnHandler handler, ExecOuputStreams streams) {
-		return exec(commands, asSuperUsser, false, handler, streams);
+	public static int exec(String[] commands, boolean asSuperUser,
+			PendingReturnHandler handler, ExecOutputStreams streams) {
+		return exec(commands, asSuperUser, false, handler, streams);
 	}
 	
-	static int exec(String[] commands, boolean asSuperUsser, boolean waitFor, 
+	static int exec(String[] commands, boolean asSuperUser, boolean waitFor,
 			PendingReturnHandler handler) {
-		return exec(commands, asSuperUsser, waitFor, handler, null);
+		return exec(commands, asSuperUser, waitFor, handler, null);
 	}
 	
-	static int exec(String[] commands, boolean asSuperUsser, boolean waitFor, 
-			PendingReturnHandler handler, ExecOuputStreams streams) {
+	static int exec(String[] commands, boolean asSuperUser, boolean waitFor,
+			PendingReturnHandler handler, ExecOutputStreams streams) {
 		printCmds(commands);
 		
 		if (commands == null) {
@@ -127,7 +128,7 @@ public class CommandShell {
 		}
 		
 		String shellCommand = null;
-		if (asSuperUsser) {
+		if (asSuperUser) {
 			shellCommand = CommandFinder.findSuCommand();
 		} else {
 			shellCommand = CommandFinder.findShCommand();
@@ -195,7 +196,7 @@ public class CommandShell {
 		final Process process = unit.getProcess();
 		if (process == null) {
 			if (handler != null) {
-				handler.onReturned(unit.pendingId, EXEC_FAILED);
+				handler.onReturned(unit.pendingId, EXEC_FAILED, null, null);
 			}
 			
 			return EXEC_FAILED;
@@ -224,7 +225,8 @@ public class CommandShell {
 				ret);
 
 		if (handler != null) {
-			handler.onReturned(unit.pendingId, ret);
+			handler.onReturned(unit.pendingId, ret,
+					unit.getOutputs(), unit.getErrors());
 		}
 		
 		return ret;
