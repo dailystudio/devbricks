@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 
 import android.content.Context;
 
+import com.dailystudio.app.utils.ArrayUtils;
 import com.dailystudio.development.Logger;
 import com.dailystudio.system.CommandShell.PendingReturnHandler;
 import com.dailystudio.test.ActivityTestCase;
@@ -237,11 +238,14 @@ public class CommandShellTest extends ActivityTestCase {
 	private PendingReturnHandler mHandler = new PendingReturnHandler() {
 		
 		@Override
-		public void onReturned(int pendingId, int ret) {
-			Logger.debug("mPendingId(%d), pendingId(%d), ret(%d)",
+		public void onReturned(int pendingId, int ret,
+							   String[] outputs, String[] errors) {
+			Logger.debug("mPendingId(%d), pendingId(%d), ret(%d), outputs(%s), errors(%s)",
 					mPendingId,
 					pendingId,
-					ret);
+					ret,
+					ArrayUtils.stringArrayToString(outputs, ", "),
+					ArrayUtils.stringArrayToString(errors, ", "));
 			if (mPendingId != pendingId) {
 				return;
 			}
