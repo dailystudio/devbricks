@@ -10,7 +10,7 @@ DevBricks provides several classes which will be usually  used in daily Android 
 - **Consistent** : DevBricks includes unified logging system, database accessing, UI elements and styles. This make all of your applications has consistency at primary impression.
 
 ## Quick Setup
-To use DevBircks Library, follow these steps.
+To use DevBricks Library, follow these steps.
 
 ### Step 1: Include the Library
 **Maven dependency:**
@@ -28,7 +28,7 @@ compile 'com.github.dailystudio:devbricks:1.1.0'
 ```
 
 ### Step 2: Application initialization
-Extends youre main Application from DevBricks Application:
+Extends your main Application from DevBricks Application:
 ``` java
 public class MyApplication extends DevBricksApplication {
 	/* your own code about application */
@@ -130,7 +130,7 @@ public class MyApplication extends DevBricksApplication {
 	
 }
 ```
-The first paramter is the output format of log, while rest parameters provide the content of the arguments describe in the first parameter. It is exactly same as **`String.format()`**. The TAG will be generated as `MyApplication: onCreate()` and the log output will be like this:
+The first parameter is the output format of log, while rest parameters provide the content of the arguments describe in the first parameter. It is exactly same as **`String.format()`**. The TAG will be generated as `MyApplication: onCreate()` and the log output will be like this:
 ```java
 ...
 02-22 17:09:06.888 8476-8476/? D/MyApplication: onCreate(): Hello app: MyApplication
@@ -525,7 +525,7 @@ public class PeopleBmisAsyncTask extends ProjectedDatabaseObjectsAsyncTask<Peopl
 }
 ```
 
-All the **`Loader`** in DevBricks are drived from **`android.support.v4.content.Loader`**, while the **`AsyncTask`** are drived from **`android.os.AsyncTask`**. How to use a **`Loader`** or **`AsyncTask`** is not covered in this document, you can refer to detailed guides on offical  [Android Devloper](http://developer.android.com/index.html) website. But if you want to save your energy to save the world, please move on to read the following chapter - *Fragments*. 
+All the **`Loader`** in DevBricks are derived from **`android.support.v4.content.Loader`**, while the **`AsyncTask`** are drived from **`android.os.AsyncTask`**. How to use a **`Loader`** or **`AsyncTask`** is not covered in this document, you can refer to detailed guides on offical  [Android Devloper](http://developer.android.com/index.html) website. But if you want to save your energy to save the world, please move on to read the following chapter - *Fragments*.
 
 ## Fragments
 A **`Fragment`** is a piece of an application's user interface or behavior that can be placed in an **`Activity`**. DevBricks provide you some classes derived from **`Fragment`** and well integrated the concept mentioned in previous chapters. With these pre-defined classes, you can easily use **`DatabaseObject`** and **`Loader`** in your own application. 
