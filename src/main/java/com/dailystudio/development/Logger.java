@@ -12,6 +12,7 @@ public class Logger {
 	
 	private static enum LogToken {
 		LOG_D,
+		LOG_SD,
 		LOG_W,
 		LOG_I,
 		LOG_E,
@@ -29,6 +30,7 @@ public class Logger {
 	private static final String UNKNOWN_TAG = "Unknown";
 
 	private static volatile boolean sLogDebugEnabled = BuildConfig.DEBUG;
+	private static volatile boolean sLogSecureDebugEnabled = BuildConfig.DEBUG;
 
 	private static void output(String format, LogToken token, Object... args) {
 		final String compose = String.format(DEBUG_MSG_TEMPL,
@@ -43,7 +45,8 @@ public class Logger {
 			tag = UNKNOWN_TAG;
 		}
 
-		if (token == LogToken.LOG_D) {
+		if (token == LogToken.LOG_D
+				|| token == LogToken.LOG_SD) {
 			Log.d(tag, String.format(compose, args));
 		} else if (token == LogToken.LOG_W) {
 			Log.w(tag, String.format(compose, args));
@@ -61,7 +64,15 @@ public class Logger {
 	public static boolean isDebugEnabled() {
 		return sLogDebugEnabled;
 	}
-	
+
+	public static void setSecureDebugEnabled(boolean enabled) {
+		sLogSecureDebugEnabled = enabled;
+	}
+
+	public static boolean isSecureDebugEnabled() {
+		return sLogSecureDebugEnabled;
+	}
+
 	public static boolean isDebugSuppressed() {
 		return isDebugSuppressed(SUPPRESS_FILE);
 	}
@@ -133,8 +144,14 @@ public class Logger {
 			output(format, LogToken.LOG_D, args);
 		}
 	}
-	
-	public static void warnning(String format, Object... args) {
+
+	public static void debugSecure(String format, Object... args) {
+		if (sLogSecureDebugEnabled) {
+			output(format, LogToken.LOG_SD, args);
+		}
+	}
+
+	public static void warn(String format, Object... args) {
 		output(format, LogToken.LOG_W, args);
 	}
 	
