@@ -205,7 +205,7 @@ public class MovieAsyncDecoder {
 			try {
 				resId = Integer.parseInt(parts[1]);
 			} catch (NumberFormatException e) {
-				Logger.warnning("parse resId failure: %s", e.toString());
+				Logger.warn("parse resId failure: %s", e.toString());
 				
 				resId = -1;
 			}
@@ -364,7 +364,7 @@ public class MovieAsyncDecoder {
 		final String movieKey = decodeTask.getMovieKey();
 		final String decodeSource = decodeTask.getDecodeSource();
 		if (movieKey == null || decodeSource == null) {
-			Logger.warnning("invalid decode params: key = %s, source = %s",
+			Logger.warn("invalid decode params: key = %s, source = %s",
 					movieKey, decodeSource);
 			
 			return;

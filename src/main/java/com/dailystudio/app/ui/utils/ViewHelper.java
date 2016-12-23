@@ -27,7 +27,7 @@ public class ViewHelper {
 						Paint.class);
 				method.invoke(view, 1, new Paint()); 
 			} catch (Exception e) {
-				Logger.warnning("setLayerType() failure: %s", e.toString());
+				Logger.warn("setLayerType() failure: %s", e.toString());
 			}
 		}
 	}

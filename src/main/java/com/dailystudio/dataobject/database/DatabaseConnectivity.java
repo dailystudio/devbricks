@@ -6,7 +6,6 @@ import java.util.List;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.AbstractWindowedCursor;
 import android.database.Cursor;
 import android.net.Uri;
@@ -307,7 +306,7 @@ public class DatabaseConnectivity extends AbsDatabaseConnectivity {
 		try {
 			c = mContentResovler.query(uri, projection, selection, null, sortOrder);
 		} catch (Exception e) {
-			Logger.warnning("content resolver failure: %s", e.toString());
+			Logger.warn("content resolver failure: %s", e.toString());
 		}
 		
 		if (c == null || c.getCount() <= 0) {
@@ -405,7 +404,7 @@ public class DatabaseConnectivity extends AbsDatabaseConnectivity {
 		try {
 			c = mContentResovler.query(uri, null, null, null, null);
 		} catch (Exception e) {
-			Logger.warnning("content resolver failure: %s", e.toString());
+			Logger.warn("content resolver failure: %s", e.toString());
 		}
 		
 		if (c == null || c.getCount() <= 0) {
@@ -429,7 +428,7 @@ public class DatabaseConnectivity extends AbsDatabaseConnectivity {
 			newVer = c.getInt(c.getColumnIndex(GetUpdateInfoCmdCursor.COLUMN_NEW_VERSION));
 			oldVer = c.getInt(c.getColumnIndex(GetUpdateInfoCmdCursor.COLUMN_OLD_VERSION));
 		} catch (Exception e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		}
 		
 		c.close();

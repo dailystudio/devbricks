@@ -105,7 +105,7 @@ public class JobExecutor extends AsyncTask<Void, Job, Void> {
 			try {
 				job = mPendingQueue.poll(1000, TimeUnit.MILLISECONDS);
 			} catch (InterruptedException e) {
-				Logger.warnning("Interrupted from poll(): %s", e.toString());
+				Logger.warn("Interrupted from poll(): %s", e.toString());
 				
 				job = null;
 			}

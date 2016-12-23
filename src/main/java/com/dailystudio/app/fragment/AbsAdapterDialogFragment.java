@@ -5,10 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -119,7 +116,7 @@ public abstract class AbsAdapterDialogFragment<Item, ItemSet> extends AbsLoaderD
         if (activity instanceof OnListItemSelectedListener) {
         	mOnListItemSelectedListener = (OnListItemSelectedListener) activity;
         } else {
-        	Logger.warnning("host activity does not implements: %s", 
+        	Logger.warn("host activity does not implements: %s",
         			OnListItemSelectedListener.class.getSimpleName());
         }
     }

@@ -43,7 +43,7 @@ public abstract class XmlResourceParser {
 			    
 			    if (gotRoot == false) {
 				    if (!xmlRoot.equals(nodeName)) {
-				    	Logger.warnning("xml does not start with tag %s",
+				    	Logger.warn("xml does not start with tag %s",
 								xmlRoot);
 				        
 				        success = false;
@@ -62,11 +62,11 @@ public abstract class XmlResourceParser {
 
 	        success = true;
     	} catch (XmlPullParserException e) {
-    		Logger.warnning("parse xml failed: %s", e.toString());
+    		Logger.warn("parse xml failed: %s", e.toString());
     		
     		success = false;
     	} catch (IOException e) {
-			Logger.warnning("parse xml failed: %s", e.toString());
+			Logger.warn("parse xml failed: %s", e.toString());
     		
     		success = false;
 		}

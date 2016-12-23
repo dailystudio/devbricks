@@ -13,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.dailystudio.app.fragment.AbsLoaderFragment;
 import com.dailystudio.development.Logger;
 
 public abstract class AbsEditableLoaderFragment<T> extends AbsLoaderFragment<T> {
@@ -105,7 +104,7 @@ public abstract class AbsEditableLoaderFragment<T> extends AbsLoaderFragment<T> 
 		try {
 			amount = Double.parseDouble(amountstr);
 		} catch (NumberFormatException e) {
-			Logger.warnning("could not parse amount from [%s]: %s",
+			Logger.warn("could not parse amount from [%s]: %s",
 					amountstr, e.toString());
 			
 			amount = .0;
@@ -147,7 +146,7 @@ public abstract class AbsEditableLoaderFragment<T> extends AbsLoaderFragment<T> 
 		try {
 			count = Long.parseLong(countstr);
 		} catch (NumberFormatException e) {
-			Logger.warnning("could not parse count from [%s]: %s",
+			Logger.warn("could not parse count from [%s]: %s",
 					countstr, e.toString());
 			
 			count = 0l;

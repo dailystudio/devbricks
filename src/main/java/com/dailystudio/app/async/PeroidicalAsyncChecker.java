@@ -36,7 +36,7 @@ public abstract class PeroidicalAsyncChecker extends AsyncChecker {
                 || (elapsed < 0)) {
             run();
         } else {
-            Logger.warnning("time elapsed(%s) less than interval, skip",
+            Logger.warn("time elapsed(%s) less than interval, skip",
                     CalendarUtils.durationToReadableString(elapsed),
                     CalendarUtils.durationToReadableString(interval));
         }

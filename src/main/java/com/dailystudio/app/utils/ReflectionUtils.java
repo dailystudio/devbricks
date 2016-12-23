@@ -30,12 +30,12 @@ public class ReflectionUtils {
 
             filedVal = f.get(o);
         } catch (IllegalArgumentException e) {
-            Logger.warnning("could not call %s in object(%s): %s",
+            Logger.warn("could not call %s in object(%s): %s",
                     filed, o, e.toString());
 
             filedVal = null;
         } catch (IllegalAccessException e) {
-            Logger.warnning("could not access %s in object(%s): %s",
+            Logger.warn("could not access %s in object(%s): %s",
                     filed, o, e.toString());
 
             filedVal = null;

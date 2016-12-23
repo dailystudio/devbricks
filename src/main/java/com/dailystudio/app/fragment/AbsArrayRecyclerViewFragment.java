@@ -31,7 +31,7 @@ public abstract class AbsArrayRecyclerViewFragment<Item, ItemHolder extends Recy
         if (activity instanceof OnRecyclerViewItemClickListener) {
             mOnRecyclerViewItemClickListener = (OnRecyclerViewItemClickListener) activity;
         } else {
-            Logger.warnning("host activity does not implements: %s",
+            Logger.warn("host activity does not implements: %s",
                     OnRecyclerViewItemClickListener.class.getSimpleName());
         }
     }

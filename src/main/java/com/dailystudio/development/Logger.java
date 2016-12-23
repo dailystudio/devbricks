@@ -151,10 +151,15 @@ public class Logger {
 		}
 	}
 
+	@Deprecated
+	public static void warnning(String format, Object... args) {
+		output(format, LogToken.LOG_W, args);
+	}
+
 	public static void warn(String format, Object... args) {
 		output(format, LogToken.LOG_W, args);
 	}
-	
+
 	public static void error(String format, Object... args) {
 		output(format, LogToken.LOG_E, args);
 	}

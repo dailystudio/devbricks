@@ -101,7 +101,7 @@ public abstract class AbsAdapterFragment<Item, ItemSet> extends AbsLoaderFragmen
         if (activity instanceof OnListItemSelectedListener) {
         	mOnListItemSelectedListener = (OnListItemSelectedListener) activity;
         } else {
-        	Logger.warnning("host activity does not implements: %s", 
+        	Logger.warn("host activity does not implements: %s",
         			OnListItemSelectedListener.class.getSimpleName());
         }
     }

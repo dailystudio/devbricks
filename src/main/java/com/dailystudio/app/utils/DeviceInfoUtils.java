@@ -115,7 +115,7 @@ public class DeviceInfoUtils {
 		try {
 			aId = Long.toHexString(Long.parseLong(c.getString(1)));
 		} catch (NumberFormatException e) {
-			Logger.warnning("parse aid failure: %s", e.toString());
+			Logger.warn("parse aid failure: %s", e.toString());
 
 			aId = null;
 		}

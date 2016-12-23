@@ -30,7 +30,7 @@ public class SimCardObservable extends NativeObservable {
             try {
                 mContext.registerReceiver(mSimCardChangedReceiver, filter);
             } catch (Exception e) {
-                Logger.warnning("register receiver failure: %s",
+                Logger.warn("register receiver failure: %s",
                         e.toString());
             }
         }
@@ -42,7 +42,7 @@ public class SimCardObservable extends NativeObservable {
             try {
                 mContext.unregisterReceiver(mSimCardChangedReceiver);
             } catch (Exception e) {
-                Logger.warnning("unregister receiver failure: %s",
+                Logger.warn("unregister receiver failure: %s",
                         e.toString());
             }
         }

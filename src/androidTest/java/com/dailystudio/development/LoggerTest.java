@@ -30,13 +30,13 @@ public class LoggerTest extends AndroidTestCase {
 	public void testLogOutput() {
 		Logger.setDebugEnabled(true);
 		Logger.debug("Print DEBUG output: %d", mRandom.nextLong());
-		Logger.warnning("Print WARN output: %d", mRandom.nextLong());
+		Logger.warn("Print WARN output: %d", mRandom.nextLong());
 		Logger.info("Print INFO output: %d", mRandom.nextLong());
 		Logger.error("Print ERROR output: %d", mRandom.nextLong());
 		
 		Logger.setDebugEnabled(false);
 		Logger.debug("Print DEBUG output: %d", mRandom.nextLong());
-		Logger.warnning("Print WARN output: %d", mRandom.nextLong());
+		Logger.warn("Print WARN output: %d", mRandom.nextLong());
 		Logger.info("Print INFO output: %d", mRandom.nextLong());
 		Logger.error("Print ERROR output: %d", mRandom.nextLong());
 	}

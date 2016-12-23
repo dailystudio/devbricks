@@ -135,7 +135,7 @@ class DatabaseOpenHandler extends SQLiteOpenHelper {
 			try {
 				db = super.getWritableDatabase();
 			} catch (SQLiteException e) {
-				Logger.warnning("database failure: %s", e.toString());
+				Logger.warn("database failure: %s", e.toString());
 				db = null;
 			}
 			
@@ -149,7 +149,7 @@ class DatabaseOpenHandler extends SQLiteOpenHelper {
 			try {
 				Thread.sleep(RETRY_INTERVAL);
 			} catch (InterruptedException e) {
-				Logger.warnning("Interrupted from Thread.sleep(): %s", e.toString());
+				Logger.warn("Interrupted from Thread.sleep(): %s", e.toString());
 			}
 		} while (retry < RETRY_TIMES);
 		

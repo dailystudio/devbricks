@@ -121,7 +121,7 @@ public class AndroidApplication extends AndroidObject {
         try {
             pInfo = pkgmgr.getPackageInfo(mPackageName, 0);
         } catch (NameNotFoundException e) {
-            Logger.warnning("Could not get package info for [pkg: %s]: %s",
+            Logger.warn("Could not get package info for [pkg: %s]: %s",
                     mPackageName, e.toString());
             pInfo = null;
         }
@@ -143,19 +143,19 @@ public class AndroidApplication extends AndroidObject {
 			
 			firstIntallTime = field.getLong(pInfo);
 		} catch (IllegalAccessException e) {
-			Logger.warnning("fetch firstIntallTime failure: %s", e.toString());
+			Logger.warn("fetch firstIntallTime failure: %s", e.toString());
 
 			firstIntallTime = 0l; 
 		} catch (NoSuchFieldException e) {
-			Logger.warnning("fetch firstIntallTime failure: %s", e.toString());
+			Logger.warn("fetch firstIntallTime failure: %s", e.toString());
 
 			firstIntallTime = 0l; 
 		} catch (IllegalArgumentException e) {
-			Logger.warnning("fetch firstIntallTime failure: %s", e.toString());
+			Logger.warn("fetch firstIntallTime failure: %s", e.toString());
 
 			firstIntallTime = 0l; 
 		} catch (SecurityException e) {
-			Logger.warnning("fetch firstIntallTime failure: %s", e.toString());
+			Logger.warn("fetch firstIntallTime failure: %s", e.toString());
 
 			firstIntallTime = 0l; 
 		}
@@ -173,19 +173,19 @@ public class AndroidApplication extends AndroidObject {
 			
 			lastUpdatedTime = field.getLong(pInfo);
 		} catch (IllegalAccessException e) {
-			Logger.warnning("fetch lastUpdatedTime failure: %s", e.toString());
+			Logger.warn("fetch lastUpdatedTime failure: %s", e.toString());
 
 			lastUpdatedTime = 0l; 
 		} catch (NoSuchFieldException e) {
-			Logger.warnning("fetch lastUpdatedTime failure: %s", e.toString());
+			Logger.warn("fetch lastUpdatedTime failure: %s", e.toString());
 
 			lastUpdatedTime = 0l; 
 		} catch (IllegalArgumentException e) {
-			Logger.warnning("fetch lastUpdatedTime failure: %s", e.toString());
+			Logger.warn("fetch lastUpdatedTime failure: %s", e.toString());
 
 			lastUpdatedTime = 0l; 
 		} catch (SecurityException e) {
-			Logger.warnning("fetch lastUpdatedTime failure: %s", e.toString());
+			Logger.warn("fetch lastUpdatedTime failure: %s", e.toString());
 
 			lastUpdatedTime = 0l; 
 		}
@@ -309,7 +309,7 @@ public class AndroidApplication extends AndroidObject {
 			mIcon = d;
 			mLabel = aInfo.loadLabel(pkgmgr);
 		} catch (NameNotFoundException e) {
-			Logger.warnning("resolve resources failure: %s", e.toString());
+			Logger.warn("resolve resources failure: %s", e.toString());
 		}
 	}
 
@@ -458,7 +458,7 @@ public class AndroidApplication extends AndroidObject {
 		try {
 			appInfo = pkgmgr.getApplicationInfo(pkg, 0);
 		} catch (NameNotFoundException e) {
-			Logger.warnning("cannot get appInfo for pkg: %s", pkg);
+			Logger.warn("cannot get appInfo for pkg: %s", pkg);
 			
 			appInfo = null;
 		}
@@ -525,7 +525,7 @@ public class AndroidApplication extends AndroidObject {
 			
 			installed = (aInfo != null);
 		} catch (NameNotFoundException e) {
-//			Logger.warnning("check installation failure: %s", e.toString());
+//			Logger.warn("check installation failure: %s", e.toString());
 					
 			installed = false;
 		}

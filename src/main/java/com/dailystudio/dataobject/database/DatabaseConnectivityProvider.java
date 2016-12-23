@@ -78,14 +78,14 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} catch (IllegalStateException e){
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} finally {
 			try {
 				db.endTransaction();
 			} catch (Exception e) {
-				Logger.warnning("database failure: %s", e.toString());
+				Logger.warn("database failure: %s", e.toString());
 			}
 		}
 		
@@ -176,14 +176,14 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} catch (IllegalStateException e){
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} finally {
 			try {
 				db.endTransaction();
 			} catch (Exception e) {
-				Logger.warnning("database failure: %s", e.toString());
+				Logger.warn("database failure: %s", e.toString());
 			}
 		}
 		
@@ -251,14 +251,14 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} catch (IllegalStateException e){
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} finally {
 			try {
 				db.endTransaction();
 			} catch (Exception e) {
-				Logger.warnning("database failure: %s", e.toString());
+				Logger.warn("database failure: %s", e.toString());
 			}
 		}
 		
@@ -332,14 +332,14 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} catch (IllegalStateException e){
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} finally {
 			try {
 				db.endTransaction();
 			} catch (Exception e) {
-				Logger.warnning("database failure: %s", e.toString());
+				Logger.warn("database failure: %s", e.toString());
 			}
 		}
 		
@@ -527,14 +527,14 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 			c = db.query(table, projection, selection, selectionArgs, 
 					groupBy, having, orderBy, limit);
 		} catch (SQLException e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} catch (IllegalStateException e){
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} finally {
 			try {
 				db.endTransaction();
 			} catch (Exception e) {
-				Logger.warnning("database failure: %s", e.toString());
+				Logger.warn("database failure: %s", e.toString());
 			}
 		}
 		
@@ -568,7 +568,7 @@ public class DatabaseConnectivityProvider extends ContentProvider {
 	        db.execSQL(createTableSQL);
 	        success = true;
 		} catch (Exception e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 			success = false;
 		}
 		

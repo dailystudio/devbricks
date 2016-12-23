@@ -28,7 +28,7 @@ public class WebViewUtils {
 				method.invoke(webView, 1, new Paint()); // 1 = LAYER_TYPE_SOFTWARE
 														// (API11)
 			} catch (Exception e) {
-				Logger.warnning("setLayerType() failure: %s", e.toString());
+				Logger.warn("setLayerType() failure: %s", e.toString());
 			}
 		}
 	}

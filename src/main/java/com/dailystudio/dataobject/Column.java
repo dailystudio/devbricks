@@ -265,7 +265,7 @@ public abstract class Column {
 		}
 		
 		if (matchColumnType(value) == false) {
-			Logger.warnning("Illegal operation(%s) on column(type: %s) with value(%s)",
+			Logger.warn("Illegal operation(%s) on column(type: %s) with value(%s)",
 					operator,
 					mTypeName,
 					value.getClass().getSimpleName());
@@ -318,7 +318,7 @@ public abstract class Column {
 			value = values[i];
 			
 			if (matchColumnType(value) == false) {
-				Logger.warnning("Illegal operation(%s) on column(type: %s) with value(%s)",
+				Logger.warn("Illegal operation(%s) on column(type: %s) with value(%s)",
 						operator,
 						mTypeName,
 						value.getClass().getSimpleName());

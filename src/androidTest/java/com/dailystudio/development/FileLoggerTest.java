@@ -25,10 +25,10 @@ public class FileLoggerTest extends ActivityInstrumentationTestCase2<PermCheckAc
 				mPermCheckLock.wait();
 				Logger.debug("release for perm check result");
 			} catch (InterruptedException e) {
-				Logger.warnning("wait for lock interrupted: %s",
+				Logger.warn("wait for lock interrupted: %s",
 						e.toString());
 			} catch (Exception e) {
-				Logger.warnning("check perm failed: %s", e.toString());
+				Logger.warn("check perm failed: %s", e.toString());
 			}
 		}
 

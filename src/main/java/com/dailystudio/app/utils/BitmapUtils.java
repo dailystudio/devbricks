@@ -14,7 +14,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
@@ -114,7 +113,7 @@ public class BitmapUtils {
 
 		final int destMin = Math.min(destWidth, destHeight);
 		if (destMin <= 0) {
-			Logger.warnning("incorrect dest dimen: [%d, %d]",
+			Logger.warn("incorrect dest dimen: [%d, %d]",
 					destWidth,
 					destHeight);
 
@@ -340,7 +339,7 @@ public class BitmapUtils {
 			bitmap = Bitmap.createBitmap(
 					desireWidth, desireHeight, config);
 		} catch (OutOfMemoryError e) {
-			Logger.warnning("create cache bitmap failure: %s",
+			Logger.warn("create cache bitmap failure: %s",
 					e.toString());
 			
 			bitmap = null;
@@ -393,7 +392,7 @@ public class BitmapUtils {
                 bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             }
         }  catch (OutOfMemoryError e) {
-            Logger.warnning("decode bitmap from Base64 string failure: %s",
+            Logger.warn("decode bitmap from Base64 string failure: %s",
                     e.toString());
 
             bitmap = null;
@@ -418,7 +417,7 @@ public class BitmapUtils {
 		final int alphah = alphaBitmap.getHeight();
 		if (rgbw != alphaw
 				|| rgbh != alphah) {
-			Logger.warnning("mismatch bitmaps, rgb[%-3dx%-3d], alpha[%-3dx%-3d]",
+			Logger.warn("mismatch bitmaps, rgb[%-3dx%-3d], alpha[%-3dx%-3d]",
 					rgbw, rgbh, alphaw, alphah);
 			
 			return rgbBitmap;
@@ -490,7 +489,7 @@ public class BitmapUtils {
 		try {
 			finalBitmap = Bitmap.createBitmap(bw, bh, config);
 		} catch (OutOfMemoryError e) {
-			Logger.warnning("could not create composite bitmap: %s",
+			Logger.warn("could not create composite bitmap: %s",
 					e.toString());
 			
 			finalBitmap = null;
@@ -556,13 +555,13 @@ public class BitmapUtils {
 	        	bitmap = BitmapFactory.decodeStream(istream);
 	        }
 	    } catch (OutOfMemoryError e) {
-	    	Logger.warnning("could not decode asset bitmap: %s",
+	    	Logger.warn("could not decode asset bitmap: %s",
 	    			assetFile,
 	    			e.toString());
 	    	
 	        bitmap = null;
 		} catch (IOException e) {
-	    	Logger.warnning("could not decode asset bitmap: %s",
+	    	Logger.warn("could not decode asset bitmap: %s",
 	    			assetFile,
 	    			e.toString());
 	    	

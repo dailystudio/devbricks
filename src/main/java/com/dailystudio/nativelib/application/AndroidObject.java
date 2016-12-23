@@ -107,7 +107,7 @@ public abstract class AndroidObject implements IResourceObject {
 			
 			object = method.invoke(actmgr, (Object[]) null);
 		} catch (Exception e) {
-			Logger.warnning("getLauncherLargeIconDensity() failure: %s", e.toString());
+			Logger.warn("getLauncherLargeIconDensity() failure: %s", e.toString());
 			object = null;
 		}
 		
@@ -135,7 +135,7 @@ public abstract class AndroidObject implements IResourceObject {
 			
 			object = method.invoke(resources, iconId, mIconDpi);
 		} catch (Exception e) {
-			Logger.warnning("getDrawableForDensity() failure: %s [resId: %d]",
+			Logger.warn("getDrawableForDensity() failure: %s [resId: %d]",
 					e.toString(), iconId);
 			
 			object = null;
@@ -145,7 +145,7 @@ public abstract class AndroidObject implements IResourceObject {
 			try {
 				object = resources.getDrawable(iconId);
 			} catch (NotFoundException e) {
-				Logger.warnning("getDrawable() failure: %s [resId: %d]",
+				Logger.warn("getDrawable() failure: %s [resId: %d]",
 						e.toString(), iconId);
 				
 				object = null;

@@ -98,14 +98,14 @@ public class AndroidActivity extends AndroidComponentObject {
 	
 	public void launch(Context context) {
 		if (context == null) {
-			Logger.warnning("NULL context");
+			Logger.warn("NULL context");
 			
 			return;
 		}
 		
 		final ComponentName comp = getComponentName();
 		if (comp == null) {
-			Logger.warnning("NULL component");
+			Logger.warn("NULL component");
 			
 			return;
 		}

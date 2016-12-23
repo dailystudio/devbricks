@@ -1,24 +1,19 @@
 package com.dailystudio.nativelib.contacts;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.dailystudio.development.Logger;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -122,7 +117,7 @@ public class AndroidContact {
                 }
             }
         } catch (Exception e) {
-            Logger.warnning("get contact for uri(%s) failed: %s",
+            Logger.warn("get contact for uri(%s) failed: %s",
                     contactUri, e.toString());
         } finally {
             if (c != null) {
@@ -181,7 +176,7 @@ public class AndroidContact {
                 }
             }
         } catch (Exception e) {
-            Logger.warnning("query contacts for phone number(%s) failed: %s",
+            Logger.warn("query contacts for phone number(%s) failed: %s",
                     givenNumber, e.toString());
         } finally {
             if (c != null) {
@@ -222,7 +217,7 @@ public class AndroidContact {
                 }
             }
         } catch (Exception e) {
-            Logger.warnning("retrieve display name for contact(%d) failed: %s",
+            Logger.warn("retrieve display name for contact(%d) failed: %s",
                     contactId, e.toString());
 
             displayName = null;
@@ -249,7 +244,7 @@ public class AndroidContact {
                 String.valueOf(contactId));
 
         InputStream photoInputStream = openContactPhotoStream(cr, contactUri);
-//        Logger.warnning("photoInputStream for contact(%d) = %s",
+//        Logger.warn("photoInputStream for contact(%d) = %s",
 //                contactId, photoInputStream);
         if (photoInputStream == null) {
             return null;
@@ -260,14 +255,14 @@ public class AndroidContact {
             photoBitmap = BitmapFactory.decodeStream(
                     new BufferedInputStream(photoInputStream));
         } catch (OutOfMemoryError e) {
-            Logger.warnning("decode photo for contact(%d) failed: %s",
+            Logger.warn("decode photo for contact(%d) failed: %s",
                     contactId, e.toString());
             photoBitmap = null;
         } finally {
             try {
                 photoInputStream.close();
             } catch (IOException e) {
-                Logger.warnning("close photo stream for contact(%d) failed: %s",
+                Logger.warn("close photo stream for contact(%d) failed: %s",
                         contactId, e.toString());
             }
         }
@@ -288,7 +283,7 @@ public class AndroidContact {
                 photoInputStream =
                         (InputStream) method.invoke(null, cr, contactUri, true);
             } catch (Exception e) {
-                Logger.warnning("openContactPhotoInputStream() failure: %s", e.toString());
+                Logger.warn("openContactPhotoInputStream() failure: %s", e.toString());
 
                 photoInputStream = null;
             }
@@ -333,7 +328,7 @@ public class AndroidContact {
                 }
             }
         } catch (Exception e) {
-            Logger.warnning("retrieve phone number for contact(%d) failed: %s",
+            Logger.warn("retrieve phone number for contact(%d) failed: %s",
                     contactId, e.toString());
 
             phoneNumber = null;
@@ -382,7 +377,7 @@ public class AndroidContact {
                 }
             }
         } catch (Exception e) {
-            Logger.warnning("retrieve phone number for contact(%d) failed: %s",
+            Logger.warn("retrieve phone number for contact(%d) failed: %s",
                     contactId, e.toString());
 
             contactId = 0;

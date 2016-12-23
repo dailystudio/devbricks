@@ -59,7 +59,7 @@ public class AsyncDatabaseHelper {
                     	objects = 
                     		connectivity.query(args.query, args.projectionClass);
                     } catch (Exception e) {
-                    	Logger.warnning("query failure: %s", e.toString());
+                    	Logger.warn("query failure: %s", e.toString());
                         objects = null;
                     }
 
@@ -73,7 +73,7 @@ public class AsyncDatabaseHelper {
                     		connectivity.queryCursor(
                     				args.query, args.projectionClass);
                     } catch (Exception e) {
-                    	Logger.warnning("query cursor failure: %s", e.toString());
+                    	Logger.warn("query cursor failure: %s", e.toString());
                     	cursor = null;
                     }
 
@@ -84,7 +84,7 @@ public class AsyncDatabaseHelper {
                 	try {
                 		args.result = connectivity.insert(args.objects[0]);
                     } catch (Exception e) {
-                    	Logger.warnning("insert failure: %s", e.toString());
+                    	Logger.warn("insert failure: %s", e.toString());
                     	args.result = 0;
                     }
                     break;
@@ -93,7 +93,7 @@ public class AsyncDatabaseHelper {
                 	try {
                 		args.result = connectivity.insert(args.objects);
                     } catch (Exception e) {
-                    	Logger.warnning("inserts failure: %s", e.toString());
+                    	Logger.warn("inserts failure: %s", e.toString());
                     	args.result = 0;
                     }
                     break;
@@ -103,7 +103,7 @@ public class AsyncDatabaseHelper {
                 		args.result = connectivity.update(args.query, 
                 				args.objects[0]);
                     } catch (Exception e) {
-                    	Logger.warnning("update failure: %s", e.toString());
+                    	Logger.warn("update failure: %s", e.toString());
                     	args.result = 0;
                     }
                     break;
@@ -112,7 +112,7 @@ public class AsyncDatabaseHelper {
                 	try {
                 		args.result = connectivity.delete(args.query);
                     } catch (Exception e) {
-                    	Logger.warnning("delete failure: %s", e.toString());
+                    	Logger.warn("delete failure: %s", e.toString());
                     	args.result = 0;
                     }
                     break;

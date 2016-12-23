@@ -33,7 +33,7 @@ public class GlobalContextWrapper {
 	
     public synchronized static Context getContext() {
     	if (sContext == null) {
-    		Logger.warnning("NULL context, please call bindContext() firstly.");
+    		Logger.warn("NULL context, please call bindContext() firstly.");
     	}
     	return sContext;
     }

@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
-import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -298,7 +297,7 @@ public class ThumbAsyncDecoder {
 			try {
 				resId = Integer.parseInt(parts[1]);
 			} catch (NumberFormatException e) {
-				Logger.warnning("parse resId failure: %s", e.toString());
+				Logger.warn("parse resId failure: %s", e.toString());
 				
 				resId = -1;
 			}
@@ -490,7 +489,7 @@ public class ThumbAsyncDecoder {
 		final String thumbKey = decodeTask.getThumbKey();
 		final String decodeSource = decodeTask.getDecodeSource();
 		if (thumbKey == null || decodeSource == null) {
-			Logger.warnning("invalid decode params: key = %s, source = %s", 
+			Logger.warn("invalid decode params: key = %s, source = %s",
 					thumbKey, decodeSource);
 			
 			return;

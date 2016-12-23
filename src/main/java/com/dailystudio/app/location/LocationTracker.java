@@ -67,7 +67,7 @@ public class LocationTracker {
 			mLocationManager.requestLocationUpdates(mProviderName, 
 					0, 0, mLocationListener);
 		} catch (Exception e) {
-			Logger.warnning("request location updates failure: %s", e.toString());
+			Logger.warn("request location updates failure: %s", e.toString());
 		}
 	}
 	

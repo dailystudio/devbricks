@@ -15,7 +15,6 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.regex.Pattern;
@@ -28,7 +27,6 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -100,7 +98,7 @@ public class FileUtils {
 			if (directory.isDirectory()) {
 				return true;
 			} else {
-				Logger.warnning("%s is NOT a directory", directory);
+				Logger.warn("%s is NOT a directory", directory);
 			}
 		}
 		
@@ -140,7 +138,7 @@ public class FileUtils {
 		try {
 			success = tagFile.createNewFile();
 		} catch (IOException e) {
-			Logger.warnning("could not create tag[%s] in dir[%s]: %s",
+			Logger.warn("could not create tag[%s] in dir[%s]: %s",
 					NO_MEDIA_TAG_FILE,
 					dir.getAbsoluteFile(),
 					e.toString());
@@ -483,7 +481,7 @@ public class FileUtils {
 		try {
 			fis = new FileInputStream(file);
 		} catch (FileNotFoundException e) {
-			Logger.warnning("get encodeing failure: %s", e.toString());
+			Logger.warn("get encodeing failure: %s", e.toString());
 			fis = null;
 		}
 		
@@ -505,7 +503,7 @@ public class FileUtils {
 			  detector.handleData(buf, 0, nread);
 			}
 		} catch (IOException e) {
-			Logger.warnning("get encodeing failure: %s", e.toString());
+			Logger.warn("get encodeing failure: %s", e.toString());
 		}
 		
 	    detector.dataEnd();
@@ -517,7 +515,7 @@ public class FileUtils {
 	    try {
 	    	istream.close();
 	    }  catch (IOException e) {
-			Logger.warnning("close stream failure: %s", e.toString());
+			Logger.warn("close stream failure: %s", e.toString());
 		}
 	    
 	    return encoding;

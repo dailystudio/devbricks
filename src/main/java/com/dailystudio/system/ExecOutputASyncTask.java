@@ -57,7 +57,7 @@ class ExecOutputASyncTask extends ExecIOASyncTask {
 
 			lineReader.close();
 		} catch (IOException e) {
-			Logger.warnning("[%s]: read from output failed, %s", e.toString());
+			Logger.warn("[%s]: read from output failed, %s", e.toString());
 		}
 	}
 	

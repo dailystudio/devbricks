@@ -32,7 +32,7 @@ public class EncrpytUtils {
         try {
             m = MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
-            Logger.warnning("create digest [s: %s, alg: %s] failed: %s",
+            Logger.warn("create digest [s: %s, alg: %s] failed: %s",
                     s, algorithm, e.toString());
             return s;
         }

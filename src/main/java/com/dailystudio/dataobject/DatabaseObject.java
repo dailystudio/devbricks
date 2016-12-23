@@ -112,20 +112,20 @@ public class DatabaseObject {
 		}
 		
 		if (mTemplate.containsColumn(column) == false) {
-			Logger.warnning("no such column(name: %s)", column.getName());
+			Logger.warn("no such column(name: %s)", column.getName());
 			
 			return;
 		}
 		
 		if (column.matchColumnType(value) == false) {
-			Logger.warnning("unmatched column(type: %s)", column.getType());
+			Logger.warn("unmatched column(type: %s)", column.getType());
 			
 			return;
 		}
 		
 		final int colVer = column.getVerion();
 		if (colVer > mVersion) {
-			Logger.warnning("column(name: %s, ver: %d) is NOT match object version %d", 
+			Logger.warn("column(name: %s, ver: %d) is NOT match object version %d",
 					column.getName(), colVer,
 					mVersion);
 			return;
@@ -160,7 +160,7 @@ public class DatabaseObject {
 		}
 		
 		if (mTemplate.containsColumn(column) == false) {
-			Logger.warnning("no such column(name: %s)", column.getName());
+			Logger.warn("no such column(name: %s)", column.getName());
 			Logger.debug("columns: [%s]", mTemplate.listColumns());
 			
 			return null;
@@ -168,7 +168,7 @@ public class DatabaseObject {
 		
 		final int colVer = column.getVerion();
 		if (colVer > mVersion) {
-			Logger.warnning("column(name: %s, ver: %d) is NOT match object version %d", 
+			Logger.warn("column(name: %s, ver: %d) is NOT match object version %d",
 					column.getName(), colVer,
 					mVersion);
 			return null;

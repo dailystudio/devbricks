@@ -90,14 +90,14 @@ class DatabaseConnectivityDirectSQLiteImpl extends
 			
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} catch (IllegalStateException e){
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} finally {
 			try {
 				db.endTransaction();
 			} catch (Exception e) {
-				Logger.warnning("database failure: %s", e.toString());
+				Logger.warn("database failure: %s", e.toString());
 			}
 		}
 		
@@ -177,14 +177,14 @@ class DatabaseConnectivityDirectSQLiteImpl extends
 			
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} catch (IllegalStateException e){
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} finally {
 			try {
 				db.endTransaction();
 			} catch (Exception e) {
-				Logger.warnning("database failure: %s", e.toString());
+				Logger.warn("database failure: %s", e.toString());
 			}
 		}
 		
@@ -235,14 +235,14 @@ class DatabaseConnectivityDirectSQLiteImpl extends
 			
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} catch (IllegalStateException e){
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} finally {
 			try {
 				db.endTransaction();
 			} catch (Exception e) {
-				Logger.warnning("database failure: %s", e.toString());
+				Logger.warn("database failure: %s", e.toString());
 			}
 		}
 		
@@ -313,12 +313,12 @@ class DatabaseConnectivityDirectSQLiteImpl extends
 			
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} finally {
 			try {
 				db.endTransaction();
 			} catch (Exception e) {
-				Logger.warnning("database failure: %s", e.toString());
+				Logger.warn("database failure: %s", e.toString());
 			}
 		}
 		
@@ -400,14 +400,14 @@ class DatabaseConnectivityDirectSQLiteImpl extends
 
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} catch (IllegalStateException e){
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} finally {
 			try {
 				db.endTransaction();
 			} catch (Exception e) {
-				Logger.warnning("database failure: %s", e.toString());
+				Logger.warn("database failure: %s", e.toString());
 			}
 		}
 		
@@ -475,9 +475,9 @@ class DatabaseConnectivityDirectSQLiteImpl extends
 				} while (c.moveToNext());
 			}
 		} catch (SQLException e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} catch (IllegalStateException e){
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 		} 
 		
 		c.close();
@@ -503,7 +503,7 @@ class DatabaseConnectivityDirectSQLiteImpl extends
 	        db.execSQL(creationSQL);
 	        success = true;
 		} catch (Exception e) {
-			Logger.warnning("database failure: %s", e.toString());
+			Logger.warn("database failure: %s", e.toString());
 			success = false;
 		}
 		
