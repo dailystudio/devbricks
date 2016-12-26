@@ -3,7 +3,7 @@ package com.dailystudio.system;
 import java.io.File;
 import java.util.HashMap;
 
-class CommandFinder {
+public class CommandFinder {
 
 	private static final String[] sSUCmdCandidates = {
 		"/system/bin/su",
