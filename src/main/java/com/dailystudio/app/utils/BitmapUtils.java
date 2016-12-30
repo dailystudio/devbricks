@@ -23,6 +23,7 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -186,6 +187,14 @@ public class BitmapUtils {
 			if (oheight > nheight) {
 				newBitmap = createClippedBitmap(bitmap, 0,
 						(bitmap.getHeight() - nheight) / 2, owidth, nheight);
+			} else {
+				newBitmap = Bitmap.createBitmap(nwidth, nheight, bitmap.getConfig());
+
+				Canvas c = new Canvas(newBitmap);
+				Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
+				c.drawBitmap(bitmap,
+						new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
+						new Rect(0, 0, nwidth, nheight), p);
 			}
 		}
 
