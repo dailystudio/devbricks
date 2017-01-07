@@ -327,7 +327,17 @@ public class FileUtils {
 
 		return dir.listFiles(ff);
 	}
-	
+
+	public static long getFileLastModified(String fileName) {
+		if (TextUtils.isEmpty(fileName)) {
+			return 0l;
+		}
+
+		File file = new File(fileName);
+
+		return file.lastModified();
+	}
+
 	public static String getFileContent(String file) throws IOException {
 		if (file == null) {
 			return null;
