@@ -27,23 +27,14 @@ public abstract class AbsAdapterDialogFragment<Item, ItemSet> extends AbsLoaderD
 	private BaseAdapter mAdapter;
 	
     private OnListItemSelectedListener mOnListItemSelectedListener;
-    
+
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		Dialog dialog = getDialog();
-		Logger.debug("dialog = %s", dialog);
+	protected void setupViewsOnDialog(DialogInterface dialog) {
+		super.setupViewsOnDialog(dialog);
 
-		if (dialog != null) {
-			dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-				@Override
-				public void onShow(DialogInterface dialog) {
-					bindAdapterView();
+		bindAdapterView();
 
-					restartLoader();
-				}
-			});
-		}
+		restartLoader();
 	}
 
 	@Override
