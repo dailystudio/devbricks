@@ -29,7 +29,7 @@ public abstract class AbsAdapterDialogFragment<Item, ItemSet> extends AbsLoaderD
     private OnListItemSelectedListener mOnListItemSelectedListener;
 
 	@Override
-	protected void setupViewsOnDialog(DialogInterface dialog) {
+	protected void setupViewsOnDialog(Dialog dialog) {
 		super.setupViewsOnDialog(dialog);
 
 		bindAdapterView();
