@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
@@ -654,5 +655,40 @@ public class BitmapUtils {
 
         return output;
     }
+
+	public static int calculateBrightnessEstimate(Bitmap bitmap, int pixelSpacing) {
+		if (bitmap == null) {
+			return 0;
+		}
+
+		final int width = bitmap.getWidth();
+		final int height = bitmap.getHeight();
+		if (width <= 0 || height <= 0) {
+			return 0;
+		}
+
+		int r = 0, g = 0, b = 0, n = 0;
+
+		int[] pixels = new int[width * height];
+		bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+
+		int i, color;
+		for (i = 0; i < pixels.length; i += pixelSpacing) {
+			color = pixels[i];
+
+			r += Color.red(color);
+			g += Color.green(color);
+			b += Color.blue(color);
+
+			n++;
+		}
+
+		return (r + b + g) / (n * 3);
+	}
+
+	public static int calculateBrightness(android.graphics.Bitmap bitmap) {
+		return calculateBrightnessEstimate(bitmap, 1);
+	}
+
 
 }
