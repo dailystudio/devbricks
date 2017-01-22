@@ -32,8 +32,13 @@ public abstract class AbsAsyncRecyclerViewLayout<Item, ItemSet, ItemHolder exten
 
     public AbsAsyncRecyclerViewLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+    }
 
+    @Override
+    protected void onAttachedToWindow() {
         bindAdapterView();
+
+        super.onAttachedToWindow();
     }
 
     protected int getAdapterViewId() {

@@ -1,8 +1,10 @@
 package com.dailystudio.app.ui;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.support.annotation.WorkerThread;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +70,11 @@ public abstract class AbsAsyncLayout<T> extends FrameLayout {
 
     protected View getContentView() {
         return mContentView;
+    }
+
+    public boolean isPermissionGranted(String permission){
+        return (ContextCompat.checkSelfPermission(getContext(),
+                permission) == PackageManager.PERMISSION_GRANTED);
     }
 
     @Override
