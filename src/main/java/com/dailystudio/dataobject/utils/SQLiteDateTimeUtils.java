@@ -3,6 +3,7 @@ package com.dailystudio.dataobject.utils;
 public class SQLiteDateTimeUtils {
 	
 	private final static String TIME_FUNC = "CAST ( strftime('%s', (%s / 1000), 'unixepoch', 'localtime') AS INTEGER )";
+	private final static String DATE_FUNC = "date((%s / 1000), 'unixepoch', 'localtime')";
 
 	private final static String HOUR = "%H";
 	private final static String MINUTE = "%M";
@@ -12,7 +13,18 @@ public class SQLiteDateTimeUtils {
 	private final static String WEEK = "%W";
 	private final static String MONTH = "%m";
 	private final static String YEAR = "%Y";
-	
+	private final static String DATE = "%Y-%m-%d";
+
+	public static String dateOf(String timeString) {
+		return String.format(DATE_FUNC,
+				timeString);
+	}
+
+	public static String dateOf(long time) {
+		return String.format(DATE_FUNC,
+				String.valueOf(time));
+	}
+
 	static String toDateTimeString(String formatString, String timeString) {
 		return String.format(TIME_FUNC,
 				formatString,
@@ -46,7 +58,7 @@ public class SQLiteDateTimeUtils {
 	public static String dayOf(String timeString) {
 		return toDateTimeString(DAY, timeString);
 	}
-	
+
 	public static String dayOf(long time) {
 		return toDateTimeString(DAY, String.valueOf(time));
 	}

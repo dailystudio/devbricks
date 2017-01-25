@@ -125,10 +125,14 @@ public class TimeColumn extends LongColumn {
 		return new OrderingToken(SQLiteDateTimeUtils.secondOf(getName()));
 	}
 	
+	public OrderingToken groupByDate() {
+		return new OrderingToken(SQLiteDateTimeUtils.dateOf(getName()));
+	}
+
 	public OrderingToken groupByDay() {
 		return new OrderingToken(SQLiteDateTimeUtils.dayOf(getName()));
 	}
-	
+
 	public OrderingToken groupByWeekday() {
 		return new OrderingToken(SQLiteDateTimeUtils.weekdayOf(getName()));
 	}

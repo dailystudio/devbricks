@@ -67,6 +67,21 @@ public class SQLiteDateTimeUtilsTest extends AndroidTestCase {
 		assertEquals(expected, SQLiteDateTimeUtils.secondOf(now));
 	}
 
+	public void testDateOf() {
+		String expected = null;
+		String time = null;
+		long now = 0;
+
+		time = "time_column";
+		expected = "date((time_column / 1000), 'unixepoch', 'localtime')";
+		assertEquals(expected, SQLiteDateTimeUtils.dateOf(time));
+
+		now = System.currentTimeMillis();
+		expected = String.format("date((%d / 1000), 'unixepoch', 'localtime')",
+				now);
+		assertEquals(expected, SQLiteDateTimeUtils.dateOf(now));
+	}
+
 	public void testDayOf() {
 		String expected = null;
 		String time = null;

@@ -284,10 +284,14 @@ public class TimeColumnTest extends AndroidTestCase {
 		expected = "CAST ( strftime('%S', (time / 1000), 'unixepoch', 'localtime') AS INTEGER )";
 		assertEquals(expected, token.toString());
 		
+		token = column.groupByDate();
+		expected = "date((time / 1000), 'unixepoch', 'localtime')";
+		assertEquals(expected, token.toString());
+
 		token = column.groupByDay();
 		expected = "CAST ( strftime('%d', (time / 1000), 'unixepoch', 'localtime') AS INTEGER )";
 		assertEquals(expected, token.toString());
-		
+
 		token = column.groupByWeekday();
 		expected = "CAST ( strftime('%w', (time / 1000), 'unixepoch', 'localtime') AS INTEGER )";
 		assertEquals(expected, token.toString());
