@@ -27,12 +27,12 @@ android {
             proguardFile getDefaultProguardFile('proguard-android.txt')
             proguardFile 'proguard-project.txt'
 
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
         }
 
         debug {
             debuggable true
-            signingConfig signingConfigs.debug
+//            signingConfig signingConfigs.debug
             versionNameSuffix " (DEBUG)"
         }
     }
