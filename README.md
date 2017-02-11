@@ -1,7 +1,6 @@
 #DevBricks
 
-[![License](https://poser.pugx.org/dreamfactory/dreamfactory/license.svg)](http://www.apache.org/licenses/LICENSE-2.0) [![API](https://img.shields.io/badge/API-13%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=8) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dailystudio/devbricks/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dailystudio/devbricks)
-
+[![License](https://poser.pugx.org/dreamfactory/dreamfactory/license.svg)](http://www.apache.org/licenses/LICENSE-2.0) [![API](https://img.shields.io/badge/API-13%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=8) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dailystudio/devbricks/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dailystudio/devbricks)[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-DevBricks-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/4911)
 
 DevBricks provides several classes which will be usually  used in daily Android development. With these "bricks", your development will become:
 
@@ -114,7 +113,7 @@ DevBricks Logger   | Android Log
 :---               | :-------
 **`.debug()`**     | Log.d()
 **`.info()`**      | Log.i()
-**`.warnning()`**  | Log.w()
+**`.warn()`**  | Log.w()
 **`.error()`**     | Log.e()
 
 Different with default logging utils, **`Logger`** do not need you to provide a TAG when you print the log. It will automatically provides a TAG according the class and method which is currently calling **`Logger`** to print the logs. For example,
