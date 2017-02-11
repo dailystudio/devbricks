@@ -54,6 +54,7 @@ Then declare it in your **`AndroidMenifest.xml`**:
 - If there is a file name in `dslog_force.your-package-name` under root directory of your external storage (e.g. `/sdcard`), all of debug output of your applications will be printed even the build type of your application is release.
 - If there is a file name in `dslog_suppress.your-package-name` under root directory of your external storage (e.g. `/sdcard`), there will be no any debug outputs for your applications.
 - If **`isDebugBuild()`** returns `true`,  all of the debug output will be printed. Otherwise no any outputs.
+- **`debugSecure()`** will be only enabled when **`isDebugBuild()`** returnes `true`. It will not be affected by any `dslog_force` or `dslog_suppress` file on your external storage.
 
 >On Android 6.0,  new permission framework will affect this feature is your application does not grant the permission `android.permission.READ_EXTERNAL_STORAGE`. To grant the permission is not DevBricks responsibility. If you want to have this feature,  you need to handle it on your application side.
 
@@ -61,7 +62,7 @@ Usually, there is no any special files (prefix with `dslog_`) exist on your exte
 ``` java
 public class MyApplication extends DevBricksApplication {
 	...
-	
+
 	@Override
 	protected boolean isDebugBuild() {
 		return BuildConfig.DEBUG;
@@ -75,7 +76,7 @@ public class MyApplication extends DevBricksApplication {
 As you know **`Context`** is an important thing in Android application. Your code can do few things without **`Context`**. DevBricks provides an interfaces to bind a global application context - **`GlobalContextWrapper`**. You can retrieve it at anywhere in your application. To bind the context, you can call **`bindContext()`**:
 ```java
 public class MyApplication extends Application {
-	
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -102,19 +103,20 @@ public class MyApplication extends Application {
 		GlobalContextWrapper.unbindContext(getApplicationContext());
 		super.onTerminate();
 	}
-	
+
 }
 ```
 
 ## Logging
 DevBricks bases and enhance the default Android logging mechanism. Same as default logging mechanism, it separates the log in four different priorities:
 
-DevBricks Logger   | Android Log
-:---               | :-------
-**`.debug()`**     | Log.d()
-**`.info()`**      | Log.i()
-**`.warn()`**  | Log.w()
-**`.error()`**     | Log.e()
+DevBricks Logger        | Android Log
+:---                    | :-------
+**`.debug()`**          | Log.d()
+**`.debugSecure()`**    | Log.d()
+**`.info()`**           | Log.i()
+**`.warn()`**           | Log.w()
+**`.error()`**          | Log.e()
 
 Different with default logging utils, **`Logger`** do not need you to provide a TAG when you print the log. It will automatically provides a TAG according the class and method which is currently calling **`Logger`** to print the logs. For example,
 ```java
@@ -123,10 +125,10 @@ public class MyApplication extends DevBricksApplication {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		Logger.debug("Hello app: %s", getString(R.string.app_name))
 	}
-	
+
 }
 ```
 The first parameter is the output format of log, while rest parameters provide the content of the arguments describe in the first parameter. It is exactly same as **`String.format()`**. The TAG will be generated as `MyApplication: onCreate()` and the log output will be like this:
@@ -135,7 +137,7 @@ The first parameter is the output format of log, while rest parameters provide t
 02-22 17:09:06.888 8476-8476/? D/MyApplication: onCreate(): Hello app: MyApplication
 ...
 ```
-There is another important interface in **`Logger`** class is **`setDebugEnabled()`**. As you seen in the last chapter, **`DevBricksApplication`** will automatically enable or disable debug outputs according to some case. But you can use **`setDebugEnabled()`** to force enable or disable debug logging.
+There is another important interfaces in **`Logger`** class is **`setDebugEnabled()`** and **`setSecureDebugEnabled()`**. As you seen in the last chapter, **`DevBricksApplication`** will automatically enable or disable debug outputs according to some case. But you can use **`setDebugEnabled()`** and **`setSecureDebugEnabled()`**to force enable or disable debug logging.
 
 ## Database
 Database facilities in DevBricks provides a efficient way to convert between *In-Memory Data Structures* and *SQLite Database Records*。 
