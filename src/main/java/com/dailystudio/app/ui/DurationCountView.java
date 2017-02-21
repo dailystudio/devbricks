@@ -59,16 +59,16 @@ public class DurationCountView extends FrameLayout {
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.DurationCountView, defStyle, 0);
         
-        int textColor = a.getColor(R.styleable.DurationCountView_textColor,
+        int textColor = a.getColor(R.styleable.DurationCountView_devTextColor,
         		ColorHelper.getColorResource(mContext, R.color.black));
         setTextColor(textColor);
 
-        float textSize = a.getDimensionPixelSize(R.styleable.DurationCountView_textSize, 0);
+        float textSize = a.getDimensionPixelSize(R.styleable.DurationCountView_devTextSize, 0);
         if (textSize != 0) {
         	setTextSize(textSize);
         }
 
-        int textStyle = a.getInt(R.styleable.DurationCountView_textStyle, 0);
+        int textStyle = a.getInt(R.styleable.DurationCountView_devTextStyle, 0);
         setTextStyle(textStyle);
         
         a.recycle();
