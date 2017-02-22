@@ -17,13 +17,13 @@ To use DevBricks Library, follow these steps.
 <dependency>
 	<groupId>com.github.dailystudio</groupId>
 	<artifactId>devbricks</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 </dependency>
 ```
 or
 **Gradle dependency:**
 ``` groovy
-compile 'com.github.dailystudio:devbricks:1.1.1'
+compile 'com.github.dailystudio:devbricks:1.1.2'
 ```
 
 ### Step 2: Application initialization
@@ -601,4 +601,4 @@ public class PeopleBmisAdapterFragment extends AbsArrayFragment<PeopleBmi> {
 ```
 
 >Copyright
->2010-2016 by Daily Studio.
+>2010-2017 by Daily Studio.
