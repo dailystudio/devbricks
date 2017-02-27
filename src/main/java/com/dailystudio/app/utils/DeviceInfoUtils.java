@@ -13,6 +13,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
 public class DeviceInfoUtils {
 
@@ -162,6 +163,17 @@ public class DeviceInfoUtils {
         }
 
         return countryCode;
+    }
+
+
+    public static String getSimCountryIso(Context context) {
+        TelephonyManager telmgr = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        if (telmgr == null) {
+            return null;
+        }
+
+        return telmgr.getSimCountryIso();
     }
 
 }
