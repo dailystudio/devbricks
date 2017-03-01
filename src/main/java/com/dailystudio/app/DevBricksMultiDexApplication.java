@@ -2,12 +2,12 @@ package com.dailystudio.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
-import com.dailystudio.GlobalContextWrapper;
-import com.dailystudio.development.Logger;
 import com.dailystudio.BuildConfig;
 
-public class DevBricksApplication extends Application {
+public class DevBricksMultiDexApplication extends MultiDexApplication {
 
 	private DevBricksApplicationAgent mDevBricksAgent;
 
@@ -26,6 +26,12 @@ public class DevBricksApplication extends Application {
 		}
 
 		super.onTerminate();
+	}
+
+	@Override
+	public void attachBaseContext(Context base) {
+		MultiDex.install(base);
+		super.attachBaseContext(base);
 	}
 
 	protected boolean isDebugBuild() {
