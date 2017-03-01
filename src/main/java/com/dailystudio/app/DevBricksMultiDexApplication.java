@@ -1,29 +1,31 @@
 package com.dailystudio.app;
 
-import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.dailystudio.BuildConfig;
+import com.dailystudio.GlobalContextWrapper;
+import com.dailystudio.development.Logger;
 
 public class DevBricksMultiDexApplication extends MultiDexApplication {
-
-	private DevBricksApplicationAgent mDevBricksAgent;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
-		mDevBricksAgent = new DevBricksApplicationAgent(this);
-		mDevBricksAgent.onCreate();
+		final Context appContext = getApplicationContext();
+
+		GlobalContextWrapper.bindContext(appContext);
+
+		checkAndSetDebugEnabled();
 	}
-	
+
 	@Override
 	public void onTerminate() {
-		if (mDevBricksAgent != null) {
-			mDevBricksAgent.onTerminate();
-		}
+		final Context appContext = getApplicationContext();
+
+		GlobalContextWrapper.unbindContext(appContext);
 
 		super.onTerminate();
 	}
@@ -34,12 +36,32 @@ public class DevBricksMultiDexApplication extends MultiDexApplication {
 		super.attachBaseContext(base);
 	}
 
-	protected boolean isDebugBuild() {
-		if (mDevBricksAgent != null) {
-			return mDevBricksAgent.isDebugBuild();
+	private void checkAndSetDebugEnabled() {
+		boolean handled = false;
+
+		if (Logger.isDebugSuppressed()
+				|| Logger.isPackageDebugSuppressed(getPackageName())) {
+			Logger.setDebugEnabled(false);
+
+			handled = true;
 		}
 
-		return false;
+		if (Logger.isDebugForced()
+				|| Logger.isPackageDebugForced(getPackageName())) {
+			Logger.setDebugEnabled(true);
+
+			handled = true;
+		}
+
+		if (!handled) {
+			Logger.setDebugEnabled(isDebugBuild());
+		}
+
+		Logger.setSecureDebugEnabled(isDebugBuild());
+	}
+
+	protected boolean isDebugBuild() {
+		return BuildConfig.DEBUG;
 	}
 
 }
