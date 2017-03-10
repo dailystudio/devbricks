@@ -781,4 +781,37 @@ public class FileUtils {
 		}
 
 	}
+
+	public static boolean saveFile(byte[] bytes, String filename) {
+		if (TextUtils.isEmpty(filename)) {
+			return false;
+		}
+
+ 		return saveFile(bytes, new File(filename));
+	}
+
+	public static boolean saveFile(byte[] bytes, File file) {
+		if (bytes == null || file == null) {
+			return false;
+		}
+
+		boolean success = false;
+		try {
+			FileOutputStream out = new FileOutputStream(file);
+
+			out.write(bytes);
+
+			out.flush();
+			out.close();
+
+			success = true;
+		} catch (IOException e) {
+			Logger.debug("save bytes failure: %s", e.toString());
+
+			success = false;
+		}
+
+		return success;
+	}
+
 }
