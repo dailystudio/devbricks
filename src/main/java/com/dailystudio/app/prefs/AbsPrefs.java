@@ -1,11 +1,21 @@
 package com.dailystudio.app.prefs;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
+
+import com.dailystudio.development.Logger;
 
 public abstract class AbsPrefs {
-    
+
+	public static final String ACTION_PREFS_CHANGED = "devbricks.intent.ACTION_PREFS_CHANGED";
+	public static final String EXTRA_PREF_KEY = "devbricks.intent.EXTRA_PREF_KEY";
+
 	private SharedPreferences getSharedPreferences(Context context) {
 		if (context == null) {
 			return null;
@@ -40,6 +50,8 @@ public abstract class AbsPrefs {
 		
 		editor.putString(pref, sValue);
 		editor.commit();
+
+		notifyPrefChanged(context, pref);
 	}
 	
 	public void setBooleanPrefValue(Context context,
@@ -53,6 +65,8 @@ public abstract class AbsPrefs {
 		
 		editor.putBoolean(pref, bValue);
 		editor.commit();
+
+		notifyPrefChanged(context, pref);
 	}
 	
 	public void setLongPrefValue(Context context,
@@ -66,6 +80,8 @@ public abstract class AbsPrefs {
 		
 		editor.putLong(pref, lValue);
 		editor.commit();
+
+		notifyPrefChanged(context, pref);
 	}
 	
 	public void setIntegerPrefValue(Context context,
@@ -79,6 +95,8 @@ public abstract class AbsPrefs {
 		
 		editor.putInt(pref, iValue);
 		editor.commit();
+
+		notifyPrefChanged(context, pref);
 	}
 	
 	public void setFloatPrefValue(Context context,
@@ -92,6 +110,8 @@ public abstract class AbsPrefs {
 		
 		editor.putFloat(pref, fValue);
 		editor.commit();
+
+		notifyPrefChanged(context, pref);
 	}
 	
 	public String getStringPrefValue(Context context, String pref) {
@@ -179,6 +199,47 @@ public abstract class AbsPrefs {
 		}
 		
 		return sharedPref.getFloat(pref, defVal);
+	}
+
+	protected void notifyPrefChanged(Context context, String key) {
+		if (context == null || TextUtils.isEmpty(key)) {
+			return;
+		}
+
+		Intent i = new Intent(ACTION_PREFS_CHANGED);
+		i.putExtra(EXTRA_PREF_KEY, key);
+
+		LocalBroadcastManager.getInstance(context).sendBroadcast(i);
+	}
+
+	public void registerPrefChangesReceiver(Context context, BroadcastReceiver receiver) {
+		if (context == null || receiver == null) {
+			return;
+		}
+
+		IntentFilter filter = new IntentFilter(ACTION_PREFS_CHANGED);
+
+		try {
+			LocalBroadcastManager.getInstance(context)
+					.registerReceiver(receiver, filter);
+		} catch (Exception e) {
+			Logger.warn("could not register receiver [%s] on %s: %s",
+					receiver, ACTION_PREFS_CHANGED, e.toString());
+		}
+	}
+
+	public void unregisterPrefChangesReceiver(Context context, BroadcastReceiver receiver) {
+		if (context == null || receiver == null) {
+			return;
+		}
+
+		try {
+			LocalBroadcastManager.getInstance(context)
+					.unregisterReceiver(receiver);
+		} catch (Exception e) {
+			Logger.warn("could not unregister receiver [%s] from %s: %s",
+					receiver, ACTION_PREFS_CHANGED, e.toString());
+		}
 	}
 
 	abstract protected String getPrefName();
