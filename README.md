@@ -391,7 +391,7 @@ Op function        | SQLite Equivalent  | Explanation
 Here is a real case to demonstrate how to convert a SQLite query statement into a Query object. Taking People as example, we want to find out a set of people who is older than 30 and their BMI is not in standard range:
 
 ```sql
-SELECT * FROME People WHERE (age > 30) AND (weight / (height * height) > 24) OR (weight / (height * height) < 18.5);
+SELECT * FROM People WHERE (age > 30) AND (weight / (height * height) > 24) OR (weight / (height * height) < 18.5);
 ```
 To describe this query with Query object, here is the snippet:
 ```java
