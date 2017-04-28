@@ -53,8 +53,8 @@ public class FileUtils {
 
 	private final static String NO_MEDIA_TAG_FILE = ".nomedia";
 	
-	private static final int DOWNLOAD_CONNECTION_TIMEOUT = (3 * 1000);
-	private static final int DOWNLOAD_READ_TIMEOUT = (20 * 1000);
+	public static final int DOWNLOAD_CONNECTION_TIMEOUT = (3 * 1000);
+	public static final int DOWNLOAD_READ_TIMEOUT = (20 * 1000);
 	
 	public static final long SIZE_KB = 1024;
 	public static final long SIZE_MB = (1024 * SIZE_KB);
@@ -663,6 +663,12 @@ public class FileUtils {
 	}
 
 	public static boolean downloadFile(String fileUrl, String dstFile) {
+		return downloadFile(fileUrl, dstFile,
+				DOWNLOAD_CONNECTION_TIMEOUT, DOWNLOAD_READ_TIMEOUT);
+	}
+
+	public static boolean downloadFile(String fileUrl, String dstFile,
+									   int connTimeout, int readTimeout) {
 		if (fileUrl == null || dstFile == null) {
 			return false;
 		}
@@ -674,7 +680,8 @@ public class FileUtils {
 		boolean ret = false;
 		
 		try {
-			ret = downloadFile(fileUrl, new FileOutputStream(dstFile));
+			ret = downloadFile(fileUrl, new FileOutputStream(dstFile),
+					connTimeout, readTimeout);
 		} catch (Exception e) {
 			Logger.debug("download file failure: %s", e.toString());
 
@@ -683,8 +690,14 @@ public class FileUtils {
 		
 		return ret;
 	}
-	
+
 	public static boolean downloadFile(String fileUrl, OutputStream os) {
+		return downloadFile(fileUrl, os,
+				DOWNLOAD_CONNECTION_TIMEOUT, DOWNLOAD_READ_TIMEOUT);
+	}
+
+	public static boolean downloadFile(String fileUrl, OutputStream os,
+									   int connTimeout, int readTimeout) {
 		if (fileUrl == null || os == null) {
 			return false;
 		}
@@ -702,8 +715,8 @@ public class FileUtils {
 			 * 		the default connect/read timeout is infinite.
 			 * 		we need to set a acceptable value
 			 */
-			connection.setConnectTimeout(DOWNLOAD_CONNECTION_TIMEOUT);
-			connection.setReadTimeout(DOWNLOAD_READ_TIMEOUT);
+			connection.setConnectTimeout(connTimeout);
+			connection.setReadTimeout(readTimeout);
 			
 			is = connection.getInputStream();
 			
