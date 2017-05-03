@@ -17,13 +17,13 @@ To use DevBricks Library, follow these steps.
 <dependency>
 	<groupId>com.github.dailystudio</groupId>
 	<artifactId>devbricks</artifactId>
-	<version>1.1.2</version>
+	<version>1.1.3</version>
 </dependency>
 ```
 or
 **Gradle dependency:**
 ``` groovy
-compile 'com.github.dailystudio:devbricks:1.1.2'
+compile 'com.github.dailystudio:devbricks:1.1.3'
 ```
 
 ### Step 2: Application initialization
