@@ -12,13 +12,13 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.dailystudio.R;
 import com.dailystudio.development.Logger;
-
-import java.util.List;
 
 /**
  * Created by nanye on 17/5/8.
@@ -26,9 +26,9 @@ import java.util.List;
 
 public abstract class SettingsFragment extends BaseIntentFragment {
 
-    public static interface LayoutHolder {
+    public interface LayoutHolder {
 
-        public View createView(Context context, Setting setting);
+        View createView(Context context, Setting setting);
 
     }
 
@@ -145,6 +145,113 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     }
 
+    public abstract static class RadioSetting extends Setting {
+
+        private int[] mSelectionLabelIds;
+        private int[] mSelectionIds;
+
+        public RadioSetting(Context context,
+                            String name,
+                            int iconResId,
+                            int labelResId,
+                            RadioSettingsLayoutHolder holder,
+                            int[] selectionLabelIds,
+                            int[] selectionIds) {
+            super(context, name, iconResId, labelResId, holder);
+
+            mSelectionLabelIds = selectionLabelIds;
+            mSelectionIds = selectionIds;
+        }
+
+        public int [] getSelectionLabelIds() {
+            return mSelectionLabelIds;
+        }
+
+        public int [] getSelectionIds() {
+            return mSelectionIds;
+        }
+
+        protected abstract int getSelectedId();
+        protected abstract void setSelected(int selectedId);
+
+    }
+
+    public class RadioSettingsLayoutHolder extends BaseSettingLayoutHolder {
+
+        @Override
+        public View createView(Context context, Setting setting) {
+            View view = LayoutInflater.from(context).inflate(
+                    R.layout.layout_setting_radio, null);
+
+            bingSetting(view, setting);
+
+            return view;
+        }
+
+        @Override
+        protected void bingSetting(View settingView, Setting setting) {
+            super.bingSetting(settingView, setting);
+
+            if (settingView == null
+                    || setting instanceof RadioSetting == false) {
+                return;
+            }
+
+            final Context context = getContext();
+            if (context == null) {
+                return;
+            }
+
+            final RadioSetting radioSetting = (RadioSetting) setting;
+
+            final int selectdId = radioSetting.getSelectedId();
+            final int[] selectionIds = radioSetting.getSelectionIds();
+            final int[] labelIds = radioSetting.getSelectionLabelIds();
+            if (selectionIds == null
+                    || labelIds == null
+                    || selectionIds.length != labelIds.length) {
+                return;
+            }
+
+            RadioGroup radioGroup = (RadioGroup) settingView.findViewById(
+                    R.id.selection_group);
+            if (radioGroup != null) {
+                final int N = selectionIds.length;
+
+                RadioButton rb;
+                for (int i = 0; i < N; i++) {
+                    rb = new RadioButton(context);
+
+                    rb.setText(context.getString(labelIds[i]));
+                    rb.setTextAppearance(context, R.style.SettingsText);
+                    rb.setTag(selectionIds[i]);
+                    rb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if (isChecked && compoundButton != null) {
+                                Object o = compoundButton.getTag();
+                                if (o instanceof Integer) {
+                                    Integer i = (Integer)o;
+                                    radioSetting.setSelected(i.intValue());
+                                }
+
+                                radioSetting.notifySettingsChanged();
+                            }
+                        }
+                    });
+                    if (selectionIds[i] == selectdId) {
+                        rb.setChecked(true);
+                    } else {
+                        rb.setChecked(false);
+                    }
+
+                    radioGroup.addView(rb);
+                }
+            }
+        }
+
+    }
+
     public class SwitchSettingsLayoutHolder extends BaseSettingLayoutHolder {
 
         @Override
@@ -216,8 +323,6 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     private ViewGroup mSettingsContainer;
 
-    private List<Setting> mSettings;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, null);
@@ -272,8 +377,6 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
         Logger.debug("add settings view: %s", view);
         mSettingsContainer.addView(view, llp);
-
-//        mSettings.add(setting);
     }
 
 }
