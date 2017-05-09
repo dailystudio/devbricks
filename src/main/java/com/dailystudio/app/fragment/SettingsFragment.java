@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,9 @@ import android.widget.TextView;
 
 import com.dailystudio.R;
 import com.dailystudio.development.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nanye on 17/5/8.
@@ -145,38 +149,82 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     }
 
-    public abstract static class RadioSetting extends Setting {
+    public interface RadioSettingItem {
 
-        private int[] mSelectionLabelIds;
-        private int[] mSelectionIds;
+        public CharSequence getLabel();
+        public String getId();
+
+    }
+
+    public abstract static class RadioSetting<T extends  RadioSettingItem> extends Setting {
+
+        private List<T> mRadioItems = new ArrayList<>();
+        private Object mLock = new Object();
 
         public RadioSetting(Context context,
                             String name,
                             int iconResId,
                             int labelResId,
                             RadioSettingsLayoutHolder holder,
-                            int[] selectionLabelIds,
-                            int[] selectionIds) {
+                            T[] items) {
             super(context, name, iconResId, labelResId, holder);
 
-            mSelectionLabelIds = selectionLabelIds;
-            mSelectionIds = selectionIds;
+            addItems(items);
         }
 
-        public int [] getSelectionLabelIds() {
-            return mSelectionLabelIds;
+        public void addItem(T item) {
+            synchronized (mLock) {
+                mRadioItems.add(item);
+            }
         }
 
-        public int [] getSelectionIds() {
-            return mSelectionIds;
+        public void addItems(T[] items) {
+            if (items == null
+                    || items.length <= 0) {
+                return;
+            }
+
+            synchronized (mLock) {
+                for (T item : items) {
+                    mRadioItems.add(item);
+                }
+            }
         }
 
-        protected abstract int getSelectedId();
-        protected abstract void setSelected(int selectedId);
+        public void clear() {
+            synchronized (mLock) {
+                mRadioItems.clear();
+            }
+        }
+
+        public T getItem(int position) {
+            return mRadioItems.get(position);
+        }
+
+        public int getItemCount() {
+            return mRadioItems.size();
+        }
+
+        public T findItemById(String itemId) {
+            if (TextUtils.isEmpty(itemId)) {
+                return null;
+            }
+
+            for (T item: mRadioItems) {
+                if (itemId.equals(item.getId())) {
+                    return item;
+                }
+            }
+
+            return null;
+        }
+
+        protected abstract String getSelectedId();
+        protected abstract void setSelected(String selectedId);
 
     }
 
-    public class RadioSettingsLayoutHolder extends BaseSettingLayoutHolder {
+    public class RadioSettingsLayoutHolder<T extends RadioSettingItem> extends BaseSettingLayoutHolder {
 
         @Override
         public View createView(Context context, Setting setting) {
@@ -204,48 +252,56 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
             final RadioSetting radioSetting = (RadioSetting) setting;
 
-            final int selectdId = radioSetting.getSelectedId();
-            final int[] selectionIds = radioSetting.getSelectionIds();
-            final int[] labelIds = radioSetting.getSelectionLabelIds();
-            if (selectionIds == null
-                    || labelIds == null
-                    || selectionIds.length != labelIds.length) {
+            final int N = radioSetting.getItemCount();
+            if (N <= 0) {
                 return;
             }
 
             RadioGroup radioGroup = (RadioGroup) settingView.findViewById(
                     R.id.selection_group);
             if (radioGroup != null) {
-                final int N = selectionIds.length;
+                final String selectedId = radioSetting.getSelectedId();
 
+                RadioSettingItem item;
                 RadioButton rb;
+                RadioButton[] rbs = new RadioButton[N];
                 for (int i = 0; i < N; i++) {
+                    item = radioSetting.getItem(i);
+
                     rb = new RadioButton(context);
 
-                    rb.setText(context.getString(labelIds[i]));
+                    rb.setText(item.getLabel());
                     rb.setTextAppearance(context, R.style.SettingsText);
-                    rb.setTag(selectionIds[i]);
+                    rb.setTag(item);
                     rb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                             if (isChecked && compoundButton != null) {
                                 Object o = compoundButton.getTag();
-                                if (o instanceof Integer) {
-                                    Integer i = (Integer)o;
-                                    radioSetting.setSelected(i.intValue());
+                                if (o instanceof RadioSettingItem) {
+                                    RadioSettingItem i = (RadioSettingItem)o;
+                                    radioSetting.setSelected(i.getId());
                                 }
 
                                 radioSetting.notifySettingsChanged();
                             }
                         }
                     });
-                    if (selectionIds[i] == selectdId) {
+
+                    radioGroup.addView(rb);
+                    rbs[i] = rb;
+                }
+
+                for (int i = 0; i < N; i++) {
+                    item = radioSetting.getItem(i);
+                    rb = rbs[i];
+
+                    if (!TextUtils.isEmpty(selectedId)
+                            && selectedId.equals(item.getId())) {
                         rb.setChecked(true);
                     } else {
                         rb.setChecked(false);
                     }
-
-                    radioGroup.addView(rb);
                 }
             }
         }
