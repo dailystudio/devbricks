@@ -114,5 +114,9 @@
 	<dimen name="card_item_vpadding">8dp</dimen>
 	<dimen name="card_content_height">165dp</dimen>
 	<dimen name="card_content_height_mini">150dp</dimen>
-										
+
+	<dimen name="settings_font_size">18dp</dimen>
+	<dimen name="settings_icon_margin">16dp</dimen>
+	<dimen name="settings_icon_size">32dp</dimen>
+
 </resources>

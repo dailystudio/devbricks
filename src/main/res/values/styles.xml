@@ -178,4 +178,10 @@
 		<item name="cardUseCompatPadding">true</item>
 	</style>
 
+	<style name="SettingsText" parent="DefaultLabel">
+		<item name="android:gravity">center</item>
+		<item name="android:textColor">@color/colorPrimary</item>
+		<item name="android:textSize">@dimen/settings_font_size</item>
+	</style>
+
 </resources>

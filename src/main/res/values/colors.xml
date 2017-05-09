@@ -40,4 +40,8 @@
 	<color name="card_title_bg_color">@color/light_black</color>
 	<color name="default_ripple_color">@color/light_white</color>
 
+	<color name="colorPrimary">#382419</color>
+	<color name="colorPrimaryDark">#382419</color>
+	<color name="colorAccent">#382419</color>
+
 </resources>
