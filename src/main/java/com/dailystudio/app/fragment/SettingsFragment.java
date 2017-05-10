@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -32,7 +33,9 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     public interface LayoutHolder {
 
+        View getView();
         View createView(Context context, Setting setting);
+        void invalidate(Context context, Setting setting);
 
     }
 
@@ -114,6 +117,11 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             return mHolder;
         }
 
+        public void notfiyDataChanges() {
+            mHandler.removeCallbacks(mNotifyDataChangesRunnable);
+            mHandler.postDelayed(mNotifyDataChangesRunnable, 300);
+        }
+
         @Override
         public String toString() {
             return String.format("%s(0x%08x): label = %s, icon = %s, holder = %s",
@@ -131,6 +139,17 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(i);
         }
+
+        private Runnable mNotifyDataChangesRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mHolder != null) {
+                    mHolder.invalidate(getContext(), Setting.this);
+                }
+            }
+        };
+
+        private Handler mHandler = new Handler();
 
     }
 
@@ -176,6 +195,8 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             synchronized (mLock) {
                 mRadioItems.add(item);
             }
+
+            notfiyDataChanges();
         }
 
         public void addItems(T[] items) {
@@ -189,12 +210,16 @@ public abstract class SettingsFragment extends BaseIntentFragment {
                     mRadioItems.add(item);
                 }
             }
+
+            notfiyDataChanges();
         }
 
         public void clear() {
             synchronized (mLock) {
                 mRadioItems.clear();
             }
+
+            notfiyDataChanges();
         }
 
         public T getItem(int position) {
@@ -226,14 +251,32 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     public class RadioSettingsLayoutHolder<T extends RadioSettingItem> extends BaseSettingLayoutHolder {
 
+        private RadioGroup mRadioGroup;
+
         @Override
-        public View createView(Context context, Setting setting) {
-            View view = LayoutInflater.from(context).inflate(
+        public View onCreateView(Context context,
+                                 LayoutInflater layoutInflater,
+                                 Setting setting) {
+            View view = layoutInflater.inflate(
                     R.layout.layout_setting_radio, null);
 
             bingSetting(view, setting);
 
             return view;
+        }
+
+        @Override
+        public void invalidate(Context context, Setting setting) {
+            if (mRadioGroup == null) {
+                return;
+            }
+
+            mRadioGroup.removeAllViews();
+
+            if (setting instanceof RadioSetting) {
+                bindRadios(getContext(), mRadioGroup,
+                        (RadioSetting)setting);
+            }
         }
 
         @Override
@@ -252,56 +295,68 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
             final RadioSetting radioSetting = (RadioSetting) setting;
 
+            mRadioGroup = (RadioGroup) settingView.findViewById(
+                    R.id.selection_group);
+            if (mRadioGroup != null) {
+
+            }
+        }
+
+        private void bindRadios(Context context,
+                                RadioGroup radioGroup,
+                                final RadioSetting<T> radioSetting) {
+            if (context == null
+                    || radioGroup == null
+                    || radioSetting == null) {
+                return;
+            }
+
             final int N = radioSetting.getItemCount();
             if (N <= 0) {
                 return;
             }
 
-            RadioGroup radioGroup = (RadioGroup) settingView.findViewById(
-                    R.id.selection_group);
-            if (radioGroup != null) {
-                final String selectedId = radioSetting.getSelectedId();
+            final String selectedId = radioSetting.getSelectedId();
 
-                RadioSettingItem item;
-                RadioButton rb;
-                RadioButton[] rbs = new RadioButton[N];
-                for (int i = 0; i < N; i++) {
-                    item = radioSetting.getItem(i);
+            RadioSettingItem item;
+            RadioButton rb;
+            RadioButton[] rbs = new RadioButton[N];
+            for (int i = 0; i < N; i++) {
+                item = radioSetting.getItem(i);
 
-                    rb = new RadioButton(context);
+                rb = new RadioButton(context);
 
-                    rb.setText(item.getLabel());
-                    rb.setTextAppearance(context, R.style.SettingsText);
-                    rb.setTag(item);
-                    rb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                            if (isChecked && compoundButton != null) {
-                                Object o = compoundButton.getTag();
-                                if (o instanceof RadioSettingItem) {
-                                    RadioSettingItem i = (RadioSettingItem)o;
-                                    radioSetting.setSelected(i.getId());
-                                }
-
-                                radioSetting.notifySettingsChanged();
+                rb.setText(item.getLabel());
+                rb.setTextAppearance(context, R.style.SettingsText);
+                rb.setTag(item);
+                rb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                        if (isChecked && compoundButton != null) {
+                            Object o = compoundButton.getTag();
+                            if (o instanceof RadioSettingItem) {
+                                RadioSettingItem i = (RadioSettingItem)o;
+                                radioSetting.setSelected(i.getId());
                             }
+
+                            radioSetting.notifySettingsChanged();
                         }
-                    });
-
-                    radioGroup.addView(rb);
-                    rbs[i] = rb;
-                }
-
-                for (int i = 0; i < N; i++) {
-                    item = radioSetting.getItem(i);
-                    rb = rbs[i];
-
-                    if (!TextUtils.isEmpty(selectedId)
-                            && selectedId.equals(item.getId())) {
-                        rb.setChecked(true);
-                    } else {
-                        rb.setChecked(false);
                     }
+                });
+
+                mRadioGroup.addView(rb);
+                rbs[i] = rb;
+            }
+
+            for (int i = 0; i < N; i++) {
+                item = radioSetting.getItem(i);
+                rb = rbs[i];
+
+                if (!TextUtils.isEmpty(selectedId)
+                        && selectedId.equals(item.getId())) {
+                    rb.setChecked(true);
+                } else {
+                    rb.setChecked(false);
                 }
             }
         }
@@ -311,13 +366,20 @@ public abstract class SettingsFragment extends BaseIntentFragment {
     public class SwitchSettingsLayoutHolder extends BaseSettingLayoutHolder {
 
         @Override
-        public View createView(Context context, Setting setting) {
-            View view = LayoutInflater.from(context).inflate(
+        public View onCreateView(Context context,
+                                 LayoutInflater layoutInflater,
+                                 Setting setting) {
+            View view = layoutInflater.inflate(
                     R.layout.layout_setting_switch, null);
 
             bingSetting(view, setting);
 
             return view;
+        }
+
+        @Override
+        public void invalidate(Context context, Setting setting) {
+
         }
 
         @Override
@@ -356,6 +418,24 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     public abstract class BaseSettingLayoutHolder implements LayoutHolder {
 
+        private View mView;
+
+        @Override
+        final public View createView(Context context, Setting setting) {
+            LayoutInflater layoutInflater = LayoutInflater.from(context);
+
+            mView = onCreateView(context, layoutInflater, setting);
+
+            bingSetting(mView, setting);
+
+            return mView;
+        }
+
+        @Override
+        public View getView() {
+            return mView;
+        }
+
         protected void bingSetting(View settingView, Setting setting) {
             if (settingView == null
                     || setting == null) {
@@ -375,6 +455,9 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             }
         }
 
+        protected abstract View onCreateView(Context context,
+                                             LayoutInflater layoutInflater,
+                                             Setting setting);
     }
 
     private ViewGroup mSettingsContainer;
