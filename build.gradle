@@ -42,6 +42,9 @@ android {
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
     }
 
     dependencies {
@@ -52,13 +55,19 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile "com.android.support:support-v4:${project.ext.androidSupportVersion}"
+    compile "com.android.support:support-compat:${project.ext.androidSupportVersion}"
+    compile "com.android.support:support-core-utils:${project.ext.androidSupportVersion}"
+    compile "com.android.support:support-core-ui:${project.ext.androidSupportVersion}"
+    compile "com.android.support:support-fragment:${project.ext.androidSupportVersion}"
     compile "com.android.support:appcompat-v7:${project.ext.appcompatVersion}"
     compile "com.android.support:cardview-v7:${project.ext.cardViewVersion}"
     compile "com.android.support:design:${project.ext.designVersion}"
