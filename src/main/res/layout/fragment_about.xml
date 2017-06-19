@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/fragment_view_root"
+	android:orientation="vertical"
+	android:padding="@dimen/default_content_padding"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+	<LinearLayout
+		android:id="@+id/app_info_layout"
+		android:orientation="horizontal"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+		<ImageView
+			android:id="@+id/about_app_icon"
+			android:layout_gravity="center_vertical"
+			android:layout_width="@dimen/about_app_icon_size"
+			android:layout_height="@dimen/about_app_icon_size"/>
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_gravity="center_vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:id="@+id/about_app_name"
+				style="@style/AppNameLabel"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"/>
+
+			<TextView
+				android:id="@+id/about_app_ver"
+				style="@style/AppVerLabel"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+	<TextView
+		android:id="@+id/about_app_desc"
+		android:autoLink="web|email"
+		android:layout_below="@id/app_info_layout"
+		android:padding="@dimen/default_content_padding"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"/>
+
+</RelativeLayout>
