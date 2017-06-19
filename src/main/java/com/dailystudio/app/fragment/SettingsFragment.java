@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -117,7 +118,7 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             return mHolder;
         }
 
-        public void notfiyDataChanges() {
+        public void notifyDataChanges() {
             mHandler.removeCallbacks(mNotifyDataChangesRunnable);
             mHandler.postDelayed(mNotifyDataChangesRunnable, 300);
         }
@@ -168,6 +169,25 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     }
 
+    public static abstract class SeekBarSetting extends Setting {
+
+        public SeekBarSetting(Context context,
+                              String name,
+                              int iconResId,
+                              int labelResId,
+                              SeekBarSettingsLayoutHolder holder) {
+            super(context, name, iconResId, labelResId, holder);
+        }
+
+        public abstract int getProgress(Context context);
+
+        public abstract void setProgress(Context context, int progress);
+
+        public abstract int getMinValue(Context context);
+        public abstract int getMaxValue(Context context);
+        public abstract int getStep(Context context);
+    }
+
     public interface RadioSettingItem {
 
         public CharSequence getLabel();
@@ -196,7 +216,7 @@ public abstract class SettingsFragment extends BaseIntentFragment {
                 mRadioItems.add(item);
             }
 
-            notfiyDataChanges();
+            notifyDataChanges();
         }
 
         public void addItems(T[] items) {
@@ -211,7 +231,7 @@ public abstract class SettingsFragment extends BaseIntentFragment {
                 }
             }
 
-            notfiyDataChanges();
+            notifyDataChanges();
         }
 
         public void clear() {
@@ -219,7 +239,7 @@ public abstract class SettingsFragment extends BaseIntentFragment {
                 mRadioItems.clear();
             }
 
-            notfiyDataChanges();
+            notifyDataChanges();
         }
 
         public T getItem(int position) {
@@ -411,6 +431,120 @@ public abstract class SettingsFragment extends BaseIntentFragment {
                         switchSetting.setSwitchOn(context, isChecked);
                         switchSetting.notifySettingsChanged();
                     }
+                });
+            }
+        }
+    }
+
+    public class SeekBarSettingsLayoutHolder extends BaseSettingLayoutHolder {
+
+        @Override
+        public View onCreateView(Context context,
+                                 LayoutInflater layoutInflater,
+                                 Setting setting) {
+            View view = layoutInflater.inflate(
+                    R.layout.layout_setting_seek_bar, null);
+
+            bingSetting(view, setting);
+
+            return view;
+        }
+
+        @Override
+        public void invalidate(Context context, Setting setting) {
+            View view = getView();
+            if (view == null) {
+                return;
+            }
+
+            if (setting instanceof SeekBarSetting == false) {
+                return;
+            }
+
+            SeekBarSetting seekBarSetting = (SeekBarSetting)setting;
+
+            SeekBar seekBarView = (SeekBar) view.findViewById(
+                    R.id.setting_seek_bar);
+            syncProgressWithSetting(getContext(), seekBarView, seekBarSetting);
+        }
+
+        private void syncProgressWithSetting(Context context,
+                                             SeekBar seekBar,
+                                             SeekBarSetting seekBarSetting) {
+            if (context == null
+                    || seekBar == null
+                    || seekBarSetting == null) {
+                return;
+            }
+
+            final int progress = seekBarSetting.getProgress(context);
+            final int step = seekBarSetting.getStep(context);
+
+            final int min = seekBarSetting.getMinValue(context);
+            final int max = seekBarSetting.getMaxValue(context);
+            final int prg = min + (progress * step);
+
+/*
+            Logger.debug("prg = %d, [min: %d, max: %d, step: %d",
+                    prg, min, max, step);
+*/
+
+            seekBar.setProgress((prg - min) / step);
+            seekBar.setMax((max - min) / step);
+        }
+
+        @Override
+        protected void bingSetting(View settingView, Setting setting) {
+            super.bingSetting(settingView, setting);
+
+            if (settingView == null
+                    || setting instanceof SeekBarSetting == false) {
+                return;
+            }
+
+            final Context context = getContext();
+            if (context == null) {
+                return;
+            }
+
+            final SeekBarSetting seekBarSetting = (SeekBarSetting) setting;
+
+            final TextView seekValView = (TextView) settingView.findViewById(
+                    R.id.setting_seek_value);
+            if (seekValView != null) {
+                seekValView.setText(String.valueOf(
+                        seekBarSetting.getProgress(context)));
+            }
+
+            SeekBar seekBarView = (SeekBar) settingView.findViewById(
+                    R.id.setting_seek_bar);
+            if (seekBarView != null) {
+                syncProgressWithSetting(getContext(), seekBarView, seekBarSetting);
+                seekBarView.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        int prg = seekBarSetting.getMinValue(context)
+                                + (progress * seekBarSetting.getStep(context));
+
+                        if (seekValView != null) {
+                            seekValView.setText(String.valueOf(prg));
+                        }
+
+                        seekBarSetting.setProgress(context, prg);
+                        seekBarSetting.notifySettingsChanged();
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+
                 });
             }
         }
