@@ -1,7 +1,9 @@
 package com.dailystudio.app.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -650,6 +652,36 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
         Logger.debug("add settings view: %s", view);
         mSettingsContainer.addView(view, llp);
+    }
+
+    public static void registerSettingChangesReceiver(Context context, BroadcastReceiver receiver) {
+        if (context == null || receiver == null) {
+            return;
+        }
+
+        IntentFilter filter = new IntentFilter(ACTION_SETTINGS_CHANGED);
+
+        try {
+            LocalBroadcastManager.getInstance(context)
+                    .registerReceiver(receiver, filter);
+        } catch (Exception e) {
+            Logger.warn("could not register receiver [%s] on %s: %s",
+                    receiver, ACTION_SETTINGS_CHANGED, e.toString());
+        }
+    }
+
+    public static void unregisterSettingChangesReceiver(Context context, BroadcastReceiver receiver) {
+        if (context == null || receiver == null) {
+            return;
+        }
+
+        try {
+            LocalBroadcastManager.getInstance(context)
+                    .unregisterReceiver(receiver);
+        } catch (Exception e) {
+            Logger.warn("could not unregister receiver [%s] from %s: %s",
+                    receiver, ACTION_SETTINGS_CHANGED, e.toString());
+        }
     }
 
 }
