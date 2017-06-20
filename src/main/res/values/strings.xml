@@ -7,9 +7,9 @@
 	
 	<string name="time_print_date_format">MMM. dd, yyyy</string>
 	<string name="time_print_date_format_without_year">MMM. dd</string>
-	<string name="time_print_time_format">HH:mm:ss</string>
+	<string name="time_print_time_format" translatable="false">HH:mm:ss</string>
 	
-	<string name="time_print_simple_time_format_24">HH:mm</string>
+	<string name="time_print_simple_time_format_24" translatable="false">HH:mm</string>
 				
 	<string name="time_print_label_sec">\"</string>
 	<string name="time_print_label_min">\'</string>
