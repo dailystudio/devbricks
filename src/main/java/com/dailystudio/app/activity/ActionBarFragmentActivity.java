@@ -161,6 +161,10 @@ public class ActionBarFragmentActivity extends AppCompatActivity {
     }
 
     public void showPrompt(CharSequence prompt) {
+        showPrompt(prompt, Snackbar.LENGTH_INDEFINITE);
+    }
+
+    public void showPrompt(CharSequence prompt, int duration) {
         View contentView = findViewById(android.R.id.content);
         if (contentView == null) {
             contentView = getWindow().getDecorView();
@@ -171,7 +175,7 @@ public class ActionBarFragmentActivity extends AppCompatActivity {
         }
 
         mSnackBar = Snackbar.make(contentView,
-                prompt, Snackbar.LENGTH_INDEFINITE);
+                prompt, duration);
         if (mSnackBar != null) {
             Snackbar.SnackbarLayout layout =
                     (Snackbar.SnackbarLayout) mSnackBar.getView();
