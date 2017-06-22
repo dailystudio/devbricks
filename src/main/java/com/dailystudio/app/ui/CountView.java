@@ -30,18 +30,20 @@ public class CountView extends TextView {
 	private class CountRunnable implements Runnable {
 
 		private long mStartTime = 0;
-		private float mDelatVal = 0;
+		private float mDeltaVal = 0;
+		private long mStartCount = 0;
 	
-		private CountRunnable(long destCount, long duration) {
-			mCurrCount = 0;
+		private CountRunnable(long destCount, long startCount, long duration) {
+			mStartCount = startCount;
 			
-			mDelatVal = (float)destCount / duration;
+			mDeltaVal = (float)(destCount - mStartCount) / duration;
 			
 			mStartTime = AnimationUtils.currentAnimationTimeMillis();
 			
-			Logger.debug("mDelatVal(%f) = destCount(%d) / duration(%d)",
-					mDelatVal,
+			Logger.debug("mDeltaVal(%f) = (destCount(%d) - startCount(%d)) / duration(%d)",
+					mDeltaVal,
 					destCount,
+					startCount,
 					duration);
 		}
 		
@@ -51,7 +53,7 @@ public class CountView extends TextView {
 
 			final long elapsedTime = time - mStartTime;
 
-			mCurrCount = (int)Math.round(elapsedTime * mDelatVal);
+			mCurrCount = mStartCount + Math.round(elapsedTime * mDeltaVal);
 /*			Logger.debug("[elapsedTime: %d]: mCurrCount(%d / %d)",
 					elapsedTime,
 					mCurrCount, 
@@ -76,7 +78,7 @@ public class CountView extends TextView {
 	private long mDestCount = 0;
 	private long mCurrCount = 0;
 	
-	private CountRunnable mCountRunable;
+	private CountRunnable mCountRunnable;
 	
 	private OnCountListener mOnCountListener;
     
@@ -123,15 +125,26 @@ public class CountView extends TextView {
 	public int getMinimumDigits() {
 		return mMiniDigits;
 	}
-	
+
 	public void countTo(long count) {
+		count(0, count);
+	}
+
+	public void count(long start, long to) {
+		count(start, to, 0);
+	}
+
+	public void count(long start, long to, long duration) {
 		if (mCurrCount != mDestCount) {
 			abortCount();
 		}
 
-		mDestCount = count;
-		
-		long duration = DURATION_ESTIMATION_UNIT * count;
+		mDestCount = to;
+
+		if (duration <= 0) {
+			duration = DURATION_ESTIMATION_UNIT * (to - start);
+		}
+
 		if (duration > MAX_COUNT_DURATION) {
 			duration = MAX_COUNT_DURATION;
 		}
@@ -142,14 +155,14 @@ public class CountView extends TextView {
 			return;
 		}
 		
-		mCountRunable = 
-			new CountRunnable(mDestCount, duration);
+		mCountRunnable =
+			new CountRunnable(mDestCount, start, duration);
 		
 		if (mOnCountListener != null) {
 			mOnCountListener.onCountStart(this, mDestCount);
 		}
 		
-		post(mCountRunable);
+		post(mCountRunnable);
 	}
 
 	public void abortCount() {
@@ -161,10 +174,10 @@ public class CountView extends TextView {
 	}
 
 	private void finishCount(boolean aborted) {
-		if (mCountRunable != null) {
-			removeCallbacks(mCountRunable);
+		if (mCountRunnable != null) {
+			removeCallbacks(mCountRunnable);
 			
-			mCountRunable = null;
+			mCountRunnable = null;
 		}
 		
 		mCurrCount = mDestCount;
