@@ -156,6 +156,18 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     }
 
+    public static class TextSetting extends Setting {
+
+        public TextSetting(Context context,
+                             String name,
+                             int iconResId,
+                             int labelResId,
+                             TextSettingsLayoutHolder holder) {
+            super(context, name, iconResId, labelResId, holder);
+        }
+
+    }
+
     public static abstract class SwitchSetting extends Setting {
 
         public SwitchSetting(Context context,
@@ -385,6 +397,7 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     }
 
+
     public class SwitchSettingsLayoutHolder extends BaseSettingLayoutHolder {
 
         @Override
@@ -432,6 +445,56 @@ public abstract class SettingsFragment extends BaseIntentFragment {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         switchSetting.setSwitchOn(context, isChecked);
                         switchSetting.notifySettingsChanged();
+                    }
+                });
+            }
+        }
+    }
+
+
+    public class TextSettingsLayoutHolder extends BaseSettingLayoutHolder {
+
+        @Override
+        public View onCreateView(Context context,
+                                 LayoutInflater layoutInflater,
+                                 Setting setting) {
+            View view = layoutInflater.inflate(
+                    R.layout.layout_setting_text, null);
+
+            bingSetting(view, setting);
+
+            return view;
+        }
+
+        @Override
+        public void invalidate(Context context, Setting setting) {
+
+        }
+
+        @Override
+        protected void bingSetting(View settingView, Setting setting) {
+            super.bingSetting(settingView, setting);
+
+            if (settingView == null
+                    || setting instanceof TextSetting == false) {
+                return;
+            }
+
+            final Context context = getContext();
+            if (context == null) {
+                return;
+            }
+
+            final TextSetting textSetting = (TextSetting) setting;
+
+            View rootView = settingView.findViewById(
+                    R.id.setting_root);
+            if (rootView != null) {
+                rootView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Logger.debug("clicked on text settings");
+                        textSetting.notifySettingsChanged();
                     }
                 });
             }
@@ -613,7 +676,12 @@ public abstract class SettingsFragment extends BaseIntentFragment {
         }
 
         mSettingsContainer = (ViewGroup) fragmentView.findViewById(R.id.settings_container);
-        Logger.debug("mSettingsContainer = %s", mSettingsContainer);
+
+        reloadSettings();
+    }
+
+    protected void reloadSettings() {
+        mSettingsContainer.removeAllViews();
 
         Setting[] settings = createSettings(getContext());
         if (settings != null) {
