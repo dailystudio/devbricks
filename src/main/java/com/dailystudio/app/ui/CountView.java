@@ -130,11 +130,13 @@ public class CountView extends TextView {
 		count(0, count);
 	}
 
-	public void count(long start, long to) {
-		count(start, to, 0);
+	public void count(long from, long to) {
+		count(from, to, 0);
 	}
 
-	public void count(long start, long to, long duration) {
+	public void count(long from, long to, long duration) {
+		Logger.debug("count: from[%d], to[%d], duration[%d]",
+				from, to, duration);
 		if (mCurrCount != mDestCount) {
 			abortCount();
 		}
@@ -142,7 +144,7 @@ public class CountView extends TextView {
 		mDestCount = to;
 
 		if (duration <= 0) {
-			duration = DURATION_ESTIMATION_UNIT * (to - start);
+			duration = DURATION_ESTIMATION_UNIT * (to - from);
 		}
 
 		if (duration > MAX_COUNT_DURATION) {
@@ -156,7 +158,7 @@ public class CountView extends TextView {
 		}
 		
 		mCountRunnable =
-			new CountRunnable(mDestCount, start, duration);
+			new CountRunnable(mDestCount, from, duration);
 		
 		if (mOnCountListener != null) {
 			mOnCountListener.onCountStart(this, mDestCount);
