@@ -42,8 +42,8 @@
 
 	<TextView
 		android:id="@+id/about_app_desc"
-		android:autoLink="web|email"
 		android:layout_below="@id/app_info_layout"
+		android:autoLink="email|web"
 		android:padding="@dimen/default_content_padding"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"/>

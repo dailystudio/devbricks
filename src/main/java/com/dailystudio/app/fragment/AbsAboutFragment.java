@@ -9,6 +9,9 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -77,6 +80,12 @@ public abstract class AbsAboutFragment extends AppCompatDialogFragment {
 
         TextView appDescView = (TextView) dialogView.findViewById(R.id.about_app_desc);
         if (appDescView != null) {
+            if (hasHtmlDescription()) {
+                appDescView.setAutoLinkMask(0);
+                appDescView.setMovementMethod(LinkMovementMethod.getInstance());
+            } else {
+                appDescView.setAutoLinkMask(Linkify.EMAIL_ADDRESSES | Linkify.WEB_URLS);
+            }
             appDescView.setText(getAppDescription());
         }
 
@@ -95,6 +104,10 @@ public abstract class AbsAboutFragment extends AppCompatDialogFragment {
                 );
 
         return builder.create();
+    }
+
+    protected boolean hasHtmlDescription() {
+        return false;
     }
 
     public abstract CharSequence getAppName();
