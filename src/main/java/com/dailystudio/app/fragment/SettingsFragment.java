@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -166,6 +167,66 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             super(context, name, iconResId, labelResId, holder);
         }
 
+    }
+
+    public abstract static class EditSetting extends Setting {
+
+        public EditSetting(Context context,
+                           String name,
+                           int iconResId,
+                           int labelResId,
+                           EditSettingLayoutHolder holder) {
+            super(context, name, iconResId, labelResId, holder);
+        }
+
+
+        public abstract CharSequence getEditText(Context context);
+
+        public abstract void setEditText(Context context, CharSequence text);
+
+    }
+
+    public class EditSettingLayoutHolder extends BaseSettingLayoutHolder {
+
+        @Override
+        public View onCreateView(Context context,
+                                 LayoutInflater layoutInflater,
+                                 Setting setting) {
+            View view = layoutInflater.inflate(
+                    R.layout.layout_setting_edit, null);
+
+            bingSetting(view, setting);
+
+            return view;
+        }
+
+        @Override
+        public void invalidate(Context context, Setting setting) {
+
+        }
+
+        @Override
+        protected void bingSetting(View settingView, Setting setting) {
+            super.bingSetting(settingView, setting);
+
+            if (settingView == null
+                    || setting instanceof EditSetting == false) {
+                return;
+            }
+
+            final Context context = getContext();
+            if (context == null) {
+                return;
+            }
+
+            final EditSetting editSetting = (EditSetting) setting;
+
+            EditText editView = (EditText) settingView.findViewById(
+                    R.id.setting_edit);
+            if (editView != null) {
+
+            }
+        }
     }
 
     public static abstract class SwitchSetting extends Setting {

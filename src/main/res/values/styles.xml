@@ -184,6 +184,11 @@
 		<item name="android:textSize">@dimen/settings_font_size</item>
 	</style>
 
+	<style name="SettingsEditText" parent="SettingsText">
+		<item name="android:singleLine">true</item>
+		<item name="android:gravity">left|center_vertical</item>
+	</style>
+
 	<style name="AppNameLabel">
 		<item name="android:gravity">start|center_vertical</item>
 		<item name="android:textStyle">bold</item>
