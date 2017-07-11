@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Build;
 import android.view.View;
 
@@ -14,7 +15,24 @@ import java.lang.reflect.Method;
 public class ViewHelper {
 	
 	private final static int SCREENLAYOUT_SIZE_XLARGE = 4;
-	
+
+	private static int[] sTempPos = new int[2];
+
+	public synchronized static Rect getBoundsOnScreen(View view) {
+		if (view == null) {
+			return new Rect(0, 0, 0, 0);
+		}
+
+		view.getLocationOnScreen(sTempPos);
+
+		Rect rect = new Rect();
+		rect.set(view.getLeft(), view.getTop(),
+				view.getRight(), view.getBottom());
+		rect.offset(sTempPos[0] - view.getLeft(), sTempPos[1] - view.getTop());
+
+		return rect;
+	}
+
 	public static void disableHardwareAccelerated(View view) {
 		if (view == null) {
 			return;
