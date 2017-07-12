@@ -8,8 +8,11 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -221,12 +224,74 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
             final EditSetting editSetting = (EditSetting) setting;
 
-            EditText editView = (EditText) settingView.findViewById(
+            final EditText editView = (EditText) settingView.findViewById(
                     R.id.setting_edit);
             if (editView != null) {
+                editView.setText(editSetting.getEditText(context));
+                editView.addTextChangedListener(new TextWatcher() {
 
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        performEditTextChange(editSetting, s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+
+                });
             }
         }
+
+        protected void performEditTextChange(EditSetting editSetting, CharSequence s) {
+            if (editSetting == null) {
+                return;
+            }
+
+            mHandler.removeMessages(MSG_TEXT_CHANGED);
+
+            TextChangeData tcd = new TextChangeData();
+            tcd.editSetting = editSetting;
+            tcd.text = s;
+
+            Message msg = Message.obtain(mHandler, MSG_TEXT_CHANGED, tcd);
+
+            mHandler.sendMessageDelayed(msg, DELAY);
+        }
+
+        private final static int MSG_TEXT_CHANGED = 0x1;
+        private final static long DELAY = 500;
+
+        private class TextChangeData {
+            private EditSetting editSetting;
+            private CharSequence text;
+        }
+
+        private Handler mHandler = new Handler() {
+
+            @Override
+            public void dispatchMessage(Message msg) {
+                if (msg.what == MSG_TEXT_CHANGED
+                        && msg.obj instanceof TextChangeData) {
+                    TextChangeData tcd = (TextChangeData)msg.obj;
+
+                    if (tcd.editSetting != null) {
+                        tcd.editSetting.setEditText(getContext(), tcd.text);
+                        tcd.editSetting.notifySettingsChanged();
+                    }
+
+                    return;
+                }
+
+                super.dispatchMessage(msg);
+            }
+
+        };
+
     }
 
     public static abstract class SwitchSetting extends Setting {
@@ -511,7 +576,6 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             }
         }
     }
-
 
     public class TextSettingsLayoutHolder extends BaseSettingLayoutHolder {
 
