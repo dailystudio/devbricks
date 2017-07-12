@@ -182,6 +182,9 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             super(context, name, iconResId, labelResId, holder);
         }
 
+        public CharSequence getEditHint(Context context) {
+            return null;
+        }
 
         public abstract CharSequence getEditText(Context context);
 
@@ -228,6 +231,7 @@ public abstract class SettingsFragment extends BaseIntentFragment {
                     R.id.setting_edit);
             if (editView != null) {
                 editView.setText(editSetting.getEditText(context));
+                editView.setHint(editSetting.getEditHint(context));
                 editView.addTextChangedListener(new TextWatcher() {
 
                     @Override
