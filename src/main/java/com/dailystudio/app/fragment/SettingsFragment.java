@@ -139,7 +139,7 @@ public abstract class SettingsFragment extends BaseIntentFragment {
                     getLayoutHolder());
         }
 
-        void notifySettingsChanged() {
+        protected void notifySettingsChanged() {
             Intent i = new Intent(ACTION_SETTINGS_CHANGED);
 
             i.putExtra(EXTRA_SETTING_NAME, getName());
@@ -186,13 +186,20 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             return null;
         }
 
+        public Drawable getEditButtonDrawable(Context context) {
+            return null;
+        }
+
         public abstract CharSequence getEditText(Context context);
 
         public abstract void setEditText(Context context, CharSequence text);
+        public abstract void onEditButtonClicked(Context context);
 
     }
 
     public class EditSettingLayoutHolder extends BaseSettingLayoutHolder {
+
+        private EditText mEditText;
 
         @Override
         public View onCreateView(Context context,
@@ -208,7 +215,15 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
         @Override
         public void invalidate(Context context, Setting setting) {
+            if (context == null) {
+                return;
+            }
 
+            final EditSetting editSetting = (EditSetting) setting;
+
+            if (mEditText != null) {
+                mEditText.setText(editSetting.getEditText(context));
+            }
         }
 
         @Override
@@ -227,12 +242,32 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
             final EditSetting editSetting = (EditSetting) setting;
 
-            final EditText editView = (EditText) settingView.findViewById(
+            final ImageView editButton = (ImageView) settingView.findViewById(
+                    R.id.setting_edit_image_button);
+            if (editButton != null) {
+                final Drawable drawable =
+                        ((EditSetting) setting).getEditButtonDrawable(context);
+                if (drawable == null) {
+                    editButton.setVisibility(View.GONE);
+                    editButton.setOnClickListener(null);
+                } else {
+                    editButton.setVisibility(View.VISIBLE);
+                    editButton.setImageDrawable(drawable);
+                    editButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            editSetting.onEditButtonClicked(context);
+                        }
+                    });
+                }
+            }
+
+            mEditText = (EditText) settingView.findViewById(
                     R.id.setting_edit);
-            if (editView != null) {
-                editView.setText(editSetting.getEditText(context));
-                editView.setHint(editSetting.getEditHint(context));
-                editView.addTextChangedListener(new TextWatcher() {
+            if (mEditText != null) {
+                mEditText.setText(editSetting.getEditText(context));
+                mEditText.setHint(editSetting.getEditHint(context));
+                mEditText.addTextChangedListener(new TextWatcher() {
 
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
