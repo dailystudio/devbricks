@@ -328,6 +328,18 @@ public class FileUtils {
 		return dir.listFiles(ff);
 	}
 
+	public static File[] filterFiles(String dir, FileFilter ff) {
+		return filterFiles(new File(dir), ff);
+	}
+
+	public static File[] filterFiles(File dir, FileFilter ff) {
+		if (dir == null || dir.exists() == false) {
+			return null;
+		}
+
+		return dir.listFiles(ff);
+	}
+
 	public static long getFileLastModified(String fileName) {
 		if (TextUtils.isEmpty(fileName)) {
 			return 0l;
@@ -770,7 +782,7 @@ public class FileUtils {
 		return success;
 	}
 
-	private static class RegexFilter implements FileFilter {
+	public static class RegexFilter implements FileFilter {
 
 		private Pattern mFilePattern;
 
