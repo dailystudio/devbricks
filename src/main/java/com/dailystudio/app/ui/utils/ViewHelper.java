@@ -6,7 +6,9 @@ import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.dailystudio.development.Logger;
 
@@ -70,6 +72,42 @@ public class ViewHelper {
         
         return ((screenSize == Configuration.SCREENLAYOUT_SIZE_LARGE)
         		|| (screenSize == SCREENLAYOUT_SIZE_XLARGE));
+	}
+
+	public static int dpToPixel(Context context, int dp) {
+		if (context == null) {
+			return dp;
+		}
+
+		final Resources res = context.getResources();
+		if (res == null) {
+			return dp;
+		}
+
+		DisplayMetrics displayMetrics = res.getDisplayMetrics();
+		if (displayMetrics == null) {
+			return dp;
+		}
+
+		return (int)((dp * displayMetrics.density) + 0.5);
+	}
+
+	public static int pixelToDp(Context context, int px) {
+		if (context == null) {
+			return px;
+		}
+
+		final Resources res = context.getResources();
+		if (res == null) {
+			return px;
+		}
+
+		DisplayMetrics displayMetrics = res.getDisplayMetrics();
+		if (displayMetrics == null) {
+			return px;
+		}
+
+		return (int) ((px / displayMetrics.density) + 0.5);
 	}
 
 }
