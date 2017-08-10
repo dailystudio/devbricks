@@ -15,18 +15,25 @@ import com.dailystudio.app.widget.DeferredHandler;
 import com.dailystudio.development.Logger;
 
 public abstract class AbsAdapterDialogFragment<Item, ItemSet> extends AbsLoaderDialogFragment<ItemSet>
-	implements OnItemClickListener {
-	
+	implements OnItemClickListener, AdapterView.OnItemLongClickListener {
+
 	public interface OnListItemSelectedListener {
 		
         public void onListItemSelected(Object itemData);
         
     }
 
+	public interface OnListItemHoldListener {
+
+        public boolean onListItemHold(Object itemData);
+
+    }
+
 	private AdapterView<BaseAdapter> mAdapterView;
 	private BaseAdapter mAdapter;
 	
     private OnListItemSelectedListener mOnListItemSelectedListener;
+    private OnListItemHoldListener mOnListItemHoldListener;
 
 	@Override
 	protected void setupViewsOnDialog(Dialog dialog) {
@@ -49,6 +56,22 @@ public abstract class AbsAdapterDialogFragment<Item, ItemSet> extends AbsLoaderD
 			
 			mOnListItemSelectedListener.onListItemSelected(data);
 		}
+	}
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+		if (mOnListItemHoldListener != null) {
+			final BaseAdapter adapter = getAdapter();
+			if (adapter == null) {
+				return false;
+			}
+
+			Object data = adapter.getItem(position);
+
+			return mOnListItemHoldListener.onListItemHold(data);
+		}
+
+		return false;
 	}
 
 	protected int getAdapterViewId() {
@@ -82,6 +105,7 @@ public abstract class AbsAdapterDialogFragment<Item, ItemSet> extends AbsLoaderD
 		if (mAdapterView != null) {
 			mAdapterView.setAdapter(mAdapter);
 			mAdapterView.setOnItemClickListener(this);
+			mAdapterView.setOnItemLongClickListener(this);
 			mAdapterView.setVisibility(View.VISIBLE);
 			mAdapterView.scheduleLayoutAnimation();
 			
@@ -109,6 +133,13 @@ public abstract class AbsAdapterDialogFragment<Item, ItemSet> extends AbsLoaderD
         } else {
         	Logger.warn("host activity does not implements: %s",
         			OnListItemSelectedListener.class.getSimpleName());
+        }
+
+        if (activity instanceof OnListItemHoldListener) {
+        	mOnListItemHoldListener = (OnListItemHoldListener) activity;
+        } else {
+        	Logger.warn("host activity does not implements: %s",
+					OnListItemHoldListener.class.getSimpleName());
         }
     }
 
