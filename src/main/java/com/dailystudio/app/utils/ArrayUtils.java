@@ -1,5 +1,9 @@
 package com.dailystudio.app.utils;
 
+import android.text.TextUtils;
+
+import com.dailystudio.development.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -176,13 +180,41 @@ public class ArrayUtils {
 		final int N = a.length;
 		
 		for(int i = 0; i < N; i++) {
-			sb.append(String.format("%02x", a[i]&0xff));
+			sb.append(String.format("%02X", a[i]&0xff));
 			if (withSplitter && i != (N - 1)) {
 				sb.append(':');
 			}
 		}
 		
 		return sb.toString();
+	}
+
+	public static byte[] hexStringToByteArray(String hexString) {
+		if (TextUtils.isEmpty(hexString)) {
+			return null;
+		}
+
+		final int N = hexString.length();
+
+		if (N % 2 != 0) {
+			Logger.warn("length of hex string is invalid. len = %d", N);
+
+			return null;
+		}
+
+		StringBuilder builder = new StringBuilder("0");
+		byte[] bytes = new byte[N / 2];
+		for (int i = 0; i < N; i += 2) {
+			bytes[i / 2] = (byte) ((Character.digit(hexString.charAt(i), 16) << 4)
+					+ Character.digit(hexString.charAt(i + 1), 16));
+/*
+			Logger.debug("current byte[%c%c]: byte = %02X ",
+					hexString.charAt(i), hexString.charAt(i + 1),
+					bytes[i / 2]);
+*/
+		}
+
+		return bytes;
 	}
 
 }
