@@ -165,7 +165,60 @@ public class ArrayUtils {
 		
 		return sb.toString();
 	}
-	
+
+	/**
+	 * XXX: Code from com.google.common.primitives.Bytes
+	 *
+	 * Returns the index of the first appearance of the value {@code target} in {@code array}.
+	 *
+	 * @param array an array of {@code byte} values, possibly empty
+	 * @param target a primitive {@code byte} value
+	 * @return the least index {@code i} for which {@code array[i] == target}, or {@code -1} if no
+	 *     such index exists.
+	 */
+	public static int indexOf(byte[] array, byte target) {
+		return indexOf(array, target, 0, array.length);
+	}
+
+	public static int indexOf(byte[] array, byte target, int start, int end) {
+		for (int i = start; i < end; i++) {
+			if (array[i] == target) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int bytesToInteger(byte[] a) {
+		return bytesToInteger(a, 0);
+	}
+
+	public static String bytesToString(byte[] a) {
+		return bytesToString(a, true);
+	}
+
+	public static String bytesToString(byte[] a, boolean trim) {
+		if (a == null) {
+			return null;
+		}
+
+		int index = ArrayUtils.indexOf(a, (byte)0);
+
+		return new String(a, 0, index).trim();
+	}
+
+	public static int bytesToInteger(byte[] a, int startIndex) {
+		if (a == null ||
+				startIndex + 3 >= a.length) {
+			return 0;
+		}
+
+		return (a[startIndex] & 0xff)
+				| ((a[startIndex + 1] << 8) & 0xff00)
+				| ((a[startIndex + 2] << 24) >>> 8)
+				| (a[startIndex + 3] << 24); // byte[] to int
+	}
+
 	public static String byteArrayToHex(byte[] a) {
 		return byteArrayToHex(a, false);
 	}
