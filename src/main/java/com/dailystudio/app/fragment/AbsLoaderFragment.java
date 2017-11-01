@@ -3,6 +3,7 @@ package com.dailystudio.app.fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.ContextCompat;
@@ -34,6 +35,17 @@ public abstract class AbsLoaderFragment<T> extends BaseIntentFragment implements
 		}
 	}
 
+	public void deferredRestartLoader(long milliseconds) {
+		if (milliseconds <= 0) {
+			restartLoader();
+
+			return;
+		}
+
+		mHandler.removeCallbacks(mDeferredRestartLoaderRunnable);
+		mHandler.postDelayed(mDeferredRestartLoaderRunnable, milliseconds);
+	}
+
 	private LoaderManager getLoaderManagerSafe() {
 		LoaderManager loaderManager;
 
@@ -61,5 +73,16 @@ public abstract class AbsLoaderFragment<T> extends BaseIntentFragment implements
 
 	abstract protected int getLoaderId();
 	abstract protected Bundle createLoaderArguments();
+
+	private Handler mHandler = new Handler();
+
+	private Runnable mDeferredRestartLoaderRunnable = new Runnable() {
+
+		@Override
+		public void run() {
+			restartLoader();
+		}
+
+	};
 
 }
