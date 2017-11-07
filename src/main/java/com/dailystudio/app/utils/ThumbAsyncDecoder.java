@@ -17,6 +17,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.dailystudio.development.Logger;
 
@@ -479,9 +481,14 @@ public class ThumbAsyncDecoder {
 		requestDecodeThumb(context, new DecodeAndroidResourceSchemeThumbAsyncTask(
 				thumbKey, resUri));
 	}
-	
-	public static void requestDecodeThumb(Context context, 
-			AbsDecodeThumbAsyncTask decodeTask) {
+
+	private final static int EXECUTOR_QUEUE_SIZE = 128;
+	private final static int REQUEST_QUEUE_DELAY = 500;
+
+	private static Handler sHandler = new Handler(Looper.getMainLooper());
+
+	public static void requestDecodeThumb(final Context context,
+			final AbsDecodeThumbAsyncTask decodeTask) {
 		if (context == null || decodeTask == null) {
 			return;
 		}
@@ -497,14 +504,37 @@ public class ThumbAsyncDecoder {
 		
 		synchronized (sThumbDecodeRequests) {
 			if (sThumbDecodeRequests.contains(thumbKey)) {
-				Logger.debug("SKIP PENDING DECODE: thumbKey = %s", thumbKey);
+//				Logger.debug("SKIP PENDING DECODE: thumbKey = %s", thumbKey);
 				return;
 			}
 			
 			sThumbDecodeRequests.add(thumbKey);
-			
-			decodeTask.decode(context);
+
+			/*
+			 * If we request fast here, the queue size of THREAD_POOL_EXECUTOR will reach its
+			 * max capacity. Now, it is 128. We just slow down the request frequency, when the
+			 * queue size is getting close the ceiling.
+			 */
+			final int queued = sThumbDecodeRequests.size();
+			if (queued >= allowableQueuedSize()) {
+				Logger.warn("[%d] request queued, delay new one for %d milliseconds.",
+						queued, REQUEST_QUEUE_DELAY);
+				sHandler.postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						decodeTask.decode(context);
+					}
+
+				}, REQUEST_QUEUE_DELAY);
+			} else {
+				decodeTask.decode(context);
+			}
 		}
 	}
-	
+
+	private static int allowableQueuedSize() {
+		return (int)(EXECUTOR_QUEUE_SIZE * .8f);
+	}
+
 }
