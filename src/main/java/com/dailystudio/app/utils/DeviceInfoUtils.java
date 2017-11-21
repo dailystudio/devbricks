@@ -15,6 +15,11 @@ import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
+
 public class DeviceInfoUtils {
 
 	public static boolean isRoaming(Context context) {
@@ -165,7 +170,6 @@ public class DeviceInfoUtils {
         return countryCode;
     }
 
-
     public static String getSimCountryIso(Context context) {
         TelephonyManager telmgr = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
@@ -174,6 +178,50 @@ public class DeviceInfoUtils {
         }
 
         return telmgr.getSimCountryIso();
+    }
+
+    public static String getIPAddress(boolean useIPv4) {
+        return getIPAddress(useIPv4, false);
+    }
+
+    public static String getIPAddress(boolean useIPv4, boolean containsP2p) {
+        String ipAddr = "";
+
+        try {
+            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface netIntf : interfaces) {
+                if (netIntf.getName().contains("p2p") && !containsP2p) {
+                    continue;
+                }
+
+                List<InetAddress> netAddrs = Collections.list(netIntf.getInetAddresses());
+                for (InetAddress addr : netAddrs) {
+                    if (!addr.isLoopbackAddress()) {
+                        String strAddr = addr.getHostAddress();
+                        Logger.debug("strAddr = %s", strAddr);
+                        //boolean isIPv4 = InetAddressUtils.isIPv4Address(strAddr);
+                        boolean isIPv4 = strAddr.indexOf(':') < 0;
+
+                        if (useIPv4) {
+                            if (isIPv4) {
+                                ipAddr = strAddr;
+                            }
+                        } else {
+                            if (!isIPv4) {
+                                int delim = strAddr.indexOf('%'); // drop ip6 zone suffix
+                                ipAddr = (delim < 0 ?
+                                        strAddr.toUpperCase()
+                                        : strAddr.substring(0, delim).toUpperCase());
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Logger.warn("could not get local ip: %s", ex.toString());
+        }
+
+        return ipAddr;
     }
 
 }
