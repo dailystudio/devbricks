@@ -13,6 +13,7 @@
    	<color name="red">#FFFF0000</color>
    	
     <color name="semi_white">#CCFFFFFF</color>
+    <color name="semi_black">#80000000</color>
    	<color name="light_white">#FFEEEEEE</color>
     <color name="light_gray">#FF999999</color>
     <color name="light_black">#FF262626</color>
