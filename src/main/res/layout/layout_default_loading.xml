@@ -16,7 +16,7 @@
 			android:layout_height="wrap_content" />
 
 		<TextView
-			style="@style/DefaultEmptyText"
+			style="@style/DefaultLoadingText"
 			android:text="@string/default_loading"
 			android:layout_gravity="center_vertical"
 			android:layout_centerInParent="true"

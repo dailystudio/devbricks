@@ -165,6 +165,13 @@
 		<item name="android:textStyle">bold|italic</item>
 	</style>
 
+	<style name="DefaultLoadingText" parent="DefaultLabel">
+		<item name="android:gravity">center</item>
+		<item name="android:textColor">@color/light_gray</item>
+		<item name="android:textSize">@dimen/default_loading_text_font_size</item>
+		<item name="android:textStyle">bold|italic</item>
+	</style>
+
 	<style name="DefaultPromptText">
 		<item name="android:textColor">@color/action_bar_text_color</item>
 		<item name="android:textSize">@dimen/action_bar_text_size</item>
