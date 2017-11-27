@@ -101,10 +101,35 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 		return mItemDecoration;
 	}
 
- 	@Override
+	@Override
+	public void restartLoader() {
+		hideList();
+		super.restartLoader();
+	}
+
+	private void hideList() {
+		View view = getRecyclerView();
+		if (view == null) {
+			return;
+		}
+
+		view.setVisibility(View.INVISIBLE);
+	}
+
+	private void showList() {
+		View view = getRecyclerView();
+		if (view == null) {
+			return;
+		}
+
+		view.setVisibility(View.VISIBLE);
+	}
+
+	@Override
  	public void onLoadFinished(Loader<ItemSet> loader, ItemSet data) {
 		super.onLoadFinished(loader, data);
 
+		showList();
  		bindData(mAdapter, data);
  	}
  	
@@ -112,6 +137,7 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
  	public void onLoaderReset(Loader<ItemSet> loader) {
 		super.onLoaderReset(loader);
 
+		showList();
  		bindData(mAdapter, null);
  	}
  	

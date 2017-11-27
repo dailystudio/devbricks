@@ -133,14 +133,46 @@ public abstract class AbsExpandableListAdapterFragment<Group extends ExpandableG
         }
     }
 
+	@Override
+	public void restartLoader() {
+		hideList();
+		super.restartLoader();
+	}
+
+	private void hideList() {
+		View view = getAdapterView();
+		if (view == null) {
+			return;
+		}
+
+		view.setVisibility(View.INVISIBLE);
+	}
+
+	private void showList() {
+		View view = getAdapterView();
+		if (view == null) {
+			return;
+		}
+
+		view.setVisibility(View.VISIBLE);
+	}
+
  	@Override
  	public void onLoadFinished(Loader<ExpandableListData<Group, Item, MapKey>> loader, ExpandableListData<Group, Item, MapKey> data) {
- 		bindData(mAdapter, data);
+ 		super.onLoadFinished(loader, data);
+
+ 		showList();
+
+		bindData(mAdapter, data);
  	}
  	
  	@Override
  	public void onLoaderReset(Loader<ExpandableListData<Group, Item, MapKey>> loader) {
- 		bindData(mAdapter, null);
+ 		super.onLoaderReset(loader);
+
+ 		showList();
+
+		bindData(mAdapter, null);
  	}
  	
  	protected void removeCallbacks(Runnable r) {
