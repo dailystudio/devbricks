@@ -7,7 +7,10 @@ import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
+import android.view.View;
 
+import com.dailystudio.R;
 import com.dailystudio.development.Logger;
 
 public abstract class AbsLoaderFragment<T> extends BaseIntentFragment implements LoaderCallbacks<T> {
@@ -19,6 +22,7 @@ public abstract class AbsLoaderFragment<T> extends BaseIntentFragment implements
 		LoaderManager ldMgr = getLoaderManagerSafe();
 		if (ldMgr != null) {
 			ldMgr.initLoader(getLoaderId(), createLoaderArguments(), this);
+			showLoadingView();
 		}
 	}
 	
@@ -32,7 +36,18 @@ public abstract class AbsLoaderFragment<T> extends BaseIntentFragment implements
 		LoaderManager ldMgr = getLoaderManagerSafe();
 		if (ldMgr != null) {
 			ldMgr.restartLoader(getLoaderId(), createLoaderArguments(), this);
+			showLoadingView();
 		}
+	}
+
+	@Override
+	public void onLoadFinished(Loader<T> loader, T data) {
+		hideLoadingView();
+	}
+
+	@Override
+	public void onLoaderReset(Loader<T> loader) {
+		hideLoadingView();
 	}
 
 	public void deferredRestartLoader(long milliseconds) {
@@ -64,6 +79,51 @@ public abstract class AbsLoaderFragment<T> extends BaseIntentFragment implements
 
 	protected int getEmptyViewId() {
 		return android.R.id.empty;
+	}
+
+	private View findLoadingView() {
+		View rootView = getView();
+		if (rootView == null) {
+			return null;
+		}
+
+		return rootView.findViewById(getLoadingViewId());
+	}
+
+	private View findEmptyView() {
+		View rootView = getView();
+		if (rootView == null) {
+			return null;
+		}
+
+		return rootView.findViewById(getEmptyViewId());
+	}
+
+	protected void showLoadingView() {
+		View emptyView = findEmptyView();
+		if (emptyView != null) {
+			emptyView.setVisibility(View.GONE);
+		}
+
+		View loadingView = findLoadingView();
+		if (loadingView == null) {
+			return;
+		}
+
+		loadingView.setVisibility(View.VISIBLE);
+	}
+
+	protected void hideLoadingView() {
+		View loadingView = findLoadingView();
+		if (loadingView == null) {
+			return;
+		}
+
+		loadingView.setVisibility(View.GONE);
+	}
+
+	protected int getLoadingViewId() {
+		return R.id.loading;
 	}
 
 	public boolean isPermissionGranted(String permission){

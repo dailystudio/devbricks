@@ -145,13 +145,17 @@ public abstract class AbsAdapterDialogFragment<Item, ItemSet> extends AbsLoaderD
 
  	@Override
  	public void onLoadFinished(Loader<ItemSet> loader, ItemSet data) {
+		super.onLoadFinished(loader, data);
+
  		bindData(mAdapter, data);
- 	};
+ 	}
  	
  	@Override
  	public void onLoaderReset(Loader<ItemSet> loader) {
+		super.onLoaderReset(loader);
+
  		bindData(mAdapter, null);
- 	};
+ 	}
  	
  	protected void removeCallbacks(Runnable r) {
  		mHandler.removeCallbacks(r);

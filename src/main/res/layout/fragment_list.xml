@@ -16,5 +16,10 @@
 		android:text="@string/default_nodata_prompt"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"/>
-        
+
+	<include
+		layout="@layout/layout_default_loading"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
+
 </RelativeLayout>

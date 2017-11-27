@@ -17,7 +17,12 @@ public abstract class AbsArrayAdapterDialogFragment<T> extends AbsAdapterDialogF
         
         sortAdapterIfPossible();
     }
-    
+
+    @Override
+    public void onLoaderReset(Loader<List<T>> loader) {
+        super.onLoaderReset(loader);
+    }
+
     @Override
     protected void bindData(BaseAdapter adapter, List<T> data) {
         if (adapter instanceof ArrayAdapter == false) {

@@ -103,11 +103,15 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 
  	@Override
  	public void onLoadFinished(Loader<ItemSet> loader, ItemSet data) {
+		super.onLoadFinished(loader, data);
+
  		bindData(mAdapter, data);
  	}
  	
  	@Override
  	public void onLoaderReset(Loader<ItemSet> loader) {
+		super.onLoaderReset(loader);
+
  		bindData(mAdapter, null);
  	}
  	

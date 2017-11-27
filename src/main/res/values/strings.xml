@@ -21,5 +21,6 @@
 	<string name="date_label_yesterday">Yesterday</string>
 
 	<string name="default_nodata_prompt">No data collected.</string>
+	<string name="default_loading">Loading your data ...</string>
 
 </resources>
