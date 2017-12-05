@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.dailystudio.R;
 import com.dailystudio.app.fragment.BaseIntentFragment;
+import com.dailystudio.development.Logger;
 
 import java.util.List;
 
@@ -174,6 +175,10 @@ public class ActionBarFragmentActivity extends AppCompatActivity {
             return;
         }
 
+        if (mSnackBar != null) {
+            hidePrompt();
+        }
+
         mSnackBar = Snackbar.make(contentView,
                 prompt, duration);
         if (mSnackBar != null) {
@@ -192,6 +197,7 @@ public class ActionBarFragmentActivity extends AppCompatActivity {
             }
 
             mSnackBar.show();
+            Logger.debug("snack bar shown: %s", mSnackBar);
         }
     }
 
@@ -205,6 +211,7 @@ public class ActionBarFragmentActivity extends AppCompatActivity {
     public void hidePrompt() {
         if (mSnackBar != null) {
             mSnackBar.dismiss();
+            Logger.debug("snack bar dismissed: %s", mSnackBar);
 
             mSnackBar = null;
         }

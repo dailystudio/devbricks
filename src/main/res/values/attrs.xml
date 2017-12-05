@@ -33,6 +33,7 @@
 
     <declare-styleable name="GifMovieView">
         <attr name="gif" format="reference" />
+        <attr name="tintColor" format="reference|color" />
         <attr name="paused" format="boolean" />
         <attr name="infinite" format="boolean" />
         <attr name="fill" format="boolean" />

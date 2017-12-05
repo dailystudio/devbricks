@@ -148,8 +148,16 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
  	protected void post(Runnable r) {
  		mHandler.post(r);
  	}
- 	
+
  	protected void postDelayed(Runnable r, long delayMillis) {
+		postDelayed(r, delayMillis, false);
+	}
+
+ 	protected void postDelayed(Runnable r, long delayMillis, boolean uniqueness) {
+		if (uniqueness) {
+			mHandler.removeCallbacks(r);
+		}
+
  		mHandler.postDelayed(r, delayMillis);
  	}
  	

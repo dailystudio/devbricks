@@ -74,10 +74,12 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
         T object = getObject(context, args);
         if (object == null) {
             object = createObject(context, args);
+            Logger.debug("no object existed, add new one: %s", object);
 
             writer.insert(object);
         } else {
             applyArgsOnObject(object, args);
+            Logger.debug("object existed, update with new args: %s", object);
 
             writer.update(object);
         }

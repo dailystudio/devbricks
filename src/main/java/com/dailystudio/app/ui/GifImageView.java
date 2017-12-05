@@ -3,9 +3,14 @@ package com.dailystudio.app.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.ColorFilter;
 import android.graphics.Movie;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -13,6 +18,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.dailystudio.R;
+import com.dailystudio.app.ui.utils.ColorHelper;
 import com.dailystudio.development.Logger;
 
 public class GifImageView extends View {
@@ -31,6 +37,10 @@ public class GifImageView extends View {
     private boolean mInfinite = true;
 
     private boolean mFillCanvas = false;
+
+    private int mTintColor;
+    private boolean mHasTintColor = false;
+    private Paint mTintPaint;
 
     public GifImageView(Context context) {
         this(context, null);
@@ -62,6 +72,12 @@ public class GifImageView extends View {
                 R.styleable.GifMovieView, defStyle,
                 0);
 
+        if (array.hasValue(R.styleable.GifMovieView_tintColor)) {
+            mTintColor = array.getColor(R.styleable.GifMovieView_tintColor,
+                    ColorHelper.getColorResource(getContext(), R.color.android_blue));
+            mHasTintColor = true;
+        }
+
         mMovieResourceId = array.getResourceId(R.styleable.GifMovieView_gif,
                 -1);
         mPaused = array.getBoolean(R.styleable.GifMovieView_paused, false);
@@ -72,6 +88,16 @@ public class GifImageView extends View {
         if (mMovieResourceId != -1) {
             mMovie = Movie.decodeStream(getResources().openRawResource(
                     mMovieResourceId));
+        }
+
+        if (mHasTintColor) {
+            mTintPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+            ColorFilter filter = new PorterDuffColorFilter(
+                    mTintColor,
+                    PorterDuff.Mode.SRC_ATOP);
+
+            mTintPaint.setColorFilter(filter);
         }
     }
 
@@ -138,7 +164,11 @@ public class GifImageView extends View {
         canvas.save(Canvas.MATRIX_SAVE_FLAG);
         canvas.scale(mDrawingFactor, mDrawingFactor);
 
-        mMovie.draw(canvas, xOffset, yOffset);
+        if (mHasTintColor) {
+            mMovie.draw(canvas, xOffset, yOffset, mTintPaint);
+        } else {
+            mMovie.draw(canvas, xOffset, yOffset);
+        }
 
         canvas.restore();
     }
