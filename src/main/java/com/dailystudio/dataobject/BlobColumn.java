@@ -129,4 +129,11 @@ public class BlobColumn extends Column {
         
         return new String(s);
     }
+
+
+	@Override
+	public Class<?> getValueClass() {
+		return Byte[].class;
+	}
+
 }

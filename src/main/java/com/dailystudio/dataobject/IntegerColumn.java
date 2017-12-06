@@ -57,6 +57,11 @@ public class IntegerColumn extends Column {
 	}
 
 	@Override
+	public Class<?> getValueClass() {
+		return Integer.class;
+	}
+
+	@Override
 	protected boolean matchColumnType(Object value) {
 		return (value instanceof Integer);
 	}

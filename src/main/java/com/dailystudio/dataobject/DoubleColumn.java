@@ -108,4 +108,9 @@ public class DoubleColumn extends Column {
 		return new DecimalFormat("0.####################").format(dVal.doubleValue());
 	}
 
+	@Override
+	public Class<?> getValueClass() {
+		return Double.class;
+	}
+
 }

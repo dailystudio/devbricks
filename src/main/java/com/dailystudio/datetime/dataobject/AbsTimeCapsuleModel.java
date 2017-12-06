@@ -3,14 +3,11 @@ package com.dailystudio.datetime.dataobject;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.dailystudio.app.utils.ArrayUtils;
+import com.dailystudio.dataobject.DatabaseObjectKeys;
 import com.dailystudio.dataobject.DatabaseObject;
 import com.dailystudio.dataobject.DatabaseObjectFactory;
 import com.dailystudio.dataobject.query.ExpressionToken;
 import com.dailystudio.dataobject.query.Query;
-import com.dailystudio.datetime.dataobject.TimeCapsule;
-import com.dailystudio.datetime.dataobject.TimeCapsuleDatabaseReader;
-import com.dailystudio.datetime.dataobject.TimeCapsuleDatabaseWriter;
 import com.dailystudio.development.Logger;
 
 import java.util.List;
@@ -33,25 +30,24 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
         mObjectVersion = version;
     }
 
-    public T addObject(Context context, Object... args) {
-        Logger.debug("add new object: args = [%s]",
-                args);
+    public T addObject(Context context, DatabaseObjectKeys keys) {
+        Logger.debug("add new object: keys = [%s]",
+                keys);
         if (context == null
-                || args == null
-                || args.length <= 0) {
+                || keys == null) {
             return null;
         }
 
-        if (isObjectExisted(context, args)) {
-            Logger.debug("object with args[%s] is already existed",
-                    ArrayUtils.arrayToString(args));
+        if (isObjectExisted(context, keys)) {
+            Logger.debug("object with keys[%s] is already existed",
+                    keys);
             return null;
         }
 
         TimeCapsuleDatabaseWriter<T> writer =
                 new TimeCapsuleDatabaseWriter<>(context, mObjectClass);
 
-        T object = createObject(context, args);
+        T object = createObject(keys);
 
         writer.insert(object);
 
@@ -59,27 +55,26 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
     }
 
     public T addOrUpdateObject(Context context,
-                               Object... args) {
-        Logger.debug("add or update object: args = [%s]",
-                args);
+                               DatabaseObjectKeys keys) {
+        Logger.debug("add or update object: keys = [%s]",
+                keys);
         if (context == null
-                || args == null
-                || args.length <= 0) {
+                || keys == null) {
             return null;
         }
 
         TimeCapsuleDatabaseWriter<T> writer =
                 new TimeCapsuleDatabaseWriter<>(context, mObjectClass);
 
-        T object = getObject(context, args);
+        T object = getObject(context, keys);
         if (object == null) {
-            object = createObject(context, args);
+            object = createObject(keys);
             Logger.debug("no object existed, add new one: %s", object);
 
             writer.insert(object);
         } else {
-            applyArgsOnObject(object, args);
-            Logger.debug("object existed, update with new args: %s", object);
+            applyArgsOnObject(object, keys);
+            Logger.debug("object existed, update with new keys: %s", object);
 
             writer.update(object);
         }
@@ -87,15 +82,13 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
         return object;
     }
 
-    public boolean isObjectExisted(Context context,
-                                   Object... keys) {
+    public boolean isObjectExisted(Context context, DatabaseObjectKeys keys) {
         return (getObject(context, keys) != null);
     }
 
-    public T getObject(Context context, Object... keys) {
+    public T getObject(Context context, DatabaseObjectKeys keys) {
         if (context == null
-                || keys == null
-                || keys.length <= 0) {
+                || keys == null) {
             return null;
         }
 
@@ -114,6 +107,37 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
         return (reader.queryLastOne(query));
     }
 
+    public T deleteObject(Context context, DatabaseObjectKeys keys) {
+        T oldObject = getObject(context, keys);
+
+        TimeCapsuleDatabaseWriter<T> writer =
+                new TimeCapsuleDatabaseWriter<>(context, mObjectClass);
+
+        writer.delete(oldObject);
+
+        return oldObject;
+    }
+
+    public int deleteObjects(Context context, DatabaseObjectKeys keys) {
+        if (context == null) {
+            return 0;
+        }
+
+        Query query = new Query(mObjectClass);
+
+        ExpressionToken token = objectsDeletionToken(keys);
+        if (token == null) {
+            return 0;
+        }
+
+        query.setSelection(token);
+
+        TimeCapsuleDatabaseWriter<T> writer =
+                new TimeCapsuleDatabaseWriter<>(context, mObjectClass);
+
+        return writer.delete(query);
+    }
+
     public List<T> listObjects(Context context) {
         if (context == null) {
             return null;
@@ -127,7 +151,7 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
         return reader.query(query);
     }
 
-    protected T createObject(Context context, Object... keys) {
+    protected T createObject(DatabaseObjectKeys keys) {
         T object = (T)DatabaseObjectFactory.createDatabaseObject
                 (mObjectClass, mObjectVersion);
 
@@ -136,7 +160,11 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
         return object;
     }
 
-    abstract protected ExpressionToken objectExistenceToken(Object... keys);
-    abstract protected void applyArgsOnObject(T object, Object... keys);
+    protected ExpressionToken objectsDeletionToken(DatabaseObjectKeys keys) {
+        return objectExistenceToken(keys);
+    }
+
+    abstract protected ExpressionToken objectExistenceToken(DatabaseObjectKeys keys);
+    abstract protected void applyArgsOnObject(T object, DatabaseObjectKeys args);
 
 }

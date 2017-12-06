@@ -125,5 +125,9 @@ public class TextColumn extends Column {
 				Expression.OPERATOR_LIKE, value);
 	}
 
+	@Override
+	public Class<?> getValueClass() {
+		return String.class;
+	}
 
 }

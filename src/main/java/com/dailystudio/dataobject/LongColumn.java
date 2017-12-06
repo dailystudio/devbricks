@@ -105,4 +105,9 @@ public class LongColumn extends Column {
 		return String.valueOf(lVal.longValue());
 	}
 
+	@Override
+	public Class<?> getValueClass() {
+		return Long.class;
+	}
+
 }

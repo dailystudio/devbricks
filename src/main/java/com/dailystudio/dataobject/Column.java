@@ -121,6 +121,8 @@ public abstract class Column {
 				&& (mIsPrimary == column.mIsPrimary));
 	}
 
+	public abstract Class<?> getValueClass();
+
 	abstract boolean matchColumnType(Object value);
 	
 	abstract void setValue(ContentValues container, Object value);
