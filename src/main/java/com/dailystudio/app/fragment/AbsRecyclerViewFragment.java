@@ -103,17 +103,20 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 
 	@Override
 	public void restartLoader() {
-		hideList();
+		hideListAndEmpty();
 		super.restartLoader();
 	}
 
-	private void hideList() {
-		View view = getRecyclerView();
-		if (view == null) {
-			return;
+	private void hideListAndEmpty() {
+		View recyclerView = getRecyclerView();
+		if (recyclerView != null) {
+			recyclerView.setVisibility(View.INVISIBLE);
 		}
 
-		view.setVisibility(View.INVISIBLE);
+		View emptyView = mEmptyView;
+		if (emptyView != null) {
+			emptyView.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	private void showList() {
