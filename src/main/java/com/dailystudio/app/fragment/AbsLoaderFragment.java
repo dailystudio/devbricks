@@ -14,7 +14,9 @@ import com.dailystudio.R;
 import com.dailystudio.development.Logger;
 
 public abstract class AbsLoaderFragment<T> extends BaseIntentFragment implements LoaderCallbacks<T> {
-    
+
+	private boolean mShowLoadingView = true;
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -22,7 +24,10 @@ public abstract class AbsLoaderFragment<T> extends BaseIntentFragment implements
 		LoaderManager ldMgr = getLoaderManagerSafe();
 		if (ldMgr != null) {
 			ldMgr.initLoader(getLoaderId(), createLoaderArguments(), this);
-			showLoadingView();
+
+			if (shouldShowLoadingView()) {
+				showLoadingView();
+			}
 		}
 	}
 	
@@ -36,7 +41,10 @@ public abstract class AbsLoaderFragment<T> extends BaseIntentFragment implements
 		LoaderManager ldMgr = getLoaderManagerSafe();
 		if (ldMgr != null) {
 			ldMgr.restartLoader(getLoaderId(), createLoaderArguments(), this);
-			showLoadingView();
+
+			if (shouldShowLoadingView()) {
+				showLoadingView();
+			}
 		}
 	}
 
@@ -90,13 +98,21 @@ public abstract class AbsLoaderFragment<T> extends BaseIntentFragment implements
 		return rootView.findViewById(getLoadingViewId());
 	}
 
-	private View findEmptyView() {
+	protected View findEmptyView() {
 		View rootView = getView();
 		if (rootView == null) {
 			return null;
 		}
 
 		return rootView.findViewById(getEmptyViewId());
+	}
+
+	public boolean shouldShowLoadingView() {
+		return mShowLoadingView;
+	}
+
+	public void setShowLoadingView(boolean show) {
+		mShowLoadingView = show;
 	}
 
 	protected void showLoadingView() {

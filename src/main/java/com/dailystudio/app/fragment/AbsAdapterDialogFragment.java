@@ -146,17 +146,23 @@ public abstract class AbsAdapterDialogFragment<Item, ItemSet> extends AbsLoaderD
 
 	@Override
 	public void restartLoader() {
-		hideList();
+		if (shouldShowLoadingView()) {
+			hideListAndEmpty();
+		}
+
 		super.restartLoader();
 	}
 
-	private void hideList() {
-		View view = getAdapterView();
-		if (view == null) {
-			return;
+	private void hideListAndEmpty() {
+		View recyclerView = getAdapterView();
+		if (recyclerView != null) {
+			recyclerView.setVisibility(View.INVISIBLE);
 		}
 
-		view.setVisibility(View.INVISIBLE);
+		View emptyView = findEmptyView();
+		if (emptyView != null) {
+			emptyView.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	private void showList() {

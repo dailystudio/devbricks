@@ -3,6 +3,7 @@ package com.dailystudio.app.fragment;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -12,12 +13,17 @@ import com.dailystudio.development.Logger;
 
 public abstract class AbsLoaderDialogFragment<T> extends BaseIntentDialogFragment implements LoaderCallbacks<T> {
 
+	private boolean mShowLoadingView = true;
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
 		getLoaderManager().initLoader(getLoaderId(), createLoaderArguments(), this);
-		showLoadingView();
+
+		if (shouldShowLoadingView()) {
+			showLoadingView();
+		}
 	}
 
 	public void onNewIntent(Intent intent) {
@@ -28,7 +34,10 @@ public abstract class AbsLoaderDialogFragment<T> extends BaseIntentDialogFragmen
 	
 	public void restartLoader() {
 		getLoaderManager().restartLoader(getLoaderId(), createLoaderArguments(), this);
-		showLoadingView();
+
+		if (shouldShowLoadingView()) {
+			showLoadingView();
+		}
 	}
 
 	@Override
@@ -50,13 +59,21 @@ public abstract class AbsLoaderDialogFragment<T> extends BaseIntentDialogFragmen
 		return dialog.findViewById(getLoadingViewId());
 	}
 
-	private View findEmptyView() {
+	protected View findEmptyView() {
 		Dialog dialog = getDialog();
 		if (dialog == null) {
 			return null;
 		}
 
 		return dialog.findViewById(getEmptyViewId());
+	}
+
+	public boolean shouldShowLoadingView() {
+		return mShowLoadingView;
+	}
+
+	public void setShowLoadingView(boolean show) {
+		mShowLoadingView = show;
 	}
 
 	protected void showLoadingView() {

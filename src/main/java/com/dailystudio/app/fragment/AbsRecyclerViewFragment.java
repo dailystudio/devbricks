@@ -65,7 +65,7 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 				mRecyclerView.addItemDecoration(mItemDecoration);
 			}
 
-			mEmptyView = fragmentView.findViewById(getEmptyViewId());
+			mEmptyView = findEmptyView();
 			if (mEmptyView != null && mAdapter != null) {
 				mAdapter.registerAdapterDataObserver(mAdapterDataObserver);
 			}
@@ -103,7 +103,10 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 
 	@Override
 	public void restartLoader() {
-		hideListAndEmpty();
+		if (shouldShowLoadingView()) {
+			hideListAndEmpty();
+		}
+
 		super.restartLoader();
 	}
 
@@ -113,7 +116,7 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 			recyclerView.setVisibility(View.INVISIBLE);
 		}
 
-		View emptyView = mEmptyView;
+		View emptyView = findEmptyView();
 		if (emptyView != null) {
 			emptyView.setVisibility(View.INVISIBLE);
 		}
