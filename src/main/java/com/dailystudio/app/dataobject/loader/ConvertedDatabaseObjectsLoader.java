@@ -11,7 +11,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
 
-public abstract class ConvertedDatabaseObjectsLoader<D extends DatabaseObject, P extends DatabaseObject, C extends DatabaseObject> 
+public abstract class ConvertedDatabaseObjectsLoader<D extends DatabaseObject, P extends DatabaseObject, C>
 	extends AbsAsyncDataLoader<List<C>> {
 
     final ForceLoadContentObserver mObserver = new ForceLoadContentObserver();
