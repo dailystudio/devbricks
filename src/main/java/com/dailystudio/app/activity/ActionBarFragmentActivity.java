@@ -127,6 +127,10 @@ public class ActionBarFragmentActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    public void hideFragmentOnCreate(int fragmentId) {
+        hideFragmentOnCreate(findFragment(fragmentId));
+    }
+
     public void hideFragmentOnCreate(Fragment fragment) {
         if (fragment == null) {
             return;
