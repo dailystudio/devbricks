@@ -2,6 +2,7 @@ package com.dailystudio.datetime.dataobject;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.dailystudio.dataobject.DatabaseObjectKeys;
 import com.dailystudio.dataobject.DatabaseObject;
@@ -17,6 +18,9 @@ import java.util.List;
  */
 
 public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
+
+    protected String TOKEN_TYPE_EXISTENCE = "existence";
+    protected String TOKEN_TYPE_DELETION = "deletion";
 
     private Class<T> mObjectClass;
     private int mObjectVersion;
@@ -97,7 +101,7 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
 
         Query query = new Query(mObjectClass);
 
-        ExpressionToken selToken = objectExistenceToken(keys);
+        ExpressionToken selToken = objectsToken(keys, TOKEN_TYPE_EXISTENCE);
         if (selToken == null) {
             return null;
         }
@@ -125,7 +129,8 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
 
         Query query = new Query(mObjectClass);
 
-        ExpressionToken token = objectsDeletionToken(keys);
+        ExpressionToken token = objectsToken(keys, TOKEN_TYPE_DELETION);
+        Logger.debug("deletion token = %s", token);
         if (token == null) {
             return 0;
         }
@@ -139,6 +144,12 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
     }
 
     public List<T> listObjects(Context context) {
+        return listObjects(context, null, null);
+    }
+
+    public List<T> listObjects(Context context,
+                               DatabaseObjectKeys keys,
+                               String listTokenType) {
         if (context == null) {
             return null;
         }
@@ -147,6 +158,16 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
                 new TimeCapsuleDatabaseReader<>(context, mObjectClass);
 
         Query query = new Query(mObjectClass);
+
+        if (keys != null
+                && !TextUtils.isEmpty(listTokenType)) {
+            ExpressionToken token = objectsToken(keys, listTokenType);
+            if (token == null) {
+                return null;
+            }
+
+            query.setSelection(token);
+        }
 
         return reader.query(query);
     }
@@ -158,6 +179,17 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
         applyArgsOnObject(object, keys);
 
         return object;
+    }
+
+    protected ExpressionToken objectsToken(DatabaseObjectKeys keys,
+                                           @NonNull String tokenType) {
+        if (TOKEN_TYPE_EXISTENCE.equals(tokenType)) {
+            return objectExistenceToken(keys);
+        } else if (TOKEN_TYPE_DELETION.equals(tokenType)) {
+            return objectsDeletionToken(keys);
+        }
+
+        return null;
     }
 
     protected ExpressionToken objectsDeletionToken(DatabaseObjectKeys keys) {
