@@ -165,6 +165,6 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
     }
 
     abstract protected ExpressionToken objectExistenceToken(DatabaseObjectKeys keys);
-    abstract protected void applyArgsOnObject(T object, DatabaseObjectKeys args);
+    abstract protected void applyArgsOnObject(T object, DatabaseObjectKeys keys);
 
 }
