@@ -14,9 +14,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import org.mozilla.universalchardet.UniversalDetector;
@@ -837,6 +840,119 @@ public class FileUtils {
 		}
 
 		return success;
+	}
+
+	public static String md5Dir(String dir) {
+		return md5Dir(dir, false);
+	}
+
+	public static String md5Dir(String dir, boolean hiddenFies) {
+		return md5Dir(new File(dir), hiddenFies);
+	}
+
+	public static String md5File(String file) {
+		return md5File(new File(file));
+	}
+
+	public static String md5Dir(File dir, boolean hiddenFiles) {
+		String md5 = "";
+
+		if (dir == null
+				|| !dir.exists()
+				|| !dir.isDirectory()) {
+			return md5;
+		}
+
+		File[] files = dir.listFiles();
+		if (files == null) {
+			return md5;
+		}
+
+        Arrays.sort(files);
+        Logger.debug("files: [%s]", ArrayUtils.arrayToString(files));
+
+		String childMd5;
+		for (File file: files) {
+		    if (!hiddenFiles && file.isHidden()) {
+		        continue;
+            }
+
+			if (file.isDirectory()) {
+				childMd5 = md5Dir(file, hiddenFiles);
+			} else {
+				childMd5 = md5File(file);
+			}
+
+			Logger.debug("md5 update: child[%s] md5 = [%s]",
+					file, childMd5);
+			md5 += childMd5;
+		}
+
+		return md5HashOfString(md5);
+	}
+
+	public static String md5File(File file) {
+		String md5 = "";
+
+		if (file == null
+				|| !file.exists()
+				|| !file.isFile()) {
+			return md5;
+		}
+
+		try {
+			InputStream input = new FileInputStream(file);
+			byte[] buffer  = new byte[1024];
+			MessageDigest md5Hash = MessageDigest.getInstance("MD5");
+
+			int numRead = 0;
+			while (numRead != -1) {
+				numRead = input.read(buffer);
+				if (numRead > 0) {
+					md5Hash.update(buffer, 0, numRead);
+				}
+			}
+
+			input.close();
+
+			byte [] md5Bytes = md5Hash.digest();
+            BigInteger bigInt = new BigInteger(1, md5Bytes);
+            String output = bigInt.toString(16);
+            // Fill to 32 chars
+            md5 = String.format("%32s", output).replace(' ', '0');
+		} catch (Exception e) {
+			Logger.error("md5 calculation failed on file[%s]: %s",
+					file, e.toString());
+		}
+
+		return md5;
+	}
+
+	private static String md5HashOfString (String str) {
+		if (TextUtils.isEmpty(str)) {
+			return str;
+		}
+
+		MessageDigest md5Hash;
+		String md5 = "";
+
+		try {
+			md5Hash = MessageDigest.getInstance("MD5");
+			md5Hash.reset();
+			md5Hash.update(str.getBytes());
+
+			byte md5Bytes[] = md5Hash.digest();
+
+            BigInteger bigInt = new BigInteger(1, md5Bytes);
+            String output = bigInt.toString(16);
+            // Fill to 32 chars
+            md5 = String.format("%32s", output).replace(' ', '0');
+		} catch (Exception e) {
+			Logger.error("md5 hash failed on string[%s]: %s",
+					str, e.toString());
+		}
+
+		return md5;
 	}
 
 }
