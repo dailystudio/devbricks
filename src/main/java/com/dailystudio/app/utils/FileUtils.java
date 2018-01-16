@@ -18,6 +18,7 @@ import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -869,7 +870,6 @@ public class FileUtils {
 		}
 
         Arrays.sort(files);
-        Logger.debug("files: [%s]", ArrayUtils.arrayToString(files));
 
 		String childMd5;
 		for (File file: files) {
@@ -883,8 +883,10 @@ public class FileUtils {
 				childMd5 = md5File(file);
 			}
 
-			Logger.debug("md5 update: child[%s] md5 = [%s]",
-					file, childMd5);
+			Logger.debug("[%s] of (%s, %s)",
+                    childMd5,
+                    file.isDirectory() ? "D" : "F",
+                    file.getName());
 			md5 += childMd5;
 		}
 
@@ -937,9 +939,9 @@ public class FileUtils {
 		String md5 = "";
 
 		try {
-			md5Hash = MessageDigest.getInstance("MD5");
+            md5Hash = MessageDigest.getInstance("MD5");
 			md5Hash.reset();
-			md5Hash.update(str.getBytes());
+			md5Hash.update(str.getBytes(Charset.forName("UTF8")));
 
 			byte md5Bytes[] = md5Hash.digest();
 
