@@ -122,6 +122,10 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
         return oldObject;
     }
 
+    public int deleteObjects(Context context) {
+        return deleteObjects(context, null);
+    }
+
     public int deleteObjects(Context context, DatabaseObjectKeys keys) {
         if (context == null) {
             return 0;
@@ -129,13 +133,14 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
 
         Query query = new Query(mObjectClass);
 
-        ExpressionToken token = objectsToken(keys, TOKEN_TYPE_DELETION);
-        Logger.debug("deletion token = %s", token);
-        if (token == null) {
-            return 0;
-        }
+        if (keys != null) {
+            ExpressionToken token = objectsToken(keys, TOKEN_TYPE_DELETION);
+            if (token == null) {
+                return 0;
+            }
 
-        query.setSelection(token);
+            query.setSelection(token);
+        }
 
         TimeCapsuleDatabaseWriter<T> writer =
                 new TimeCapsuleDatabaseWriter<>(context, mObjectClass);
