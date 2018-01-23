@@ -8,6 +8,7 @@ import com.dailystudio.dataobject.DatabaseObjectKeys;
 import com.dailystudio.dataobject.DatabaseObject;
 import com.dailystudio.dataobject.DatabaseObjectFactory;
 import com.dailystudio.dataobject.query.ExpressionToken;
+import com.dailystudio.dataobject.query.OrderingToken;
 import com.dailystudio.dataobject.query.Query;
 import com.dailystudio.development.Logger;
 
@@ -174,6 +175,11 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
             query.setSelection(token);
         }
 
+        OrderingToken orderByToken = orderByToken(listTokenType);
+        if (orderByToken != null) {
+            query.setOrderBy(orderByToken);
+        }
+
         return reader.query(query);
     }
 
@@ -195,6 +201,10 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
         }
 
         return null;
+    }
+
+    protected OrderingToken orderByToken(@NonNull String tokenType) {
+        return TimeCapsule.COLUMN_TIME.orderByDescending();
     }
 
     protected ExpressionToken objectsDeletionToken(DatabaseObjectKeys keys) {

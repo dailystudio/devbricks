@@ -131,6 +131,10 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 		view.setVisibility(View.VISIBLE);
 	}
 
+	protected RecyclerView.LayoutManager getLayoutManager() {
+		return mLayoutManager;
+	}
+
 	@Override
  	public void onLoadFinished(Loader<ItemSet> loader, ItemSet data) {
 		super.onLoadFinished(loader, data);
