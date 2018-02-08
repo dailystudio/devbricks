@@ -12,7 +12,7 @@ public class DatabaseObjectKeys {
 
     private Map<String, Object> mValues = new HashMap<>();
 
-    public boolean hasValue(Column column) {
+    public boolean hasValue(Column column, boolean ignoreType) {
         if (column == null) {
             return false;
         }
@@ -22,12 +22,20 @@ public class DatabaseObjectKeys {
             return false;
         }
 
+        if (ignoreType) {
+            return true;
+        }
+
         final Object value = mValues.get(key);
 
         return value.getClass() == column.getValueClass();
     }
 
-    public boolean hasArrayValue(Column column) {
+    public boolean hasValue(Column column) {
+        return hasValue(column, false);
+    }
+
+    public boolean hasArrayValue(Column column, boolean ignoreType) {
         if (column == null) {
             return false;
         }
@@ -47,7 +55,15 @@ public class DatabaseObjectKeys {
             return false;
         }
 
+        if (ignoreType) {
+            return true;
+        }
+
         return array[0].getClass() == column.getValueClass();
+    }
+
+    public boolean hasArrayValue(Column column) {
+        return hasArrayValue(column, false);
     }
 
     public void putValue(Column column, Object value) {
