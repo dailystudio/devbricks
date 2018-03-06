@@ -57,7 +57,10 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 		        getAdapterViewId());
 		if (mRecyclerView != null) {
 			mRecyclerView.setAdapter(mAdapter);
-			mRecyclerView.setLayoutManager(mLayoutManager);
+			if (mLayoutManager != null) {
+				mRecyclerView.setLayoutManager(mLayoutManager);
+			}
+
 			mRecyclerView.setVisibility(View.VISIBLE);
 			mRecyclerView.scheduleLayoutAnimation();
 
@@ -85,7 +88,9 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 		mLayoutManager = onCreateLayoutManager();
 
 		if (mRecyclerView != null) {
-			mRecyclerView.setLayoutManager(mLayoutManager);
+			if (mLayoutManager != null) {
+				mRecyclerView.setLayoutManager(mLayoutManager);
+			}
 
 			if (mItemDecoration != null) {
 				mRecyclerView.addItemDecoration(mItemDecoration);
