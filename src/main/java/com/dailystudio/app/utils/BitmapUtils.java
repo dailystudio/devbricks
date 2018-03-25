@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
+import com.dailystudio.datetime.CalendarUtils;
 import com.dailystudio.development.Logger;
 
 import android.content.Context;
@@ -690,5 +692,102 @@ public class BitmapUtils {
 		return calculateBrightnessEstimate(bitmap, 1);
 	}
 
+	private final static int DEFAULT_RADIUS = 15;
+	private final static int DEFAULT_INTENSITY = 10;
+
+	private static int sIntensityCount[] = new int[256];
+	private static int sSumR[] = new int[256];
+	private static int sSumG[] = new int[256];
+	private static int sSumB[] = new int[256];
+
+	public static Bitmap oilPaintBitmap(Bitmap bitmap) {
+		return oilPaintBitmap(bitmap, DEFAULT_RADIUS, DEFAULT_INTENSITY);
+	}
+
+	public static Bitmap oilPaintBitmap(Bitmap bitmap, int radius, int intensity) {
+		if (bitmap == null) {
+			return null;
+		}
+
+		final int width = bitmap.getWidth();
+		final int height = bitmap.getHeight();
+		Logger.debug("oil paint: [%d x %d], radius = %d, intensity = %d",
+				width, height, radius, intensity);
+		if (width <= 0 || height <= 0 || radius <= 0 || intensity <= 0) {
+			Logger.error("invalid parameters.");
+
+			return bitmap;
+		}
+
+        long start, end;
+
+		start = System.currentTimeMillis();
+
+		int[] pixels = new int[width * height];
+
+		bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+		int[] output = Arrays.copyOf(pixels, pixels.length);
+
+		int cX, cY;
+		int mX, mY;
+		int color, r, g, b, i;
+		int max, maxIndex, mI;
+		for (cY = radius; cY < height - radius; cY++) {
+			for (cX = radius; cX < width - radius; cX++) {
+                Arrays.fill(sIntensityCount, 0);
+                Arrays.fill(sSumR, 0);
+                Arrays.fill(sSumG, 0);
+                Arrays.fill(sSumB, 0);
+
+                for (mY = -radius; mY <= radius; mY++) {
+					for (mX = -radius; mX <= radius; mX++) {
+						color = pixels[(cX + mX) + (cY + mY) * width];
+						r = ((color >> 16) & 0xFF);
+						g = ((color >> 8) & 0xFF);
+						b = (color & 0xFF);
+
+						i = (int)((((r + g + b) / 3.0) * intensity) / 255);
+						if (i > 255) {
+							i = 255;
+						}
+
+						sIntensityCount[i]++;
+						sSumR[i] = sSumR[i] + r;
+						sSumG[i] = sSumG[i] + g;
+						sSumB[i] = sSumB[i] + b;
+					}
+				}
+
+				max = 0;
+				maxIndex = 0;
+
+				for (mI = 0; mI < 256; mI++) {
+					if (sIntensityCount[mI] > max) {
+						max = sIntensityCount[mI];
+						maxIndex = mI;
+					}
+				}
+
+				r = sSumR[maxIndex] / max;
+				g = sSumG[maxIndex] / max;
+				b = sSumB[maxIndex] / max;
+
+				output[(cX) + (cY) * width] = 0xff000000 | (r << 16) | (g << 8) | b;
+			}
+		}
+
+		Bitmap dest = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+
+		dest.setPixels(output, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+		end = System.currentTimeMillis();
+
+		Logger.debug("oil paint: [%d x %d], r = %d, i = %d, accomplished in %d millis [%s]",
+                width, height, radius, intensity,
+                (end - start), CalendarUtils.durationToReadableString(end - start));
+
+        return dest;
+	}
 
 }
