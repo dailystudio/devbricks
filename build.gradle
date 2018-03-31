@@ -58,19 +58,19 @@ allprojects {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.android.support:support-compat:${project.ext.androidSupportVersion}"
-    implementation "com.android.support:support-core-utils:${project.ext.androidSupportVersion}"
-    implementation "com.android.support:support-core-ui:${project.ext.androidSupportVersion}"
-    implementation "com.android.support:support-fragment:${project.ext.androidSupportVersion}"
-    implementation "com.android.support:appcompat-v7:${project.ext.appcompatVersion}"
-    implementation "com.android.support:cardview-v7:${project.ext.cardViewVersion}"
-    implementation "com.android.support:design:${project.ext.designVersion}"
-    implementation "com.android.support:multidex:${project.ext.multiDexVersion}"
+    api "com.android.support:support-compat:${project.ext.androidSupportVersion}"
+    api "com.android.support:support-core-utils:${project.ext.androidSupportVersion}"
+    api "com.android.support:support-core-ui:${project.ext.androidSupportVersion}"
+    api "com.android.support:support-fragment:${project.ext.androidSupportVersion}"
+    api "com.android.support:appcompat-v7:${project.ext.appcompatVersion}"
+    api "com.android.support:cardview-v7:${project.ext.cardViewVersion}"
+    api "com.android.support:design:${project.ext.designVersion}"
+    api "com.android.support:multidex:${project.ext.multiDexVersion}"
 
-    implementation "com.googlecode.juniversalchardet:juniversalchardet:${project.ext.juniversalchardetVersion}"
-    implementation "com.google.code.gson:gson:${project.ext.gsonVersion}"
+    api "com.googlecode.juniversalchardet:juniversalchardet:${project.ext.juniversalchardetVersion}"
+    api "com.google.code.gson:gson:${project.ext.gsonVersion}"
 
     testImplementation "junit:junit:${project.ext.junitVerion}"
 }
