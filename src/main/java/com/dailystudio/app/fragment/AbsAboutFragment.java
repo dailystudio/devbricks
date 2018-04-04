@@ -9,7 +9,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
@@ -48,7 +47,18 @@ public abstract class AbsAboutFragment extends AppCompatDialogFragment {
             return null;
         }
 
-        TextView appVerView = (TextView) dialogView.findViewById(R.id.about_app_ver);
+        ImageView appThumbView = dialogView.findViewById(R.id.about_app_thumb);
+        if (appThumbView != null) {
+            final int thumbResId = getAppThumbResource();
+            if (thumbResId <= 0) {
+                appThumbView.setVisibility(View.GONE);
+            } else {
+                appThumbView.setVisibility(View.VISIBLE);
+                appThumbView.setImageResource(thumbResId);
+            }
+        }
+
+        TextView appVerView = dialogView.findViewById(R.id.about_app_ver);
         if (appVerView != null) {
             String verName = getString(android.R.string.unknownName);
 
@@ -73,12 +83,12 @@ public abstract class AbsAboutFragment extends AppCompatDialogFragment {
             }
         }
 
-        TextView appNameView = (TextView) dialogView.findViewById(R.id.about_app_name);
+        TextView appNameView = dialogView.findViewById(R.id.about_app_name);
         if (appNameView != null) {
             appNameView.setText(getAppName());
         }
 
-        TextView appDescView = (TextView) dialogView.findViewById(R.id.about_app_desc);
+        TextView appDescView = dialogView.findViewById(R.id.about_app_desc);
         if (appDescView != null) {
             if (hasHtmlDescription()) {
                 appDescView.setAutoLinkMask(0);
@@ -108,6 +118,10 @@ public abstract class AbsAboutFragment extends AppCompatDialogFragment {
 
     protected boolean hasHtmlDescription() {
         return false;
+    }
+
+    protected int getAppThumbResource() {
+        return -1;
     }
 
     public abstract CharSequence getAppName();
