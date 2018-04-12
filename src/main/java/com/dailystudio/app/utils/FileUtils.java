@@ -463,6 +463,32 @@ public class FileUtils {
 
 		return ResourcesUtils.copyToFile(istream, ostream);
 	}
+
+	public static boolean isAssetFileExisted(Context context, String assetFile) {
+		if (context == null
+				|| TextUtils.isEmpty(assetFile)) {
+			return false;
+		}
+
+		AssetManager assetManager = context.getAssets();
+		InputStream inputStream = null;
+		try {
+			inputStream = assetManager.open(assetFile);
+			if (null != inputStream) {
+				return true;
+			}
+		} catch(IOException e) {
+		} finally {
+			try {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+			} catch (IOException e) {
+			}
+		}
+
+		return false;
+	}
 	
 	public static boolean copyAssetFile(Context context, 
 			String assetFile, String dstFile) throws IOException {
