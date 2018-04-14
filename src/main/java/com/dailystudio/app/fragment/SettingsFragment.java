@@ -162,14 +162,55 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     public static class TextSetting extends Setting {
 
+        private CharSequence mDesc;
+
         public TextSetting(Context context,
                              String name,
                              int iconResId,
                              int labelResId,
                              TextSettingsLayoutHolder holder) {
-            super(context, name, iconResId, labelResId, holder);
+            this(context, name, iconResId, labelResId, -1, holder);
         }
 
+        public TextSetting(Context context,
+                             String name,
+                             int iconResId,
+                             int labelResId,
+                             int descResId,
+                             TextSettingsLayoutHolder holder) {
+            super(context, name, iconResId, labelResId, holder);
+
+            setDesc(descResId);
+        }
+
+
+        public void setDesc(CharSequence desc) {
+            mDesc = desc;
+        }
+
+        public void setDesc(int descResId) {
+            final Context context = getContext();
+            if (context == null) {
+                return;
+            }
+
+            final Resources res = context.getResources();
+            if (res == null) {
+                return;
+            }
+
+            if (descResId <= 0) {
+                setDesc(null);
+
+                return;
+            }
+
+            setDesc(res.getString(descResId));
+        }
+
+        public CharSequence getDesc() {
+            return mDesc;
+        }
     }
 
     public abstract static class EditSetting extends Setting {
@@ -333,7 +374,7 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     }
 
-    public static abstract class SwitchSetting extends Setting {
+    public static abstract class SwitchSetting extends TextSetting {
 
         public SwitchSetting(Context context,
                              String name,
@@ -341,6 +382,16 @@ public abstract class SettingsFragment extends BaseIntentFragment {
                              int labelResId,
                              SwitchSettingsLayoutHolder holder) {
             super(context, name, iconResId, labelResId, holder);
+        }
+
+
+        public SwitchSetting(Context context,
+                             String name,
+                             int iconResId,
+                             int labelResId,
+                             int descResId,
+                             SwitchSettingsLayoutHolder holder) {
+            super(context, name, iconResId, labelResId, descResId, holder);
         }
 
         public abstract boolean isSwitchOn(Context context);
@@ -563,7 +614,7 @@ public abstract class SettingsFragment extends BaseIntentFragment {
     }
 
 
-    public class SwitchSettingsLayoutHolder extends BaseSettingLayoutHolder {
+    public class SwitchSettingsLayoutHolder extends TextSettingsLayoutHolder {
 
         @Override
         public View onCreateView(Context context,
@@ -650,6 +701,18 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             }
 
             final TextSetting textSetting = (TextSetting) setting;
+
+            TextView descView = settingView.findViewById(R.id.setting_desc);
+            if (descView != null) {
+                final CharSequence desc = textSetting.getDesc();
+
+                descView.setText(desc);
+                if (TextUtils.isEmpty(desc)) {
+                    descView.setVisibility(View.GONE);
+                } else {
+                    descView.setVisibility(View.VISIBLE);
+                }
+            }
 
             View rootView = settingView.findViewById(
                     R.id.setting_root);

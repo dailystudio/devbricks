@@ -117,9 +117,12 @@
 	<dimen name="card_content_height_mini">150dp</dimen>
 
 	<dimen name="settings_font_size">18dp</dimen>
+	<dimen name="settings_desc_font_size">16dp</dimen>
 	<dimen name="settings_icon_margin">16dp</dimen>
 	<dimen name="settings_edit_button_margin">3dp</dimen>
 	<dimen name="settings_icon_size">32dp</dimen>
+	<dimen name="settings_leading_space">64dp</dimen>
+	<dimen name="settings_switch_desc_padding_end">48dp</dimen>
 
 	<dimen name="about_app_icon_size">72dp</dimen>
 	<dimen name="about_app_ver_font_size">14dp</dimen>
