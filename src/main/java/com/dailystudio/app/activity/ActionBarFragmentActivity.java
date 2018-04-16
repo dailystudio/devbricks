@@ -1,7 +1,6 @@
 package com.dailystudio.app.activity;
 
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -124,7 +123,7 @@ public class ActionBarFragmentActivity extends AppCompatActivity {
 
         ft.hide(fragment);
 
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     public void hideFragmentOnCreate(int fragmentId) {
