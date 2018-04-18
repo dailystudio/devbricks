@@ -188,7 +188,7 @@
 	<style name="SettingsText" parent="DefaultLabel">
 		<item name="android:gravity">left|center_vertical</item>
 		<item name="android:textStyle">normal</item>
-		<item name="android:textColor">@color/colorPrimary</item>
+		<item name="android:textColor">@color/colorAccent</item>
 		<item name="android:textSize">@dimen/settings_font_size</item>
 	</style>
 

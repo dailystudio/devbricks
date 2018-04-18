@@ -11,6 +11,7 @@
 
         <ImageView
             android:id="@+id/setting_icon"
+            android:tint="@color/colorAccent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
