@@ -692,6 +692,37 @@ public class BitmapUtils {
 		return calculateBrightnessEstimate(bitmap, 1);
 	}
 
+	public static Bitmap extendBitmap(Bitmap origin, int destW, int destH, int backgroundColor) {
+		if (origin == null
+				|| destW <= 0
+				|| destH <= 0) {
+			return origin;
+		}
+
+		final int w = origin.getWidth();
+		final int h = origin.getHeight();
+		if (destW < w || destH < h) {
+			return origin;
+		}
+
+		Logger.debug("origin = %d x %d, dest = %d x %d", w, h, destW, destH);
+
+		Bitmap newOne = Bitmap.createBitmap(destW, destH, Config.ARGB_8888);
+		Canvas canvas = new Canvas(newOne);
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+		canvas.drawColor(backgroundColor);
+
+		final int xOffset = (int) Math.round((destW - w) / 2.0);
+		final int yOffset = (int) Math.round((destH - h) / 2.0);
+		Logger.debug("xOffset = %d, yOffset = %d", xOffset, yOffset);
+		canvas.drawBitmap(origin, xOffset, yOffset, paint);
+
+		BitmapUtils.saveBitmap(newOne, "/sdcard/newone.png");
+
+		return newOne;
+	}
+
 	private final static int DEFAULT_RADIUS = 15;
 	private final static int DEFAULT_INTENSITY = 10;
 

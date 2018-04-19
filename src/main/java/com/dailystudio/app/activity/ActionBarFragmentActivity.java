@@ -94,7 +94,7 @@ public class ActionBarFragmentActivity extends AppCompatActivity {
 
         ft.show(fragment);
 
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     public void hideFragment(int fragmentId) {
