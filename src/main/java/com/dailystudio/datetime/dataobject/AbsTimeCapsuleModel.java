@@ -180,6 +180,11 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
             query.setOrderBy(orderByToken);
         }
 
+        OrderingToken groupByToken = groupByToken(listTokenType);
+        if (groupByToken != null) {
+            query.setGroupBy(groupByToken);
+        }
+
         return reader.query(query);
     }
 
@@ -205,6 +210,10 @@ public abstract class AbsTimeCapsuleModel<T extends TimeCapsule> {
 
     protected OrderingToken orderByToken(@NonNull String tokenType) {
         return TimeCapsule.COLUMN_TIME.orderByDescending();
+    }
+
+    protected OrderingToken groupByToken(@NonNull String tokenType) {
+        return null;
     }
 
     protected ExpressionToken objectsDeletionToken(DatabaseObjectKeys keys) {
