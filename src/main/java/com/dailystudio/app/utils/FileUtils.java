@@ -1,5 +1,6 @@
 package com.dailystudio.app.utils;
 
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -22,6 +23,8 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.mozilla.universalchardet.UniversalDetector;
 
@@ -981,6 +984,86 @@ public class FileUtils {
 		}
 
 		return md5;
+	}
+
+	public static void unzip(String zipFile, String destDir) {
+		Logger.debug("unzip file [%s] to directory: [%s]",
+				zipFile, destDir);
+		if (TextUtils.isEmpty(zipFile)
+				|| TextUtils.isEmpty(destDir)) {
+			return;
+		}
+
+		checkOrCreateDir(destDir);
+
+		try {
+			FileInputStream fin = new FileInputStream(zipFile);
+			ZipInputStream zin = new ZipInputStream(fin);
+			ZipEntry ze = null;
+
+			StringBuilder builder = new StringBuilder();
+			String destPath = null;
+			while ((ze = zin.getNextEntry()) != null) {
+				builder.setLength(0);
+				builder.append(destDir);
+				builder.append('/');
+				builder.append(ze.getName());
+
+				destPath = builder.toString();
+
+
+				Logger.debug("[%s] uncompressing [%s] to: [%s]",
+						ze.getName(),
+						(ze.isDirectory() ? "D" : "F"),
+						destPath);
+
+
+
+				//create dir if required while unzipping
+				if (ze.isDirectory()) {
+					checkOrCreateDir(destPath);
+				} else {
+					FileOutputStream fOut =
+							new FileOutputStream(destPath);
+					BufferedOutputStream bufOut = new BufferedOutputStream(fOut);
+					byte[] buffer = new byte[1024];
+					int read = 0;
+					while ((read = zin.read(buffer)) != -1) {
+						bufOut.write(buffer, 0, read);
+					}
+
+					bufOut.close();
+					zin.closeEntry();
+					fOut.close();
+				}
+
+			}
+
+			zin.close();
+		} catch (Exception e) {
+			Logger.error("unzip file [%s] to [%s] failed: %s",
+					zipFile,
+					destDir,
+					e.toString());
+		}
+	}
+
+	private static void checkOrCreateDir(String dir) {
+		if (TextUtils.isEmpty(dir)) {
+			return;
+		}
+
+		checkOrCreateDir(new File(dir));
+	}
+
+	private static void checkOrCreateDir(File dir) {
+		if (dir == null) {
+			return;
+		}
+
+		if (dir.exists() == false) {
+			dir.mkdir();
+		}
 	}
 
 }
