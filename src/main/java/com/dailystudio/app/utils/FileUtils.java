@@ -986,16 +986,20 @@ public class FileUtils {
 		return md5;
 	}
 
-	public static void unzip(String zipFile, String destDir) {
+	public static boolean unzip(String zipFile, String destDir) {
 		Logger.debug("unzip file [%s] to directory: [%s]",
 				zipFile, destDir);
 		if (TextUtils.isEmpty(zipFile)
 				|| TextUtils.isEmpty(destDir)) {
-			return;
+			return false;
 		}
+
+		final long start = System.currentTimeMillis();
 
 		checkOrCreateDir(destDir);
 
+		int count = 0;
+		boolean succeed = false;
 		try {
 			FileInputStream fin = new FileInputStream(zipFile);
 			ZipInputStream zin = new ZipInputStream(fin);
@@ -1010,14 +1014,12 @@ public class FileUtils {
 				builder.append(ze.getName());
 
 				destPath = builder.toString();
-
-
+/*
 				Logger.debug("[%s] uncompressing [%s] to: [%s]",
 						ze.getName(),
 						(ze.isDirectory() ? "D" : "F"),
 						destPath);
-
-
+*/
 
 				//create dir if required while unzipping
 				if (ze.isDirectory()) {
@@ -1037,15 +1039,28 @@ public class FileUtils {
 					fOut.close();
 				}
 
+				count++;
 			}
 
 			zin.close();
+
+			succeed = true;
 		} catch (Exception e) {
 			Logger.error("unzip file [%s] to [%s] failed: %s",
 					zipFile,
 					destDir,
 					e.toString());
+
+			succeed = false;
 		}
+
+		final long end = System.currentTimeMillis();
+		Logger.debug("unzip %d files %s in %d millis.",
+				count,
+				succeed ? "succeed" : "failed",
+				(end - start));
+
+		return succeed;
 	}
 
 	private static void checkOrCreateDir(String dir) {
