@@ -575,7 +575,27 @@ public class FileUtils {
 	    
 	    return encoding;
 	}
-	
+
+	public static String getBasename(String filename){
+		File file = new File(filename);
+
+		return file.getName();
+	}
+
+    public static String getFileName(String filename) {
+		String baseName = getBasename(filename);
+
+    	if ((baseName != null) && (baseName.length() > 0)) {
+    		int i = baseName.lastIndexOf('.');
+
+    		if ((i >-1) && (i < (baseName.length() - 1))) {
+    			return baseName.substring(0, i);
+    		}
+    	}
+    	
+    	return baseName;
+    }
+
 	public static String getFileExtension(String filename) {
 		return getFileExtension(filename, "");
 	}
@@ -588,7 +608,7 @@ public class FileUtils {
     			return filename.substring(i + 1);
     		}
     	}
-    	
+
     	return defExt;
     }
 
