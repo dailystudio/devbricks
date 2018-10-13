@@ -821,4 +821,93 @@ public class BitmapUtils {
         return dest;
 	}
 
+    public static Bitmap concatBitmap(Bitmap bitmap1, Bitmap bitmap2) {
+	    if (bitmap1 == null || bitmap2 == null) {
+	        return null;
+        }
+
+        final int w1 = bitmap1.getWidth();
+        final int h1 = bitmap1.getHeight();
+        final int w2 = bitmap2.getWidth();
+        final int h2 = bitmap2.getHeight();
+        Logger.debug("concat bitmap1: [%d x %d]", w1, h1);
+        Logger.debug("concat bitmap2: [%d x %d]", w2, h2);
+
+        final boolean landscape1 = (w1 > h1);
+        final boolean landscape2 = (w2 > h2);
+
+        if (landscape1 != landscape2) {
+            Logger.error("two images has different orientation, bitmap1 is %s and bitmap2 is %s",
+                    (landscape1 ? "Landscape" : "Portrait"),
+                    (landscape2 ? "Landscape" : "Portrait"));
+
+            return null;
+        }
+
+        final boolean landscape = landscape1;
+
+        int w, h;
+        if (landscape) {
+            w = Math.min(w1, w2);
+
+            if (w1 != w) {
+                bitmap1 = scaleBitmapRatioLocked(bitmap1, w, w);
+            }
+
+            if (w2 != w) {
+                bitmap2 = scaleBitmapRatioLocked(bitmap2, w, w);
+            }
+
+            h = bitmap1.getHeight() + bitmap2.getHeight();
+        } else {
+            h = Math.min(h1, h2);
+
+            if (h1 != h) {
+                bitmap1 = scaleBitmapRatioLocked(bitmap1, h, h);
+            }
+
+            if (h2 != h) {
+                bitmap2 = scaleBitmapRatioLocked(bitmap2, h, h);
+            }
+
+            w = bitmap1.getWidth() + bitmap2.getWidth();
+        }
+
+        Logger.debug("concat bitmap: dimen = [%d x %d]", w, h);
+
+        if (bitmap1 == null
+                || bitmap2 == null) {
+            return null;
+        }
+
+        Bitmap newBitmap = null;
+        try {
+            newBitmap = Bitmap.createBitmap(w, h, bitmap1.getConfig());
+
+            Canvas c = new Canvas(newBitmap);
+            Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+            if (landscape) {
+                c.drawBitmap(bitmap1,
+                        new Rect(0, 0, w, bitmap1.getHeight()),
+                        new Rect(0, 0, w, bitmap1.getHeight()), p);
+                c.drawBitmap(bitmap2,
+                        new Rect(0, 0, w, bitmap2.getHeight()),
+                        new Rect(0, bitmap1.getHeight(), w, h), p);
+            } else {
+                c.drawBitmap(bitmap1,
+                        new Rect(0, 0, bitmap1.getWidth(), h),
+                        new Rect(0, 0, bitmap1.getWidth(), h), p);
+                c.drawBitmap(bitmap2,
+                        new Rect(0, 0, bitmap2.getWidth(), h),
+                        new Rect(bitmap1.getWidth(), 0, w, h), p);
+            }
+        } catch (OutOfMemoryError e) {
+            Logger.error("concat bitmaps failed: %s", e.toString());
+
+            newBitmap = null;
+        }
+
+        return newBitmap;
+    }
 }
