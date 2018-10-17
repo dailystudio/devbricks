@@ -175,7 +175,15 @@ public abstract class AbsRecyclerViewFragment<Item, ItemSet, ItemHolder extends 
 
  		mHandler.postDelayed(r, delayMillis);
  	}
- 	
+
+ 	protected void notifyAdapterItemChanged(int position) {
+		if (mAdapter == null) {
+			return;
+		}
+
+		mAdapter.notifyItemChanged(position);
+	}
+
 	protected void notifyAdapterChanged() {
 		mHandler.removeCallbacks(notifyAdapterChangedRunnable);
 		post(notifyAdapterChangedRunnable);
