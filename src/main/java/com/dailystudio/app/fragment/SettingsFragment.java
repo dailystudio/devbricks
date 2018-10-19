@@ -308,21 +308,17 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             if (mEditText != null) {
                 mEditText.setText(editSetting.getEditText(context));
                 mEditText.setHint(editSetting.getEditHint(context));
-                mEditText.addTextChangedListener(new TextWatcher() {
-
+                mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (hasFocus == false) {
+                            Editable editable = mEditText.getText();
+                            if (editable != null) {
+                                performEditTextChange(editSetting,
+                                        editable);
+                            }
+                        }
                     }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        performEditTextChange(editSetting, s);
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                    }
-
                 });
             }
         }
