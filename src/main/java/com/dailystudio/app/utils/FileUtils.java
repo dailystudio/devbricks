@@ -896,15 +896,23 @@ public class FileUtils {
 		return md5Dir(dir, false);
 	}
 
-	public static String md5Dir(String dir, boolean hiddenFies) {
-		return md5Dir(new File(dir), hiddenFies);
+	public static String md5Dir(File dir) {
+		return md5Dir(dir, false);
 	}
 
-	public static String md5File(String file) {
-		return md5File(new File(file));
+	public static String md5Dir(String dir, boolean hiddenFies) {
+		return md5Dir(dir, hiddenFies, false);
 	}
 
 	public static String md5Dir(File dir, boolean hiddenFiles) {
+		return md5Dir(dir, hiddenFiles, false);
+	}
+
+	public static String md5Dir(String dir, boolean hiddenFiles, boolean verbose) {
+		return md5Dir(new File(dir), hiddenFiles, verbose);
+	}
+
+	public static String md5Dir(File dir, boolean hiddenFiles, boolean verbose) {
 		String md5 = "";
 
 		if (dir == null
@@ -932,14 +940,21 @@ public class FileUtils {
 				childMd5 = md5File(file);
 			}
 
-			Logger.debug("[%s] of (%s, %s)",
-                    childMd5,
-                    file.isDirectory() ? "D" : "F",
-                    file.getName());
+			if (verbose) {
+				Logger.debug("[%s] of (%s, %s)",
+						childMd5,
+						file.isDirectory() ? "D" : "F",
+						file.getName());
+			}
+
 			md5 += childMd5;
 		}
 
 		return md5HashOfString(md5);
+	}
+
+	public static String md5File(String file) {
+		return md5File(new File(file));
 	}
 
 	public static String md5File(File file) {
