@@ -161,7 +161,7 @@ public class GifImageView extends View {
         final int yOffset = (int)(((getHeight() - getMeasuredHeight()) / 2f)
                 / mDrawingFactor);
 
-        canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        canvas.save();
         canvas.scale(mDrawingFactor, mDrawingFactor);
 
         if (mHasTintColor) {

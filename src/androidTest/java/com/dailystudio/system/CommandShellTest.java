@@ -78,7 +78,7 @@ public class CommandShellTest extends ActivityTestCase {
 	}
 	
 	public void testExecShellCommand() {
-		int ret = CommandShell.execAndWaitFor("ls -l");
+		int ret = CommandShell.execAndWaitFor("ls /sdcard/ -l");
 		assertEquals(CommandShell.ERR_NONE, CommandShell.getErrorCode(ret));
 		assertEquals(0, CommandShell.getExitValue(ret));
 	}
@@ -183,7 +183,7 @@ public class CommandShellTest extends ActivityTestCase {
 		
 		FileOutputStream output = null;
 		try {
-			output = mTargetContext.openFileOutput(targetFile, Context.MODE_WORLD_READABLE);
+			output = mTargetContext.openFileOutput(targetFile, Context.MODE_PRIVATE);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			output = null;

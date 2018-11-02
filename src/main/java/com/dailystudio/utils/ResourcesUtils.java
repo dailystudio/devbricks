@@ -64,7 +64,7 @@ public class ResourcesUtils {
 		
 		FileOutputStream output = null;
 		try {
-			output = dstContext.openFileOutput(fname, Context.MODE_WORLD_READABLE);
+			output = dstContext.openFileOutput(fname, Context.MODE_PRIVATE);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			output = null;

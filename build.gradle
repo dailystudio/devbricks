@@ -44,6 +44,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
+    useLibrary 'android.test.runner'
+    useLibrary 'android.test.base'
+    useLibrary 'android.test.mock'
 }
 
 buildscript {
@@ -80,10 +84,7 @@ dependencies {
     api "com.google.code.gson:gson:${project.ext.gsonVersion}"
 
     testImplementation "junit:junit:${project.ext.junitVerion}"
-}
 
-task wrapper(type: Wrapper) {
-    gradleVersion = gradleWrapperVersion
 }
 
 apply from: './maven_push.gradle'

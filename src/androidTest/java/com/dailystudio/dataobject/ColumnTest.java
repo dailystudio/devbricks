@@ -39,6 +39,11 @@ public class ColumnTest extends AndroidTestCase {
 		}
 
 		@Override
+		public Class<?> getValueClass() {
+			return Object.class;
+		}
+
+		@Override
 		boolean matchColumnType(Object value) {
 			return false;
 		}
@@ -94,6 +99,11 @@ public class ColumnTest extends AndroidTestCase {
 		@Override
 		Object getValue(ContentValues container) {
 			return null;
+		}
+
+		@Override
+		public Class<?> getValueClass() {
+			return Object.class;
 		}
 
 		@Override
