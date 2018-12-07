@@ -270,4 +270,19 @@ public class ArrayUtils {
 		return bytes;
 	}
 
+	public static <T> List<T> arrayToList(T[] arrays) {
+		if (arrays == null
+				|| arrays.length <= 0) {
+			return null;
+		}
+
+		List<T> list = new ArrayList<>();
+
+		for (T item: arrays) {
+			list.add(item);
+		}
+
+		return list;
+	}
+
 }
