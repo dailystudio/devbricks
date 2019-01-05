@@ -87,7 +87,7 @@ public class ThumbAsyncDecoder {
 		
 	}
 	
-	private static class DecodeFileThumbAsyncTask extends AbsDecodeThumbAsyncTask {
+	public static class DecodeFileThumbAsyncTask extends AbsDecodeThumbAsyncTask {
 
 		public DecodeFileThumbAsyncTask(String thumbKey, String decodeSource) {
 			super(thumbKey, decodeSource);

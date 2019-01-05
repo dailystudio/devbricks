@@ -692,6 +692,47 @@ public class BitmapUtils {
 		return calculateBrightnessEstimate(bitmap, 1);
 	}
 
+	public static Bitmap paddingBitmap(Bitmap origin,
+									   int padding,
+									   int paddingBackground,
+									   boolean expand) {
+		if (origin == null
+				|| padding <= 0) {
+			return origin;
+		}
+
+		final int w = origin.getWidth();
+		final int h = origin.getHeight();
+
+/*
+		Logger.debug("origin = %d x %d, padding = %d, expand = %s",
+				w, h,
+				padding,
+				expand);
+*/
+
+		int destW = w;
+		int destH = h;
+
+		if (expand) {
+			destW += padding * 2;
+			destH += padding * 2;
+		}
+
+		Bitmap newOne = Bitmap.createBitmap(destW, destH, Config.ARGB_8888);
+		Canvas canvas = new Canvas(newOne);
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+		canvas.drawColor(paddingBackground);
+
+		canvas.drawBitmap(origin,
+				new Rect(0, 0, w, h),
+				new Rect(padding, padding, destW - padding, destH - padding),
+				paint);
+
+		return newOne;
+	}
+
 	public static Bitmap extendBitmap(Bitmap origin, int destW, int destH, int backgroundColor) {
 		if (origin == null
 				|| destW <= 0
