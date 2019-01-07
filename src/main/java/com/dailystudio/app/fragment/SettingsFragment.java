@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -421,6 +422,33 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     }
 
+    public class SimpleRadioSettingItem implements RadioSettingItem {
+
+        private Context mContext;
+        private int mLabelResId;
+        private String mItemId;
+
+        public SimpleRadioSettingItem(@NonNull Context context,
+                                      int labelResId,
+                                      @NonNull String itemId) {
+            mContext = context.getApplicationContext();
+            mLabelResId = labelResId;
+            mItemId = itemId;
+        }
+
+
+        @Override
+        public CharSequence getLabel() {
+            return mContext.getString(mLabelResId);
+        }
+
+        @Override
+        public String getId() {
+            return mItemId;
+        }
+
+    }
+
     public abstract static class RadioSetting<T extends  RadioSettingItem> extends Setting {
 
         private List<T> mRadioItems = new ArrayList<>();
@@ -612,6 +640,8 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
     public class SwitchSettingsLayoutHolder extends TextSettingsLayoutHolder {
 
+        private Switch mSwitch;
+
         @Override
         public View onCreateView(Context context,
                                  LayoutInflater layoutInflater,
@@ -626,7 +656,13 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
         @Override
         public void invalidate(Context context, Setting setting) {
+            if (mSwitch != null
+                    && setting instanceof SwitchSetting) {
+                final boolean switchOn =
+                        ((SwitchSetting)setting).isSwitchOn(context);
 
+                mSwitch.setChecked(switchOn);
+            }
         }
 
         @Override
@@ -645,14 +681,14 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
             final SwitchSetting switchSetting = (SwitchSetting) setting;
 
-            Switch swView = (Switch) settingView.findViewById(
+            mSwitch = settingView.findViewById(
                     R.id.setting_switch);
-            if (swView != null) {
+            if (mSwitch != null) {
                 final boolean switchOn =
                         switchSetting.isSwitchOn(context);
 
-                swView.setChecked(switchOn);
-                swView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                mSwitch.setChecked(switchOn);
+                mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         switchSetting.setSwitchOn(context, isChecked);
