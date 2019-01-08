@@ -141,11 +141,7 @@ public abstract class SettingsFragment extends BaseIntentFragment {
         }
 
         protected void notifySettingsChanged() {
-            Intent i = new Intent(ACTION_SETTINGS_CHANGED);
-
-            i.putExtra(EXTRA_SETTING_NAME, getName());
-
-            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(i);
+            SettingsFragment.notifySettingChange(getContext(), getName());
         }
 
         private Runnable mNotifyDataChangesRunnable = new Runnable() {
@@ -1009,6 +1005,14 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             Logger.warn("could not unregister receiver [%s] from %s: %s",
                     receiver, ACTION_SETTINGS_CHANGED, e.toString());
         }
+    }
+
+    public static void notifySettingChange(Context context, String settingId) {
+        Intent i = new Intent(ACTION_SETTINGS_CHANGED);
+
+        i.putExtra(EXTRA_SETTING_NAME, settingId);
+
+        LocalBroadcastManager.getInstance(context).sendBroadcast(i);
     }
 
 }
