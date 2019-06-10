@@ -7,26 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
+import android.graphics.*;
 import com.dailystudio.datetime.CalendarUtils;
 import com.dailystudio.development.Logger;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory.Options;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -951,4 +940,43 @@ public class BitmapUtils {
 
         return newBitmap;
     }
+
+	public static Bitmap clipBitmapByPath(Bitmap src, Path path) {
+		if (src == null || path == null) {
+			return src;
+		}
+
+		Path resized = resizePath(path, src.getWidth(), src.getHeight());
+
+		Bitmap output = Bitmap.createBitmap(src.getWidth(),
+				src.getHeight(), Bitmap.Config.ARGB_8888);
+
+		Canvas canvas = new Canvas(output);
+
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+		canvas.drawPath(resized, paint);
+
+		// Keeps the source pixels that cover the destination pixels,
+		// discards the remaining source and destination pixels.
+		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+
+		canvas.drawBitmap(src, 0, 0, paint);
+
+		return output;
+	}
+
+	private static Path resizePath(Path path, float width, float height) {
+		RectF bounds = new RectF(0, 0, width, height);
+		Path resizedPath = new Path(path);
+		RectF src = new RectF();
+		resizedPath.computeBounds(src, true);
+
+		Matrix resizeMatrix = new Matrix();
+		resizeMatrix.setRectToRect(src, bounds, Matrix.ScaleToFit.CENTER);
+		resizedPath.transform(resizeMatrix);
+
+		return resizedPath;
+	}
+
 }
