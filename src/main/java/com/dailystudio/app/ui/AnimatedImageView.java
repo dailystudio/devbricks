@@ -79,5 +79,12 @@ public class AnimatedImageView extends ImageView {
 			post(new AnimStopRunnable((AnimationDrawable)d));
 		}
 	}
+
+	public void resetAnimation() {
+		Drawable d = getDrawable();
+		if (d instanceof AnimationDrawable) {
+			((AnimationDrawable)d).selectDrawable(0);
+		}
+	}
 	
 }
