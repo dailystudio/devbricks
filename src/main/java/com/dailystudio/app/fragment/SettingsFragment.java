@@ -802,12 +802,12 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
             final int min = seekBarSetting.getMinValue(context);
             final int max = seekBarSetting.getMaxValue(context);
-            final int prg = min + (progress * step);
+            final int prg = progress;
 
-/*
+
             Logger.debug("prg = %d, [min: %d, max: %d, step: %d",
                     prg, min, max, step);
-*/
+
 
             seekBar.setProgress((prg - min) / step);
             seekBar.setMax((max - min) / step);
