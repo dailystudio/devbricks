@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.dailystudio.R;
 import com.dailystudio.development.Logger;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,8 @@ public abstract class SettingsFragment extends BaseIntentFragment {
         private Drawable mIcon;
         private CharSequence mLabel;
         private LayoutHolder mHolder;
+
+        private boolean mEnabled = true;
 
         public Setting(Context context, String name, int iconResId, int labelResId, LayoutHolder holder) {
             mContext = context.getApplicationContext();
@@ -130,11 +133,33 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             mHandler.postDelayed(mNotifyDataChangesRunnable, 300);
         }
 
+        public void setEnabled(boolean enabled) {
+            mEnabled = enabled;
+
+            syncEnabled();
+        }
+
+        public boolean isEnabled() {
+            return mEnabled;
+        }
+
+        private void syncEnabled() {
+            if (mHolder != null) {
+                View view = mHolder.getView();
+                if (view != null) {
+                    view.setVisibility(isEnabled() ?
+                            View.VISIBLE : View.GONE);
+                }
+            }
+        }
+
+
         @Override
         public String toString() {
-            return String.format("%s(0x%08x): label = %s, icon = %s, holder = %s",
+            return String.format("%s(0x%08x, enabled = %s): label = %s, icon = %s, holder = %s",
                     getClass().getSimpleName(),
                     hashCode(),
+                    isEnabled(),
                     getLabel(),
                     getIcon(),
                     getLayoutHolder());
@@ -402,13 +427,13 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             super(context, name, iconResId, labelResId, holder);
         }
 
-        public abstract int getProgress(Context context);
+        public abstract float getProgress(Context context);
 
-        public abstract void setProgress(Context context, int progress);
+        public abstract void setProgress(Context context, float progress);
 
-        public abstract int getMinValue(Context context);
-        public abstract int getMaxValue(Context context);
-        public abstract int getStep(Context context);
+        public abstract float getMinValue(Context context);
+        public abstract float getMaxValue(Context context);
+        public abstract float getStep(Context context);
     }
 
     public interface RadioSettingItem {
@@ -599,6 +624,14 @@ public abstract class SettingsFragment extends BaseIntentFragment {
                 rb.setText(item.getLabel());
                 rb.setTextAppearance(context, R.style.SettingsText);
                 rb.setTag(item);
+
+                if (!TextUtils.isEmpty(selectedId)
+                        && selectedId.equals(item.getId())) {
+                    rb.setChecked(true);
+                } else {
+                    rb.setChecked(false);
+                }
+
                 rb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -607,6 +640,7 @@ public abstract class SettingsFragment extends BaseIntentFragment {
                             if (o instanceof RadioSettingItem) {
                                 RadioSettingItem i = (RadioSettingItem)o;
                                 radioSetting.setSelected(i.getId());
+                                radioSetting.notifyDataChanges();
                             }
 
                             radioSetting.notifySettingsChanged();
@@ -616,18 +650,6 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
                 mRadioGroup.addView(rb);
                 rbs[i] = rb;
-            }
-
-            for (int i = 0; i < N; i++) {
-                item = radioSetting.getItem(i);
-                rb = rbs[i];
-
-                if (!TextUtils.isEmpty(selectedId)
-                        && selectedId.equals(item.getId())) {
-                    rb.setChecked(true);
-                } else {
-                    rb.setChecked(false);
-                }
             }
         }
 
@@ -797,20 +819,20 @@ public abstract class SettingsFragment extends BaseIntentFragment {
                 return;
             }
 
-            final int progress = seekBarSetting.getProgress(context);
-            final int step = seekBarSetting.getStep(context);
+            final float progress = seekBarSetting.getProgress(context);
+            final float step = seekBarSetting.getStep(context);
 
-            final int min = seekBarSetting.getMinValue(context);
-            final int max = seekBarSetting.getMaxValue(context);
-            final int prg = progress;
+            final float min = seekBarSetting.getMinValue(context);
+            final float max = seekBarSetting.getMaxValue(context);
+            final float prg = progress;
 
 
-            Logger.debug("prg = %d, [min: %d, max: %d, step: %d",
+            Logger.debug("prg = %f, [min: %f, max: %f, step: %f",
                     prg, min, max, step);
 
 
-            seekBar.setProgress((prg - min) / step);
-            seekBar.setMax((max - min) / step);
+            seekBar.setProgress(Math.round((prg - min) / step));
+            seekBar.setMax(Math.round((max - min) / step));
         }
 
         @Override
@@ -832,8 +854,10 @@ public abstract class SettingsFragment extends BaseIntentFragment {
             final TextView seekValView = (TextView) settingView.findViewById(
                     R.id.setting_seek_value);
             if (seekValView != null) {
-                seekValView.setText(String.valueOf(
-                        seekBarSetting.getProgress(context)));
+                final float prg = seekBarSetting.getProgress(context);
+                final String prgStr = NumberFormat.getInstance().format(prg);
+
+                seekValView.setText(prgStr);
             }
 
             SeekBar seekBarView = (SeekBar) settingView.findViewById(
@@ -844,11 +868,11 @@ public abstract class SettingsFragment extends BaseIntentFragment {
 
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        int prg = seekBarSetting.getMinValue(context)
+                        float prg = seekBarSetting.getMinValue(context)
                                 + (progress * seekBarSetting.getStep(context));
 
                         if (seekValView != null) {
-                            seekValView.setText(String.valueOf(prg));
+                            seekValView.setText(NumberFormat.getInstance().format(prg));
                         }
 
                         seekBarSetting.setProgress(context, prg);
@@ -942,6 +966,8 @@ public abstract class SettingsFragment extends BaseIntentFragment {
         if (settings != null) {
             for (Setting s: settings) {
                 addSetting(s);
+
+                s.syncEnabled();
             }
         }
     }
