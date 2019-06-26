@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/topLayout"
+    android:paddingTop="@dimen/inplace_settings_margin_v"
+    android:paddingBottom="@dimen/inplace_settings_margin_v"
+    android:paddingStart="@dimen/inplace_settings_margin_h"
+    android:paddingEnd="@dimen/inplace_settings_margin_h"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        style="@style/DefaultCardView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/settings_top"
+                android:src="@color/light_gray"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/inplace_settings_top_height" />
+
+            <FrameLayout
+                android:id="@+id/settings_close"
+                android:background="@color/colorPrimary"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/SettingsClose"
+                    android:text="@string/label_setting_close"
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/setting_fragment_holder"
+                android:layout_below="@id/settings_top"
+                android:layout_above="@id/settings_close"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
