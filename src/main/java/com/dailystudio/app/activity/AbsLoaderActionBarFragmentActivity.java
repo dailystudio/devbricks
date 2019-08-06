@@ -3,7 +3,7 @@ package com.dailystudio.app.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
+import androidx.loader.app.LoaderManager;
 
 /**
  * Created by nan on 2015/2/12.

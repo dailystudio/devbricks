@@ -2,8 +2,8 @@ package com.dailystudio.app.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.RecyclerView;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.dailystudio.app.widget.DeferredHandler;

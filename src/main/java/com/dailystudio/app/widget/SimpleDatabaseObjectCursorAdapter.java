@@ -5,7 +5,7 @@ import com.dailystudio.dataobject.DatabaseObjectFactory;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.widget.SimpleCursorAdapter;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 public class SimpleDatabaseObjectCursorAdapter<T extends DatabaseObject>
 	extends SimpleCursorAdapter {

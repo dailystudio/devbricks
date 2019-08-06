@@ -7,7 +7,7 @@ import com.dailystudio.development.Logger;
 
 import android.graphics.Bitmap;
 import android.os.Handler;
-import android.support.v4.util.LruCache;
+import androidx.collection.LruCache;
 
 public class ThumbCacheManager {
 	

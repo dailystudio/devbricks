@@ -1,14 +1,11 @@
 package com.dailystudio.app.ui;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.dailystudio.app.fragment.AbsArrayRecyclerViewFragment;
-import com.dailystudio.app.widget.DeferredHandler;
 import com.dailystudio.development.Logger;
 
 import java.util.Comparator;

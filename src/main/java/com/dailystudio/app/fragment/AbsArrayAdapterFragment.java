@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.dailystudio.development.Logger;
 
-import android.support.v4.content.Loader;
+import androidx.loader.content.Loader;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 

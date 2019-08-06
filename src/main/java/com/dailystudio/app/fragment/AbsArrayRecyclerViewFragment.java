@@ -1,7 +1,7 @@
 package com.dailystudio.app.fragment;
 
 import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.dailystudio.app.ui.AbsArrayRecyclerAdapter;

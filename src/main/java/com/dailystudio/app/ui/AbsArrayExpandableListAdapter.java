@@ -1,7 +1,7 @@
 package com.dailystudio.app.ui;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.widget.BaseExpandableListAdapter;
 

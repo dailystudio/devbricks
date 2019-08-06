@@ -4,7 +4,7 @@ import com.dailystudio.app.widget.SimpleDatabaseObjectCursorAdapter;
 import com.dailystudio.dataobject.DatabaseObject;
 
 import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
+import androidx.cursoradapter.widget.CursorAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 

@@ -1,8 +1,8 @@
 package com.dailystudio.app;
 
 import android.content.Context;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 import com.dailystudio.BuildConfig;
 import com.dailystudio.GlobalContextWrapper;

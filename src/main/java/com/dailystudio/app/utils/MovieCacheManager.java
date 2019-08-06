@@ -2,7 +2,7 @@ package com.dailystudio.app.utils;
 
 import android.graphics.Movie;
 import android.os.Handler;
-import android.support.v4.util.LruCache;
+import androidx.collection.LruCache;
 
 import com.dailystudio.development.Logger;
 
