@@ -83,6 +83,8 @@ dependencies {
     api "com.googlecode.juniversalchardet:juniversalchardet:${project.ext.juniversalchardetVersion}"
     api "com.google.code.gson:gson:${project.ext.gsonVersion}"
 
+    api project(':annotations')
+
     testImplementation "junit:junit:${project.ext.junitVerion}"
 
 }

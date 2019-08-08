@@ -1,1 +1,4 @@
 include ':'
+include ':annotations'
+
+project(':annotations').projectDir = new File("$rootDir/../devbricks-annotations/annotations/")
