@@ -67,6 +67,23 @@ afterEvaluate { project ->
                         }
                     }
                 }
+
+                pom.whenConfigured { pom ->
+                    pom.dependencies.forEach { dep ->
+                        if (dep.getVersion() == "unspecified") {
+                            print('moven-pom-dep: unspecified = ' + dep + '\n')
+
+                            subprojects.findAll { subproject ->
+                                if (dep.artifactId == subproject.ext.POM_ARTIFACT_ID) {
+                                    print('moven-pom-dep: mathed subproject = ' + subproject + '\n')
+                                    dep.setGroupId(subproject.ext.GROUP)
+                                    dep.setVersion(subproject.ext.appVersion)
+                                    print('moven-pom-dep: modified = ' + dep + '\n')
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
