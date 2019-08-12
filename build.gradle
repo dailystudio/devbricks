@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
 
+/*
     buildTypes {
         release {
             minifyEnabled true
@@ -22,12 +23,15 @@ android {
             versionNameSuffix " (DEBUG)"
         }
     }
+*/
 
     defaultConfig {
         versionName appVersion
         versionCode Integer.parseInt(appVersionCode)
         minSdkVersion Integer.parseInt(androidMinSdkVersion)
         targetSdkVersion Integer.parseInt(androidTargetSdkVersion)
+
+        consumerProguardFiles 'proguard-rules.txt'
     }
 
     lintOptions {
@@ -86,7 +90,6 @@ dependencies {
     api project(':annotations')
 
     testImplementation "junit:junit:${project.ext.junitVerion}"
-
 }
 
 apply from: './maven_push.gradle'
