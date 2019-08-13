@@ -2,28 +2,18 @@ apply plugin: 'com.android.library'
 
 android {
 
-/*
     buildTypes {
+
         release {
-            minifyEnabled true
-
-            proguardFile getDefaultProguardFile('proguard-android.txt')
-            proguardFile 'proguard-project.txt'
-        }
-
-        releaseUsigned {
-            minifyEnabled true
-
-            proguardFile getDefaultProguardFile('proguard-android.txt')
-            proguardFile 'proguard-project.txt'
         }
 
         debug {
             debuggable true
             versionNameSuffix " (DEBUG)"
         }
+
     }
-*/
+
 
     defaultConfig {
         versionName appVersion
