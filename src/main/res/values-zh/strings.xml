@@ -18,5 +18,9 @@
 	<string name="date_label_yesterday">昨天</string>
 
 	<string name="default_nodata_prompt">暂时没有数据哦~\n╮(╯_╰)╭</string>
+	<string name="default_loading">数据加载中……</string>
+
+	<string name="label_permissions_denied">需要的权限尚未获得！</string>
+	<string name="label_setting_close">关闭</string>
 
 </resources>

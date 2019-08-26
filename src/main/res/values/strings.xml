@@ -23,6 +23,7 @@
 	<string name="default_nodata_prompt">No data collected.</string>
 	<string name="default_loading">Loading your data ...</string>
 
+	<string name="label_permissions_denied">Required permissions are NOT granted!</string>
 	<string name="label_setting_close">Close</string>
 
 </resources>
