@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import com.dailystudio.R;
+import com.dailystudio.app.utils.ArrayUtils;
 import com.dailystudio.development.Logger;
 
 public abstract class AbsPermissionsFragment extends BaseIntentFragment {
@@ -58,19 +59,36 @@ public abstract class AbsPermissionsFragment extends BaseIntentFragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == REQUEST_PERMISSIONS) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Logger.debug("permissions = [%s], grantResults = [%s]",
+                    ArrayUtils.stringArrayToString(permissions),
+                    ArrayUtils.intArrayToString(grantResults));
+            if (isAllPermissionsGranted(grantResults)) {
                 // Take the user to the success fragment when permission is granted
-                Logger.warn("Permission request granted");
+                Logger.warn("All of required permissions are granted");
                 onPermissionsGranted(true);
             } else {
                 if (mPromptView != null) {
                     mPromptView.setVisibility(View.VISIBLE);
                 }
 
-                Logger.warn("Permission request denied");
+                Logger.warn("Permissions request denied");
                 onPermissionsDenied();
             }
         }
+    }
+
+    private boolean isAllPermissionsGranted(@NonNull int[] grantResults) {
+        if (grantResults.length <= 0) {
+            return false;
+        }
+
+        for (int gr: grantResults) {
+            if (gr != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void requestPermissions() {

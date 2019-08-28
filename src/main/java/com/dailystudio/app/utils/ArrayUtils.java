@@ -10,7 +10,11 @@ import java.util.List;
 public class ArrayUtils {
 
 	public static final String DEFAULT_ARRAY_DELIMITER = ",";
-	
+
+	public static String stringArrayToString(String[] strings) {
+		return stringArrayToString(strings, DEFAULT_ARRAY_DELIMITER);
+	}
+
 	public static String stringArrayToString(String[] strings, String delimiter) {
 		if (strings == null || delimiter == null) {
 			return null;
