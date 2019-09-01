@@ -69,7 +69,7 @@ dependencies {
     api "androidx.legacy:legacy-support-core-utils:${project.ext.androidXVersion}"
     api "androidx.legacy:legacy-support-core-ui:${project.ext.androidXVersion}"
     api "androidx.fragment:fragment:${project.ext.androidXVersion}"
-    api "androidx.appcompat:appcompat:${project.ext.androidXVersion}"
+    api "androidx.appcompat:appcompat:${project.ext.androidXAppCompatVersion}"
     api "androidx.cardview:cardview:${project.ext.androidXVersion}"
     api "com.google.android.material:material:${project.ext.androidXVersion}"
     api "androidx.multidex:multidex:${project.ext.multiDexVersion}"
