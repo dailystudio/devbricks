@@ -105,17 +105,7 @@ public abstract class InplaceSettingsFragment extends BaseIntentFragment {
             darkBackground.setVisibility(View.VISIBLE);
         }
 
-        FragmentTransaction ft =
-                getFragmentManager().beginTransaction();
-
-        final int enterAnim = getSettingsInAnimId();
-        if (enterAnim > 0) {
-            ft.setCustomAnimations(enterAnim, 0);
-        }
-
-        ft.show(this);
-
-        ft.commitAllowingStateLoss();
+        showFragment(this, getSettingsInAnimId());
     }
 
     public void hide() {
