@@ -62,11 +62,11 @@ public abstract class InplaceSettingsFragment extends BaseIntentFragment {
         final String className = getSettingFragmentClassName();
         if (!TextUtils.isEmpty(className)) {
             Logger.debug("fragment class name: %s", className);
-            Fragment fragment = Fragment.instantiate(getContext(),
-                    className);
+            Fragment fragment = getChildFragmentManager().getFragmentFactory().instantiate(
+                    getContext().getClassLoader(), className);
 
             if (fragment != null) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 ft.add(R.id.setting_fragment_holder, fragment);
                 ft.commit();
             }

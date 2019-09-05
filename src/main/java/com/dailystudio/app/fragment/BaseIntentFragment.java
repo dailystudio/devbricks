@@ -70,7 +70,7 @@ public class BaseIntentFragment extends Fragment {
 		}
 
 		FragmentTransaction ft =
-				getChildFragmentManager().beginTransaction();
+				fragment.getFragmentManager().beginTransaction();
 
 		if (exitAnim > 0) {
 			ft.setCustomAnimations(0, exitAnim);
@@ -91,7 +91,7 @@ public class BaseIntentFragment extends Fragment {
 		}
 
 		FragmentTransaction ft =
-				getChildFragmentManager().beginTransaction();
+				fragment.getFragmentManager().beginTransaction();
 
 		ft.hide(fragment);
 
