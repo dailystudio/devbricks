@@ -18,6 +18,9 @@ public class DevBricksApplication extends Application {
 		GlobalContextWrapper.bindContext(appContext);
 
 		checkAndSetDebugEnabled();
+
+		Logger.debug("current application is running in [%s] mode",
+				isDebugBuild() ? "debug" : "release");
 	}
 	
 	@Override
